@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/WritingPost.scss';
+import '../styles/community/WritingPost.scss';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import CommunityHeader from '../components/community/CommunityHeader';

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/CommunityCategoryTab.scss';
+import '../../styles/community/CommunityCategoryTab.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function CommunityCategory({ filter, setFilter }) {

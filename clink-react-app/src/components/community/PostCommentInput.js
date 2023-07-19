@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../../styles/PostCommentInput.scss'
+import '../../styles/community/PostCommentInput.scss'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';

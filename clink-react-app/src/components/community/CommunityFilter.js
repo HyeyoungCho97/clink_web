@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/CommunityFilter.scss';
+import '../../styles/community/CommunityFilter.scss';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';

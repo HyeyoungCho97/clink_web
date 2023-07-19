@@ -4,7 +4,7 @@ import CommunityCategory from "../components/community/CategoryTab";
 import CommunityFilter from "../components/community/CommunityFilter";
 import CommunityPost from "../components/community/CommunityPost";
 import CommunityPostButton from "../components/community/CommunityPostButton";
-import "../styles/CommunityContainer.scss";
+import "../styles/community/CommunityContainer.scss";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
