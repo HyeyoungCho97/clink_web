@@ -8,7 +8,10 @@ logs
 **/*.backup.*
 **/*.back.*
 
-node_modules
+clink-react-app/node_modules
+clink-react-app/package.json
+clink-react-app/package-lock.json
+clink-react-app/yarn.lock
 bower_components
 
 *.sublime*

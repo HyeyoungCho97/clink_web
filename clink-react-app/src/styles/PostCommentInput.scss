@@ -1,0 +1,25 @@
+.CommentContainer{
+    position: fixed;
+    bottom: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    left: auto;
+    right: auto;
+    max-width: 576px;
+    background-color: white;
+    Form {
+        margin-right: 10px;
+        margin-left: 10px;
+        width: 100%;
+    }
+    Button {
+        min-width: 53.66px;
+        margin-right: 10px;
+    }
+    Form, Button {
+        margin-bottom: 5px;
+    }
+
+}
