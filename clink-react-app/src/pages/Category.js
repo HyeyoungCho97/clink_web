@@ -27,7 +27,7 @@ export default function Community() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          "http://localhost/community/category?categoryNo=" +
+          "http://localhost:80/community/category?categoryNo=" +
             lo +
             "&&filter=" +
             filter

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import moment from "moment";
 import ChallengeTableCard from "./ChallengeTableCard";
-import category from "../../data/expenseCategory.json";
+import category from "../../dataCode/expenseCategory.json";
 
 const ChallengeTable = ({ date, detail }) => {
   // const forceUpdate =React.useCallback(()=>updateS)

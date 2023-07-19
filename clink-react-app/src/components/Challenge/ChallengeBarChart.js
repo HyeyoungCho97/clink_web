@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveBar } from "@nivo/bar";
-import category from "../../data/expenseCategory.json";
+import category from "../../dataCode/expenseCategory.json";
 
 const ChallengeBarChart = ({ data }) => {
   const week = ["일", "월", "화", "수", "목", "금", "토"];

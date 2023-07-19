@@ -12,7 +12,7 @@ export default function CommunityHeader() {
           <ChevronLeft
             onClick={(event) => {
               event.stopPropagation();
-              navigate('/community');
+              navigate(-1);
             }}
           ></ChevronLeft>
           &nbsp;커뮤니티
