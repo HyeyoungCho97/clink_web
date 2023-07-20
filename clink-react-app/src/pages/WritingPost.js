@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/WritingPost.scss';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
