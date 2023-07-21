@@ -3,6 +3,7 @@ import '../../styles/CommunityCategoryTab.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function CommunityCategory({ filter, setFilter }) {
+  //카테고리별 카테고리탭
   // const navigate = useNavigate();
   const onclick = () => {
     setFilter(1);

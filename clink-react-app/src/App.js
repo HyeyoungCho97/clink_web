@@ -26,22 +26,18 @@ function App() {
     {
       src: '/images/main.png',
       resrc: '/images/clickMain.png',
-      select: true,
     },
     {
       src: '/images/chall.png',
       resrc: '/images/clickChaa.png',
-      select: false,
     },
     {
       src: '/images/commu.png',
       resrc: '/images/ClickCommu.png',
-      select: false,
     },
     {
       src: '/images/myinfo.png',
       resrc: '/images/clickInfo.png',
-      select: false,
     },
   ];
 
