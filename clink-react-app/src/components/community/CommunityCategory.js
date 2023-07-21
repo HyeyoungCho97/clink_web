@@ -24,6 +24,7 @@ const dum = [
   },
 ];
 function Category() {
+  //커뮤니티 페이지의 상단 카테고리
   const [contents, setContents] = useState(dum);
   const onClick = (src) => {
     setContents(
@@ -40,7 +41,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[0].src);
-            navigate('/community/posts?categoryNo=3&&filter=1');
+            navigate('/community/posts?categoryNo=3&&filter=1'); //카테고리 번호와 필터를 함께 보냄
           }}
           className="contentIcon"
           src={best}

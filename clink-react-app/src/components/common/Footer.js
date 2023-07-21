@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Footer.css';
+import '../../styles/common/Footer.css';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 const Footer = ({ resources }) => {
   const [image, setImage] = useState(resources);

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Post from './pages/Post';
 import WritingPost from './pages/WritingPost';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+
 import NotFound from './pages/NotFound';
 import TestView from './pages/MainFrame';
 import Community from './pages/CommunityTempl';
@@ -17,7 +17,7 @@ import FindPwd from './pages/FindPwd';
 import Challenge from './pages/Challenge';
 
 import MyPage from './pages/MyPage';
-import axios from 'axios';
+
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
 

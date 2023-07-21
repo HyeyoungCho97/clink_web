@@ -5,7 +5,7 @@ import CommunityFilter from '../components/community/CommunityFilter';
 import CommunityPost from '../components/community/CommunityPost';
 import CommunityPostButton from '../components/community/CommunityPostButton';
 import '../styles/CommunityContainer.scss';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+// import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
@@ -13,13 +13,13 @@ export default function Community() {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const location = useLocation();
   const [filter, setFilter] = useState(1);
+  const [categoryNo, setCategoryNo] = useState();
+  const location = useLocation();
   useEffect(() => {
-    console.log(new URLSearchParams(location.search).get('categoryNo'));
-    const lo = new URLSearchParams(location.search).get('categoryNo');
+    console.log(Number(new URLSearchParams(location.search).get('categoryNo')));
+    const lo = Number(new URLSearchParams(location.search).get('categoryNo'));
     const fetchPosts = async () => {
-      console.log(filter);
       try {
         // 요청이 시작 할 때에는 error 와 posts 를 초기화하고
         setError(null);
@@ -32,7 +32,7 @@ export default function Community() {
         //     "&&filter=" +
         //     filter
         // );
-
+        setCategoryNo(lo);
         const response = await axios.get('http://localhost/community/posts', {
           //params에 들어온 카테고리 번호랑 필터를 넣어 보냄
           params: {
@@ -40,7 +40,7 @@ export default function Community() {
             filter: filter,
           },
         });
-        console.log(response);
+        // console.log(response);
         setPosts(response.data); // 데이터는 response.data 안에 들어있습니다.
       } catch (e) {
         setError(e);
@@ -59,8 +59,8 @@ export default function Community() {
       <>
         <CommunityHeader></CommunityHeader>
         <CommunityCategory
-          filter={filter}
           setFilter={setFilter}
+          categoryNo={categoryNo}
         ></CommunityCategory>
         <CommunityFilter
           setFilter={setFilter}
@@ -82,10 +82,10 @@ export default function Community() {
         <CommunityPost post={post} key={id}></CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
+      {/* <br />
       <br />
       <br />
-      <br />
-      <br />
+      <br /> */}
     </div>
   );
 }

@@ -14,6 +14,7 @@ function Community({ list }) {
   useEffect(() => {
     console.log(sessionStorage.getItem('userId'));
     const fetchData = async () => {
+      //뉴스 api를 호출
       try {
         //   const ID_KEY = 'FaodiymBSIFGKB1jVbkU';
         //   const SECRET_KEY = 'rz1LWa559t';
@@ -37,6 +38,7 @@ function Community({ list }) {
     fetchData();
   }, []);
   useEffect(() => {
+    //인기 게시물 호출
     const listSet = async () => {
       try {
         const response = await axios.get(
