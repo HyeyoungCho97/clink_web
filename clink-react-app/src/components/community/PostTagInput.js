@@ -15,11 +15,12 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     const { name, value } = event.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value.trim(), //양쪽 공백 막기
     });
   };
   const nextId = useRef(1);
   const onCreate = () => {
+    console.log(inputs.tagname);
     if (tags.length === 5) {
       alert('태그는 5개까지 입력가능합니다');
       setInputs({
