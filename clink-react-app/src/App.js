@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Post from './pages/Post';
 import WritingPost from './pages/WritingPost';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import NotFound from './pages/NotFound';
 import TestView from './pages/MainFrame';
 import Community from './pages/CommunityTempl';
@@ -15,9 +14,7 @@ import Join from './pages/Join';
 import FindId from './pages/FindId';
 import FindPwd from './pages/FindPwd';
 import Challenge from './pages/Challenge';
-
 import MyPage from './pages/MyPage';
-
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
 

@@ -34,8 +34,10 @@ export default function PostTagInput({ inputPost, setInputPost }) {
       setInputs({
         tagname: '',
       });
+      // const test = '#' + tagname;
+      // console.log(test);
       setInputPost({ ...inputPost, tagList: [...tags, tag] });
-      console.log(inputPost);
+      // console.log(inputPost);
       nextId.current += 1;
     }
   };
@@ -84,7 +86,7 @@ export default function PostTagInput({ inputPost, setInputPost }) {
       <div className="SetTag">
         {tags.map((tag) => (
           <Button tag={tag} key={tag.id} variant="outline-primary">
-            {tag.tagname}
+            {'#' + tag.tagname}
             <X onClick={(event) => onRemove(event, tag.id)} />
           </Button>
         ))}
