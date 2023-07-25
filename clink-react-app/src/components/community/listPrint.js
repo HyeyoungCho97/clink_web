@@ -1,4 +1,4 @@
-import './listPrint.css';
+import '../../styles/community/listPrint.css';
 import LikeButton from './likeButton';
 function ListPrint({ title, list }) {
   const lists = () => {
@@ -12,9 +12,9 @@ function ListPrint({ title, list }) {
               {list[i].boardTitle}
             </b>
             &nbsp; &nbsp;
-            <LikeButton className="likeButton" />
+            {/* <LikeButton className="likeButton" /> */}
             &nbsp;
-            <b className="Like">{list[i].boardLikes}</b>
+            {/* <b className="Like">{list[i].boardLikes}</b> */}
           </li>
         );
       }
