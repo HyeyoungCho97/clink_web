@@ -31,15 +31,14 @@ export default function CommunityPost({ post, key }) {
   };
 
   const {
-    boardNo,
-    boardCategoryNo,
-    userNo,
-    boardViews,
-    boardTitle,
-    boardContent,
-    boardDate,
-    boardWriter,
-    boardLikes,
+    board_title,
+    board_no,
+    board_content,
+    register_datetime, 
+		register_id, 
+		board_like_count,
+		hashtag_content,
+    board_views
   } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
   const navigate = useNavigate();
   const [view, setView] = useState(false);
@@ -49,7 +48,7 @@ export default function CommunityPost({ post, key }) {
         className="CommunityPostContainer"
         onClick={(event) => {
           event.stopPropagation();
-          navigate('/community/post?boardNo=' + boardNo);
+          navigate('/community/post?boardNo=' + board_no);
         }}
       >
         <div className="CommunityPostTags">
@@ -70,8 +69,8 @@ export default function CommunityPost({ post, key }) {
                 <img src={Logo} alt="Profile" />
               </div>
               <div className="CommunityPostProfileText">
-                <p className="CommunityPostProfileNickname">{boardTitle}</p>
-                <p className="CommunityPostProfileTime">{boardDate}</p>
+                <p className="CommunityPostProfileNickname">{board_title}</p>
+                <p className="CommunityPostProfileTime">{register_datetime}</p>
               </div>
             </div>
 
@@ -110,14 +109,14 @@ export default function CommunityPost({ post, key }) {
             </div>
           </div>
           <br />
-          <div className="CommunityPostContent">{boardContent}</div>
+          <div className="CommunityPostContent">{board_content}</div>
           <br />
         </div>
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
             {isLike ? <HeartFill /> : <Heart />}
-            &nbsp;좋아요 {boardLikes}
+            &nbsp;좋아요 {board_like_count}
           </button>
           <button>
             <ChatDots />
@@ -125,7 +124,7 @@ export default function CommunityPost({ post, key }) {
           </button>
           <button>
             <Eye />
-            &nbsp;조회 {boardViews}
+            &nbsp;조회 {board_views}
           </button>
         </div>
       </div>
