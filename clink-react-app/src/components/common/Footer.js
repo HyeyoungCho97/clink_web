@@ -1,64 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './Footer.css';
-import { NavLink, Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./Footer.css";
+import { NavLink, Outlet } from "react-router-dom";
 const Footer = ({ resources }) => {
   const [image, setImage] = useState(resources);
-  const accountNumber1 = sessionStorage.getItem('accountNumber1');
-  const accountNumber2 = sessionStorage.getItem('accountNumber2');
+  const accountNumber1 = sessionStorage.getItem("accountNumber1");
+  const accountNumber2 = sessionStorage.getItem("accountNumber2");
 
   const imageHandler = (src) => {
     setImage(
       image.map((item) =>
         item.src === src
           ? { ...item, select: true }
-          : { ...item, select: false },
-      ),
+          : { ...item, select: false }
+      )
     );
   };
 
   useEffect(() => {
     // accountNumber2 값이 변경될 때마다 실행되는 로직
-  }, [accountNumber1, accountNumber2]); 
+  }, [accountNumber1, accountNumber2]);
 
   // 계좌 있는지 확인하고 세션에 저장
   function checkAccountHandler() {
-
     let param = {
-      userNo: sessionStorage.getItem('userNo'),
+      user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post('http://localhost:80/clink/account/checkAccount.do', param)
+      .post("http://localhost:80/clink/user/checkAccount.do", param)
       .then((response) => {
         console.log(response.data);
 
         for (let i = 0; i < response.data.length; i++) {
           if (response.data[i].accountType === 1) {
             sessionStorage.setItem(
-              'accountType1',
-              response.data[i].accountType,
+              "accountType1",
+              response.data[i].accountType
             );
             sessionStorage.setItem(
-              'accountNumber1',
-              response.data[i].accountNumber,
+              "accountNumber1",
+              response.data[i].accountNumber
             );
             console.log(
-              'accountNumber1:' + sessionStorage.getItem('accountNumber1'),
+              "accountNumber1:" + sessionStorage.getItem("accountNumber1")
             );
           } else if (response.data[i].accountType === 2) {
             sessionStorage.setItem(
-              'accountType2',
-              response.data[i].accountType,
+              "accountType2",
+              response.data[i].accountType
             );
             sessionStorage.setItem(
-              'accountNumber2',
-              response.data[i].accountNumber,
+              "accountNumber2",
+              response.data[i].accountNumber
             );
             console.log(
-              'accountNumber2:' + sessionStorage.getItem('accountNumber2'),
+              "accountNumber2:" + sessionStorage.getItem("accountNumber2")
             );
           } else {
-            console.log('등록된 계좌 없음');
+            console.log("등록된 계좌 없음");
           }
         }
       })

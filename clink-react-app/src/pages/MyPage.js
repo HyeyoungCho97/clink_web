@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddAccount from "../components/AddAccount";
-import ShowAccount from "../components/ShowAccount";
 import pig from "../assets/pig.png";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "../styles/MyPage.scss";
-import Footer from "../components/common/Footer";
+import AddAccount from "../components/account/AddAccount";
+import ShowAccount from "../components/account/ShowAccount";
 
 const MyPage = () => {
-  const [userName, setUserName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [user_name, setUser_ame] = useState("");
+  const [nick_name, setNick_name] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [userInfo, setUserInfo] = useState(0);
   const navigate = useNavigate();
@@ -21,15 +20,15 @@ const MyPage = () => {
   const accountNumber2 = sessionStorage.getItem("accountNumber2");
 
   useEffect(() => {
-    setUserInfo(sessionStorage.getItem("userId"));
+    setUserInfo(sessionStorage.getItem("user_id"));
   }, []);
 
   useEffect(() => {
     // 개인정보 수정용
-    // const storedNickname = sessionStorage.getItem('nickname');
-    // setNickname(storedNickname);
-    // const storedName = sessionStorage.getItem('userName');
-    // setUserName(storedName);
+    // const storedNickname = sessionStorage.getItem('nick_name');
+    // setNick_name(storedNickname);
+    // const storedName = sessionStorage.getItem('user_name');
+    // setUser_ame(storedName);
   }, []);
 
   // 로그아웃(세션제거)
@@ -41,11 +40,11 @@ const MyPage = () => {
   // 개인정보 수정
   function updateHandler() {
     let param = {
-      userName: userName,
-      nickname: nickname,
-      pwd: pwd,
+      user_name: user_name,
+      nick_name: nick_name,
+      password: password,
       confirmPwd: confirmPwd,
-      userNo: sessionStorage.getItem("userNo"),
+      user_no: sessionStorage.getItem("user_no"),
     };
     axios
       .post("http://localhost:80/clink/user/update.do", param)
@@ -53,9 +52,9 @@ const MyPage = () => {
         console.log(response.data);
         if (response.data === "success") {
           alert("수정되었습니다.");
-          // setUserName('');
-          // setNickname('');
-          // setPwd('');
+          // setUser_ame('');
+          // setNick_name('');
+          // setPassword('');
           // setConfirmPwd('');
         } else if (response.data === "fail") {
           alert("정상적으로 처리되지 않았습니다.");
@@ -70,7 +69,7 @@ const MyPage = () => {
   return (
     <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
       <div className="MyPageTitle">
-        {sessionStorage.getItem("userId")} 마이페이지
+        {sessionStorage.getItem("user_id")} 마이페이지
       </div>
       {userInfo ? (
         <>
@@ -94,23 +93,23 @@ const MyPage = () => {
             <div className="MyPageInfoBox">
               <Form.Control
                 type="text"
-                name="nickname"
-                placeholder={`닉네임 ${nickname}`}
+                name="nick_name"
+                placeholder={`닉네임 ${nick_name}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setNickname(e.target.value);
+                  setNick_name(e.target.value);
                 }}
-                value={nickname}
+                value={nick_name}
               />
               <Form.Control
                 type="text"
                 name="name"
-                placeholder={`이름 ${userName}`}
+                placeholder={`이름 ${user_name}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setUserName(e.target.value);
+                  setUser_ame(e.target.value);
                 }}
-                value={userName}
+                value={user_name}
               />
               <Form.Control
                 type="password"
@@ -118,9 +117,9 @@ const MyPage = () => {
                 placeholder="비밀번호"
                 className="joinInput"
                 onChange={(e) => {
-                  setPwd(e.target.value);
+                  setPassword(e.target.value);
                 }}
-                value={pwd}
+                value={password}
               />
               <Form.Control
                 type="password"

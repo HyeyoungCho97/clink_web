@@ -11,7 +11,7 @@ import axios from "axios";
 const now = new Date();
 const name = "chatgpt";
 
-sessionStorage.setItem("userId", "chatgpt");
+// sessionStorage.setItem("userId", "chatgpt");
 let userId = sessionStorage.getItem("userId");
 if (userId == null) userId = "chatgpt";
 

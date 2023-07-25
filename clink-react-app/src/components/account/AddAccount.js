@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/AddAccount.scss'
+import '../../styles/AddAccount.scss'
 import { Link } from 'react-router-dom';
 
 

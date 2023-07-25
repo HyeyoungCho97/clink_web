@@ -10,40 +10,39 @@ import "../styles/Login.scss";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [userId, setuserId] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [user_id, setUser_id] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLoginSubmit = () => {
-    if (userId.trim() === "" || pwd.trim() === "") {
-      setuserId("");
-      setPwd("");
-      console.log(userId);
+    if (user_id.trim() === "" || password.trim() === "") {
+      setUser_id("");
+      setPassword("");
+      console.log(user_id);
       alert("아이디 또는 패스워드를 입력해주세요");
     } else {
       var param = {
-        userId: userId,
-        pwd: pwd,
+        user_id: user_id,
+        password: password,
       };
-      console.log(userId, pwd);
+      console.log(user_id, password);
       axios
         .post("http://localhost:80/clink/user/login.do", param)
         .then((response) => {
           console.log(
-            response.data.userId,
-            response.data.userNo,
-            response.data.nickname
+            response.data.user_id,
+            response.data.user_no,
           );
           if (response.data) {
-            sessionStorage.setItem("userId", response.data.userId);
-            sessionStorage.setItem("userNo", response.data.userNo);
-            sessionStorage.setItem("nickname", response.data.nickname);
-            sessionStorage.setItem("userName", response.data.userName);
-            alert(sessionStorage.getItem("userId") + " 로그인되었습니다.");
+            sessionStorage.setItem("user_id", response.data.user_id);
+            sessionStorage.setItem("user_no", response.data.user_no);
+            sessionStorage.setItem("nick_name", response.data.nick_name);
+            sessionStorage.setItem("user_name", response.data.user_name);
+            alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
             navigate("/mypage");
           } else {
             alert("다시 시도하세요");
-            setuserId("");
-            setPwd("");
+            setUser_id("");
+            setPassword("");
           }
         })
         .catch((error) => {
@@ -66,19 +65,19 @@ const Login = () => {
           <Form.Control
             type="text"
             id="inputPassword5"
-            value={userId}
+            value={user_id}
             placeholder="아이디"
             onChange={(e) => {
-              setuserId(e.target.value);
+              setUser_id(e.target.value);
             }}
           />
           <Form.Control
             type="password"
             id="inputPassword5"
             placeholder="비밀번호"
-            value={pwd}
+            value={password}
             onChange={(e) => {
-              setPwd(e.target.value);
+              setPassword(e.target.value);
             }}
           />
         </div>

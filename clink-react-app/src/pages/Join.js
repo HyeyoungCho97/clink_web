@@ -1,92 +1,103 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Join.scss';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/Join.scss";
+import { Link } from "react-router-dom";
 
 const Join = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [userId, setuserId] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [confirmPwd, setConfirmPwd] = useState('');
-  const [email, setEmail] = useState('');
+  const [user_name, setUser_name] = useState("");
+  const [user_id, setUser_id] = useState("");
+  const [nick_name, setNick_name] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [warningPwd, setWarningPwd] = useState("");
+  const [warningId, setWarningId] = useState("");
+
+
+  useEffect(() => {
+    if (password !== confirmPwd) {
+      setWarningPwd("비밀번호가 일치하지 않습니다.");
+    } else {
+      setWarningPwd("");
+    }
+  }, [password, confirmPwd]);
 
   // 아이디 중복체크
   function checkDuplicateId() {
-    let id = { userId: userId };
+    let id = { user_id: user_id };
     axios
-      .post('http://localhost/clink/user/check-duplicate-id.do', id)
+      .post("http://localhost/clink/user/check-duplicate-id.do", id)
       .then((response) => {
         console.log(response.data);
-        if (response.data === 'success') {
-          alert('사용할 수 있는 아이디입니다.');
-        } else if (response.data === 'fail') {
-          alert('사용 중인 아이디입니다.');
-          setuserId('');
+        if (response.data === "success") {
+          setWarningId("사용할 수 있는 아이디입니다.");
+        } else if (response.data === "fail") {
+          setWarningId("사용 중인 아이디입니다.");
         }
       })
       .catch((error) => {
         console.log(error);
-        alert('다시 시도하세요');
+        setWarningId("다시 시도하세요");
       });
   }
 
   // 회원가입
   function handleSubmit(e) {
     // e.preventDefault();
-    if (userId.trim() === '') {
-      alert('아이디를 입력해주세요.');
-    } else if (pwd.trim() === '') {
-      alert('비밀번호를 입력해주세요.');
-    } else if (userName.trim() === '') {
-      alert('이름을 입력해주세요.');
-    } else if (confirmPwd.trim() === '') {
-      alert('비밀번호 확인을 입력해주세요.');
+    if (user_id.trim() === "") {
+      alert("아이디를 입력해주세요.");
+    } else if (password.trim() === "") {
+      alert("비밀번호를 입력해주세요.");
+    } else if (user_name.trim() === "") {
+      alert("이름을 입력해주세요.");
+    } else if (confirmPwd.trim() === "") {
+      alert("비밀번호 확인을 입력해주세요.");
     } else {
-      let id = { userId: userId };
+      let id = { user_id: user_id };
       axios
-        .post('http://localhost:80/clink/user/check-duplicate-id.do', id)
+        .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
         .then((response) => {
           console.log(response.data);
-          if (response.data === 'success') {
+          if (response.data === "success") {
             var param = {
-              userName: userName,
-              userId: userId,
-              nickname: nickname,
-              pwd: pwd,
+              user_name: user_name,
+              user_id: user_id,
+              nick_name: nick_name,
+              password: password,
               confirmPwd: confirmPwd,
               email: email,
             };
 
             axios
-              .post('http://localhost:80/clink/user/join.do', param)
+              .post("http://localhost:80/clink/user/join.do", param)
               .then((response) => {
                 console.log(response.data);
                 if (response.data) {
-                  alert('회원가입 되었습니다. 로그인해주세요.');
-                  navigate('/');
+                  alert("회원가입 되었습니다. 로그인해주세요.");
+                  navigate("/");
                 } else {
-                  alert('다시 시도하세요');
+                  alert("다시 시도하세요");
                 }
               })
               .catch((error) => {
                 console.log(error);
-                alert('회원가입에 실패했습니다.');
+                alert("회원가입에 실패했습니다.");
               });
-          } else if (response.data === 'fail') {
-            alert('사용 중인 아이디입니다.');
-            setuserId('');
+          } else if (response.data === "fail") {
+            alert("사용 중인 아이디입니다.");
+            setUser_id("");
           }
         })
         .catch((error) => {
           console.log(error);
-          alert('다시 시도하세요');
+          alert("다시 시도하세요");
         });
     }
   }
@@ -103,40 +114,42 @@ const Join = () => {
             placeholder="이름*"
             className="joinInput"
             onChange={(e) => {
-              setUserName(e.target.value);
+              setUser_name(e.target.value);
             }}
           />
+          <div></div>
           <InputGroup className="joinInput">
             <Form.Control
-              name="userId"
+              name="user_id"
               placeholder="아이디*"
               variant="outline-secondary"
               onChange={(e) => {
-                setuserId(e.target.value);
+                setUser_id(e.target.value);
+                checkDuplicateId()
               }}
-              value={userId}
+              value={user_id}
             />
-            <Button id="JoinIdentifyBtn" onClick={() => checkDuplicateId()}>
-              중복확인
-            </Button>
           </InputGroup>
+          <div>{warningId}</div>
           <Form.Control
-            name="nickname"
+            name="nick_name"
             placeholder="닉네임"
             className="joinInput"
             onChange={(e) => {
-              setNickname(e.target.value);
+              setNick_name(e.target.value);
             }}
           />
+          <div></div>
           <Form.Control
             type="password"
             name="password"
             placeholder="비밀번호*"
             className="joinInput"
             onChange={(e) => {
-              setPwd(e.target.value);
+              setPassword(e.target.value);
             }}
           />
+          <div></div>
           <Form.Control
             type="password"
             name="confirmPassword"
@@ -146,7 +159,7 @@ const Join = () => {
               setConfirmPwd(e.target.value);
             }}
           />
-
+          <div>{warningPwd}</div>
           <InputGroup className="joinInput">
             <Form.Control
               placeholder="이메일"
@@ -172,8 +185,8 @@ const Join = () => {
           회원가입하기
         </Button>
       </div>
-      <Link to="/" style={{textDecoration: "none"}}>
-        <div className="JoinLoginBtn" >로그인</div>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <div className="JoinLoginBtn">로그인</div>
       </Link>
     </div>
   );

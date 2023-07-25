@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
-import category from "../../data/expenseCategory.json";
+import category from "../../dataCode/expenseCategory.json";
 
 const ChallengePieChart = ({ data }) => {
   const keys = Object.values(category.category);

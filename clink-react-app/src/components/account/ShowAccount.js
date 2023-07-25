@@ -20,7 +20,7 @@ const ShowAccount = ({ accountNumber2 }) => {
               accountNumber2
             ) : (
               <Link
-                to="/consumption-account-form"
+                to="/show-account-form"
                 style={{ textDecoration: 'none' }}
               >
                 + 새 계좌 등록

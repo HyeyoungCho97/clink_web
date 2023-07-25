@@ -2,35 +2,35 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import account from '../assets/account.png';
+import account from '../../assets/account.png';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/AddAccountForm.scss';
+import '../../styles/AddAccountForm.scss';
 
 const AddAccountForm = () => {
   const navigate = useNavigate();
-  const [accountNumber, setAccountNumber] = useState('');
-  const [bankType, setBankType] = useState('');
+  const [account_no, setAccount_no] = useState('');
+  const [bank_code, setBank_code] = useState('');
 
   function AddAccountHandler() {
     let param = {
-      accountNumber: accountNumber,
-      userNo: sessionStorage.getItem('userNo'),
-      bankType: bankType,
+      account_no: account_no,
+      user_no: sessionStorage.getItem('user_no'),
+      bank_code: bank_code,
       accountType: 1,
     };
     axios
-      .post('http://localhost:80/clink/account/registAccount.do', param)
+      .post('http://localhost:80/clink/user/registAccount.do', param)
       .then((response) => {
         console.log(response.data);
         if (response.data === 1) {
           alert('계좌가 등록되었습니다.');
           sessionStorage.setItem('accountType1', 1);
-          sessionStorage.setItem('accountNumber1', accountNumber);
+          sessionStorage.setItem('accountNumber1', account_no);
         } else {
           alert('계좌가 정상적으로 등록되지 않았습니다. ');
-          setAccountNumber('');
+          setAccount_no('');
         }
         navigate('/mypage');
       })
@@ -51,8 +51,8 @@ const AddAccountForm = () => {
           <form action="registAccount.do" method="post">
             <Form.Select
               aria-label="Default select example"
-              value={bankType}
-              onChange={(e) => setBankType(e.target.value)}
+              value={bank_code}
+              onChange={(e) => setBank_code(e.target.value)}
             >
               <option>은행을 선택하세요</option>
               <option value="088">신한</option>
@@ -69,9 +69,9 @@ const AddAccountForm = () => {
               name="accountNum"
               placeholder="계좌번호 ( '-' 제외)"
               onChange={(e) => {
-                setAccountNumber(e.target.value);
+                setAccount_no(e.target.value);
               }}
-              value={accountNumber}
+              value={account_no}
             />
           </form>
         </div>
