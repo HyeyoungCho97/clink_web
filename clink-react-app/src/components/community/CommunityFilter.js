@@ -1,5 +1,5 @@
+import '../../styles/CommunityFilter.scss';
 import React, { useState } from 'react';
-import '../../styles/community/CommunityFilter.scss';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -12,7 +12,7 @@ export default function CommunityFilter({ filter, setFilter }) {
         size="sm"
         title={filter === 1 ? '최신순' : '인기순'}
         id="bg-nested-dropdown"
-        menuProps={{ className: 'community-filter-dropdown' }}
+        className="community-filter-dropdown"
       >
         <Dropdown.Item eventKey="1" onClick={() => setFilter(1)}>
           최신순

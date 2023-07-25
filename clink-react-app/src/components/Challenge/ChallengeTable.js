@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import moment from "moment";
-import ChallengeTableCard from "./ChallengeTableCard";
-import category from "../../dataCode/expenseCategory.json";
+import moment from 'moment';
+import ChallengeTableCard from './ChallengeTableCard';
+import category from '../../dataCode/expenseCategory.json';
 
 const ChallengeTable = ({ date, detail }) => {
   // const forceUpdate =React.useCallback(()=>updateS)
@@ -13,21 +13,21 @@ const ChallengeTable = ({ date, detail }) => {
       let strAmount =
         detail[i].expenseAmount
           ?.toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
 
       let date = new Date(detail[i].expenseDate);
       let strDate =
         date.getMonth() < 10
-          ? "0" + (date.getMonth() + 1)
+          ? '0' + (date.getMonth() + 1)
           : date.getMonth() + 1;
-      strDate += "." + date.getDate();
+      strDate += '.' + date.getDate();
 
       result.push(
         <ChallengeTableCard
           key={detail[i].expenseId}
           date={strDate}
           time={
-            date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+            date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
           }
           description={detail[i].expenseDescription}
           category={category.category[detail[i].categoryId]}
@@ -44,8 +44,8 @@ const ChallengeTable = ({ date, detail }) => {
   return (
     <div className="ChallengeTable">
       <div id="SelectedDate">
-        {moment(date[0]).format("MM월 DD일")} ~{" "}
-        {moment(date[1]).format("MM월 DD일")}
+        {moment(date[0]).format('MM월 DD일')} ~{' '}
+        {moment(date[1]).format('MM월 DD일')}
       </div>
       {result}
     </div>

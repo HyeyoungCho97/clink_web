@@ -21,7 +21,7 @@ const Join = () => {
   function checkDuplicateId() {
     let id = { userId: userId };
     axios
-      .post('http://localhost/clink/user/check-duplicate-id.do', id)
+      .post('http://localhost:80/clink/user/check-duplicate-id.do', id)
       .then((response) => {
         console.log(response.data);
         if (response.data === 'success') {
@@ -172,8 +172,8 @@ const Join = () => {
           회원가입하기
         </Button>
       </div>
-      <Link to="/" style={{textDecoration: "none"}}>
-        <div className="JoinLoginBtn" >로그인</div>
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <div className="JoinLoginBtn">로그인</div>
       </Link>
     </div>
   );

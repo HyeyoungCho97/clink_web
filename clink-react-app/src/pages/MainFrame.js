@@ -1,19 +1,17 @@
-import "../styles/MainFrame.scss";
-import CalendarGraph from "../components/main/CalendarGraph.js";
-import MainBackgroundImage from "../images/main_background.svg";
-import React, { useEffect, useState } from "react";
-import MainHello from "../components/main/MainHello.js";
-import MainQuote from "../components/main/MainQuote.js";
-import MainSavingTotal from "../components/main/MainSavingTotal.js";
-import MainReport from "../components/main/MainReport.js";
-import axios from "axios";
+import '../styles/MainFrame.scss';
+import CalendarGraph from '../components/main/CalendarGraph.js';
+import MainBackgroundImage from '../images/main_background.svg';
+import React, { useEffect, useState } from 'react';
+import MainHello from '../components/main/MainHello.js';
+import MainQuote from '../components/main/MainQuote.js';
+import MainSavingTotal from '../components/main/MainSavingTotal.js';
+import MainReport from '../components/main/MainReport.js';
+import axios from 'axios';
 
 const now = new Date();
-const name = "chatgpt";
-
-sessionStorage.setItem("userId", "chatgpt");
-let userId = sessionStorage.getItem("userId");
-if (userId == null) userId = "chatgpt";
+const name = 'chatgpt';
+let userId = sessionStorage.getItem('userId');
+if (userId == null) userId = 'chatgpt';
 
 const TestView = (props) => {
   const [quote, setQuote] = useState([]);
@@ -24,7 +22,7 @@ const TestView = (props) => {
   useEffect(() => {
     const getUserData = async () => {
       await axios
-        .get("http://localhost:80/main/info?userId=" + userId)
+        .get('http://localhost:80/main/info?userId=' + userId)
         .then((Response) => {
           console.log(Response.data);
           setQuote([Response.data.quote.author, Response.data.quote.contents]);
@@ -37,7 +35,7 @@ const TestView = (props) => {
             low: Response.data.vo.low,
             avg: Response.data.vo.avg,
             challenge: Response.data.vo.challenge,
-            category: "food",
+            category: 'food',
           });
 
           const tempData = [];
@@ -65,7 +63,7 @@ const TestView = (props) => {
           console.log(dayData[dayData.length - 1].day);
         })
         .catch((Error) => {
-          console.log("API Error");
+          console.log('API Error');
         });
     };
     getUserData();
@@ -76,8 +74,8 @@ const TestView = (props) => {
       <div
         className="main-div"
         style={{
-          backgroundImage: "url(" + MainBackgroundImage + ")",
-          paddingBottom: "20%",
+          backgroundImage: 'url(' + MainBackgroundImage + ')',
+          paddingBottom: '20%',
         }}
       >
         <MainHello name={name} />

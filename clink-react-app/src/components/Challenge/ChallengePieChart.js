@@ -1,6 +1,6 @@
-import React from "react";
-import { ResponsivePie } from "@nivo/pie";
-import category from "../../dataCode/expenseCategory.json";
+import React from 'react';
+import { ResponsivePie } from '@nivo/pie';
+import category from '../../dataCode/expenseCategory.json';
 
 const ChallengePieChart = ({ data }) => {
   const keys = Object.values(category.category);
@@ -18,8 +18,8 @@ const ChallengePieChart = ({ data }) => {
   });
   keys.map((k) => {
     let d = {};
-    d["id"] = k;
-    d["value"] = data_dict[k];
+    d['id'] = k;
+    d['value'] = data_dict[k];
     result.push(d);
   });
   //console.log(result);
@@ -39,15 +39,15 @@ const ChallengePieChart = ({ data }) => {
           cornerRadius={1}
           /** chart 색상*/
           colors={[
-            "#4292C6",
-            "#6BAED6",
-            "#9ECAE1",
-            "#DBD778",
-            "#DEEBF7",
-            "#D1E2C4",
-            "#B9C8BC",
-            "#A0E0E4",
-            "#B6E2D3",
+            '#4292C6',
+            '#6BAED6',
+            '#9ECAE1',
+            '#DBD778',
+            '#DEEBF7',
+            '#D1E2C4',
+            '#B9C8BC',
+            '#A0E0E4',
+            '#B6E2D3',
           ]}
           /** link label 색상*/
           arcLinkLabelsTextColor="#000000"
