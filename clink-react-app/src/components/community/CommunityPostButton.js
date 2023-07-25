@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/CommunityPostButton.scss';
+import '../../styles/community/CommunityPostButton.scss';
 import { PencilSquare } from 'react-bootstrap-icons';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 export default function CommunityPostButton() {

@@ -1,5 +1,6 @@
 import '../../styles/CommunityCategoryTab.scss';
 import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 export default function CommunityCategory({ setFilter, categoryNo }) {
   //카테고리별 카테고리탭

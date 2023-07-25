@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from "../../assets/maru.jpg";
-import "../../styles/PostComment.scss";
+import "../../styles/community/PostComment.scss";
 
 export default function PostComment({comment}) {
   const { commentId, boardNo, boardCategoryNo, commentWriter, commentDate, commentContent } = comment || {};

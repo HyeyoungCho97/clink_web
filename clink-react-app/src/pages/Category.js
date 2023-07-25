@@ -4,7 +4,7 @@ import CommunityCategory from '../components/community/CategoryTab';
 import CommunityFilter from '../components/community/CommunityFilter';
 import CommunityPost from '../components/community/CommunityPost';
 import CommunityPostButton from '../components/community/CommunityPostButton';
-import '../styles/CommunityContainer.scss';
+import "../styles/community/CommunityContainer.scss";
 // import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
@@ -26,21 +26,13 @@ export default function Community() {
         setPosts(null);
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
-        // const response = await axios.get(
-        //   "http://localhost/community/category?categoryNo=" +
-        //     lo +
-        //     "&&filter=" +
-        //     filter
-        // );
-        setCategoryNo(lo);
-        const response = await axios.get('http://localhost/community/posts', {
-          //params에 들어온 카테고리 번호랑 필터를 넣어 보냄
-          params: {
-            category_no: lo,
-            filter: filter,
-          },
-        });
-        // console.log(response);
+        const response = await axios.get(
+          "http://localhost/community/category?categoryNo=" +
+            lo +
+            "&&filter=" +
+            filter
+        );
+        console.log(response);
         setPosts(response.data); // 데이터는 response.data 안에 들어있습니다.
       } catch (e) {
         setError(e);
