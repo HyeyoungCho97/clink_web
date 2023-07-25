@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveBar } from "@nivo/bar";
-import category from "../../data/expenseCategory.json";
+import category from "../../dataCode/expenseCategory.json";
 
 const ChallengeBarChart = ({ data }) => {
   const week = ["일", "월", "화", "수", "목", "금", "토"];
@@ -11,7 +11,7 @@ const ChallengeBarChart = ({ data }) => {
     idx["date"] = week[new Date(date).getDay()];
     for (let i = 1; i < 10; i++) {
       idx[category.category[String(i)]] = idx["c" + i];
-      delete idx["c" + i];
+      //delete idx["c" + i];
     }
   });
   //console.log(data);
