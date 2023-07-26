@@ -38,10 +38,10 @@ export default function WritingPost() {
     } else {
       axios.post('http://localhost:80/community/post/insert', params);
       // console.log(params.board_title, params.board_content);
-      // window.location.href =
-      //   'http://localhost:3000/community/posts/?categoryNo=' +
-      //   inputPost.categoryNo +
-      //   '&&filter=1';
+      window.location.href =
+        'http://localhost:3000/community/posts/?categoryNo=' +
+        inputPost.categoryNo +
+        '&&filter=1';
     }
     //console.log(inputPost.tagList);
   };

@@ -15,12 +15,11 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     const { name, value } = event.target;
     setInputs({
       ...inputs,
-      [name]: value.trim(), //양쪽 공백 막기
+      [name]: value, //양쪽 공백 막기
     });
   };
   const nextId = useRef(1);
   const onCreate = () => {
-    console.log(inputs.tagname);
     if (tags.length === 5) {
       alert('태그는 5개까지 입력가능합니다');
       setInputs({
@@ -29,16 +28,22 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     } else {
       const tag = {
         id: nextId.current,
-        tagname,
+        tagname: tagname.trim(),
       };
+      for (let i = 0; i < tags.length; i++) {
+        if (tags[i].tagname === tag.tagname) {
+          alert('해시태그가 중복되었습니다.');
+          setInputs({
+            tagname: '',
+          });
+          return;
+        }
+      }
       setTags([...tags, tag]);
       setInputs({
         tagname: '',
       });
-      // const test = '#' + tagname;
-      // console.log(test);
       setInputPost({ ...inputPost, tagList: [...tags, tag] });
-      // console.log(inputPost);
       nextId.current += 1;
     }
   };
@@ -47,7 +52,6 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     // = user.id 가 id 인 것을 제거함
     event.stopPropagation();
     setTags(tags.filter((tag) => tag.id !== id));
-    console.log(tags);
   };
 
   // useEffect(() => {
@@ -87,7 +91,7 @@ export default function PostTagInput({ inputPost, setInputPost }) {
       <div className="SetTag">
         {tags.map((tag) => (
           <Button tag={tag} key={tag.id} variant="outline-primary">
-            {'#' + tag.tagname}
+            {'#' + tag.tagname.trim()}
             <X onClick={(event) => onRemove(event, tag.id)} />
           </Button>
         ))}

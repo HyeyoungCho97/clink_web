@@ -12,7 +12,7 @@ function Community({ list }) {
   const [HotInfoPost, setHotInfoPost] = useState([]);
   const [HotAnnPost, setHotAnnPost] = useState([]);
   useEffect(() => {
-    console.log(sessionStorage.getItem('userId'));
+    // console.log(sessionStorage.getItem('userId'));
     const fetchData = async () => {
       //뉴스 api를 호출
       try {
@@ -44,59 +44,20 @@ function Community({ list }) {
         const response = await axios.get(
           'http://localhost:80/community/hot-posts'
         );
-        console.log(response.data.HotPost);
-        //withCredentials: true,
-        // console.log(response.data[0].boardCategoryNo)
-        // const ppl = [];
-        // const ppfl = [];
-        // const ppil = [];
-        // const ppal = [];
-        if (response.data.HotPost === undefined) {
-          //게시물이 없을때 예외처리 하기 백엔드에서
-          setHotPost([{ boardTitle: '게시물이 존재하지 않습니다.' }]);
-          setHotFreePost([{ boardTitle: '게시물이 존재하지 않습니다.' }]);
-          setHotInfoPost([{ boardTitle: '게시물이 존재하지 않습니다.' }]);
-          setHotAnnPost([{ boardTitle: '게시물이 존재하지 않습니다.' }]);
-        }
-        // console.log(HotPost);
-        // else {
-        //   for (let i = 0; i < 5; i++) {
-        //     ppl.push(response.data.HotPost[i]);
-        //     ppfl.push(response.data.HotFreePost[i]);
-        //     ppil.push(response.data.HotInfoPost[i]);
-        //     ppal.push(response.data.HotAnnPost[i]);
-        //   }
-        // }
-        // console.log(ppl);
-        // setHotPost(ppl);
-        // setHotFreePost(ppfl);
-        // setHotInfoPost(ppil);
-        // setHotAnnPost(ppal);
-        // console.log(ppl);
-        // console.log(ppfl);
-        // console.log(ppil);
-        // console.log(ppal);
+        setHotPost(response.data.hotPost);
+        setHotFreePost(response.data.hotFreePost);
+        setHotInfoPost(response.data.hotInfoPost);
+        setHotAnnPost(response.data.hotAnnPost);
       } catch (e) {
         console.log('나는 에러스');
       }
     };
     listSet();
   }, []);
-  // function getBoardList() {
-  //   const arr = [];
-  //   for (let i = 0; i < boardList.length; i++) {
-  //     if (boardList[i].boardCategoryNo === 1) {
-  //       arr.push(boardList[i]);
-  //       console.log(boardList[i]);
-  //     }
-  //   }
-  //   return arr;
-  // }
   return (
     <div className="contents" style={{ paddingBottom: '20%' }}>
       <Category />
       {data && <FinInfo data={data} />}
-      {/* 타이틀+타이틀 리스트 넘기기*/}
       {HotPost && <ListPrint list={HotPost} title={'실시간 인기글'} />}
       {HotFreePost && <ListPrint list={HotFreePost} title={'자유 인기글'} />}
       {HotInfoPost && <ListPrint list={HotInfoPost} title={'정보 인기글'} />}

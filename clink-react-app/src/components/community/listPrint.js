@@ -9,12 +9,12 @@ function ListPrint({ title, list }) {
           <li className="li" key={i}>
             <b className="listNum">{i + 1}</b>
             <b className="boardTi" style={{ overflow: 'hidden' }}>
-              {list[i].boardTitle}
+              {list[i].board_title}
             </b>
             &nbsp; &nbsp;
-            {/* <LikeButton className="likeButton" /> */}
+            <LikeButton className="likeButton" />
             &nbsp;
-            {/* <b className="Like">{list[i].boardLikes}</b> */}
+            <b className="Like">{list[i].board_like_count}</b>
           </li>
         );
       }
