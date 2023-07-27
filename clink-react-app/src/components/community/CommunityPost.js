@@ -14,7 +14,6 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 export default function CommunityPost({ post, key }) {
   const [likes, setLikes] = useState(0);
   const [isLike, setIsLike] = useState(false);
-
   useEffect(() => {
     if (post && post.likes) {
       setLikes(post.likes);
@@ -90,7 +89,7 @@ export default function CommunityPost({ post, key }) {
                   }}
                 >
                   <li
-                    href="#"
+                    href="community/writing"
                     onClick={(event) => {
                       event.stopPropagation();
                     }}
