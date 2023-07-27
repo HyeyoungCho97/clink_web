@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import CommunityHeader from '../components/community/CommunityHeader';
 import WritingCategory from '../components/community/WritingCategory';
 import PostTagInput from '../components/community/PostTagInput';
+import axios from 'axios';
+
 // import axios from 'axios';
 // import { Navigate } from 'react-router-dom';
 // import { Link } from 'react-bootstrap-icons';
@@ -17,16 +19,25 @@ export default function WritingPost() {
     tagList: [],
   });
   const insertPost = () => {
+    const arr = [];
+    for (let i = 0; i < inputPost.tagList.length; i++) {
+      arr.push('#' + inputPost.tagList[i].tagname);
+    }
+    console.log(arr.join());
     let params = {
-      boardTitle: inputPost.title,
-      boardContent: inputPost.content,
-      boardCategoryNo: inputPost.categoryNo,
-      hashTagVo: inputPost.tagList,
+      board_title: inputPost.title,
+      board_content: inputPost.content,
+      category_no: inputPost.categoryNo,
+      hashtag_content: arr.join(),
     };
-    if (params.boardTitle.trim() !== '' || params.boardContent.trim() !== '') {
+    if (
+      params.board_title.trim() === '' ||
+      params.board_content.trim() === ''
+    ) {
       alert('제목 또는 내용을 입력해주세요!');
     } else {
-      // axios.post('http://localhost:80/insertPost', params);
+      axios.post('http://localhost:80/community/post/insert', params);
+      // console.log(params.board_title, params.board_content);
       window.location.href =
         'http://localhost:3000/community/posts/?categoryNo=' +
         inputPost.categoryNo +
