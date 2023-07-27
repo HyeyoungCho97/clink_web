@@ -9,17 +9,31 @@ import {
 } from 'react-bootstrap-icons';
 import Logo from '../../assets/maru.jpg';
 import Button from 'react-bootstrap/Button';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import AdditionalButton from './AdditionalButton';
 
 export default function CommunityPost({ post, key }) {
   const [likes, setLikes] = useState(0);
   const [isLike, setIsLike] = useState(false);
+  const [isMine, setIsMine] = useState(false);
+
+  const location = useLocation();
 
   useEffect(() => {
     if (post && post.likes) {
       setLikes(post.likes);
     }
-  }, [post]);
+    if(register_id === sessionStorage.user_id
+      && 
+      location.pathname ==="/community/post") {
+      setIsMine(true);
+    }
+    console.log("isMine change :" + isMine);
+    console.log(
+      location.pathname
+    );
+  }, [post, isMine]);
+
 
   const clickLike = () => {
     if (isLike === false) {
@@ -31,15 +45,14 @@ export default function CommunityPost({ post, key }) {
   };
 
   const {
-    boardNo,
-    boardCategoryNo,
-    userNo,
-    boardViews,
-    boardTitle,
-    boardContent,
-    boardDate,
-    boardWriter,
-    boardLikes,
+    board_title,
+    board_no,
+    board_content,
+    register_datetime, 
+		register_id, 
+		board_like_count,
+		hashtag_content,
+    board_views
   } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
   const navigate = useNavigate();
   const [view, setView] = useState(false);
@@ -49,7 +62,7 @@ export default function CommunityPost({ post, key }) {
         className="CommunityPostContainer"
         onClick={(event) => {
           event.stopPropagation();
-          navigate('/community/post?boardNo=' + boardNo);
+          navigate('/community/post?board_no=' + board_no);
         }}
       >
         <div className="CommunityPostTags">
@@ -70,54 +83,34 @@ export default function CommunityPost({ post, key }) {
                 <img src={Logo} alt="Profile" />
               </div>
               <div className="CommunityPostProfileText">
-                <p className="CommunityPostProfileNickname">{boardTitle}</p>
-                <p className="CommunityPostProfileTime">{boardDate}</p>
+                <p className="CommunityPostProfileNickname">{board_title}</p>
+                <p className="CommunityPostProfileTime">{register_datetime}</p>
               </div>
             </div>
 
             <div className="menu">
+            {isMine &&
               <ThreeDotsVertical
                 onClick={(event) => {
                   setView(!view);
                   event.stopPropagation();
                 }}
               />
+            }
               {view && (
-                <ul
-                  className="sub"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <li
-                    href="#"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    &nbsp;글 수정
-                  </li>
-                  <li
-                    href="#"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    &nbsp;글 삭제
-                  </li>
-                </ul>
+                <AdditionalButton register_id={register_id}></AdditionalButton>
               )}
             </div>
           </div>
           <br />
-          <div className="CommunityPostContent">{boardContent}</div>
+          <div className="CommunityPostContent">{board_content}</div>
           <br />
         </div>
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
             {isLike ? <HeartFill /> : <Heart />}
-            &nbsp;좋아요 {boardLikes}
+            &nbsp;좋아요 {board_like_count}
           </button>
           <button>
             <ChatDots />
@@ -125,7 +118,7 @@ export default function CommunityPost({ post, key }) {
           </button>
           <button>
             <Eye />
-            &nbsp;조회 {boardViews}
+            &nbsp;조회 {board_views}
           </button>
         </div>
       </div>

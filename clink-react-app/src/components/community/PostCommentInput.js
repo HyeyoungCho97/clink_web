@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import queryString from "query-string";
 
 
-export default function PostCommentInput() {
+export default function PostCommentInput({comment}) {
   const location = useLocation();
   const apiLink = 'http://localhost/community/post/comment/insert'
   const [comment_commentContent, comment_setCommentContent] = useState("");
@@ -15,18 +15,18 @@ export default function PostCommentInput() {
     e.preventDefault();
     comment_setCommentContent(e.target.value);
   }
-
-  const comment_commentWriter = sessionStorage.getItem('userName');
+  
+  const comment_commentWriter = sessionStorage.getItem('user_id');
   const query = queryString.parse(location.search);
-  const comment_boardNo = Number(query.boardNo);
-
+  const comment_boardNo = Number(query.board_no);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
       .post(apiLink, {
-        boardNo : comment_boardNo,
-        commentWriter : comment_commentWriter,
-        commentContent : comment_commentContent,
+        board_no : comment_boardNo,
+        register_id : comment_commentWriter,
+        comment_content : comment_commentContent
       })
       .then((response) => {
         window.location.replace('http://localhost:3000/community/post'+location.search);

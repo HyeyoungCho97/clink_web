@@ -17,8 +17,8 @@ export default function Community() {
   const [categoryNo, setCategoryNo] = useState();
   const location = useLocation();
   useEffect(() => {
-    console.log(Number(new URLSearchParams(location.search).get('categoryNo')));
-    const lo = Number(new URLSearchParams(location.search).get('categoryNo'));
+    console.log(Number(new URLSearchParams(location.search).get('category_no')));
+    const lo = Number(new URLSearchParams(location.search).get('category_no'));
     const fetchPosts = async () => {
       try {
         // 요청이 시작 할 때에는 error 와 posts 를 초기화하고
@@ -27,9 +27,9 @@ export default function Community() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          "http://localhost/community/category?categoryNo=" +
+          "http://localhost/community/posts?category_no=" +
             lo +
-            "&&filter=" +
+            "&filter=" +
             filter
         );
         console.log(response);

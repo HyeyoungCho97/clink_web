@@ -18,6 +18,7 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
+  
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
