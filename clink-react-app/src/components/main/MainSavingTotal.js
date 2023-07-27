@@ -1,11 +1,12 @@
 import { useState } from "react";
-import SavingBackgroundImage from "../../images/main_coin.svg";
+import SavingBackgroundImage from "../../images/mainCard.svg";
+import SavingCoin from "../../images/mainCoin.svg";
 
 const MainSavingTotal = ({ saving, totalSave }) => {
   let dayflag = 1;
   const [a, setA] = useState("어제");
   const [b, setB] = useState("전체");
-  const [amount, setAmount] = useState(totalSave - saving);
+  const [amount, setAmount] = useState(saving);
 
   const handleClickButton = (e) => {
     const target = e.target.parentNode;
@@ -20,18 +21,32 @@ const MainSavingTotal = ({ saving, totalSave }) => {
         dayflag = 1;
         setA("어제");
         setB("전체");
-        setAmount(totalSave - saving);
+        setAmount(saving);
       }
-    }, 1500);
+    }, 1300);
   };
 
   return (
     <div
       className="main-savingsYesterday"
-      style={{ backgroundImage: "url(" + SavingBackgroundImage + ")" }}
+      style={{
+        backgroundImage: "url(" + SavingBackgroundImage + ")",
+      }}
       onClick={handleClickButton}
     >
-      <p style={{ textAlign: "left", padding: 10, height: "5%" }}>
+      <div
+        className="mainCoin"
+        style={{ backgroundImage: "url(" + SavingCoin + ")" }}
+      />
+      <p
+        style={{
+          textAlign: "left",
+          fontWeight: 700,
+          padding: 10,
+          height: "5%",
+          color: "white",
+        }}
+      >
         {a} 저축 금액 {"\n"}
       </p>
       <p
@@ -39,17 +54,21 @@ const MainSavingTotal = ({ saving, totalSave }) => {
           textAlign: "left",
           padding: 10,
           height: "50%",
-          fontSize: "50px",
+          fontSize: "30px",
+          fontWeight: 700,
+          color: "white",
         }}
       >
         {amount.toLocaleString()}원 {"\n"}
       </p>
       <p
         style={{
-          textAlign: "right",
-          padding: 10,
+          textAlign: "left",
+          padding: 5,
           height: "5%",
-          fontSize: "10px",
+          fontSize: "11px",
+          fontWeight: 500,
+          color: "yellow",
         }}
       >
         {b} 저축액을 알고 싶으면 클릭해주세요 !
