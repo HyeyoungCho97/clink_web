@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/WritingPost.scss';
+import '../styles/community/WritingPost.scss';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import CommunityHeader from '../components/community/CommunityHeader';
@@ -18,6 +18,7 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
+  
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {

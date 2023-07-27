@@ -12,7 +12,7 @@ export default function Post( ) {
   const [comments, setComments] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     const fetchPostsComments = async () => {
       try {
