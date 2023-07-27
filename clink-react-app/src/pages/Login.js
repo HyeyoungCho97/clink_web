@@ -13,6 +13,13 @@ const Login = () => {
   const [user_id, setUser_id] = useState("");
   const [password, setPassword] = useState("");
 
+  // 엔터키 이벤트
+  const handleEnterKey = (e) => {
+    if (e.key == "Enter") {
+      handleLoginSubmit();
+    }
+  };
+// 로그인
   const handleLoginSubmit = () => {
     if (user_id.trim() === "" || password.trim() === "") {
       setUser_id("");
@@ -28,15 +35,15 @@ const Login = () => {
       axios
         .post("http://localhost:80/clink/user/login.do", param)
         .then((response) => {
-          console.log(
-            response.data.user_id,
-            response.data.user_no,
-          );
+          console.log(response.data);
           if (response.data) {
-            sessionStorage.setItem("user_id", response.data.user_id);
+            console.log(response.data.user_no);
             sessionStorage.setItem("user_no", response.data.user_no);
-            sessionStorage.setItem("nick_name", response.data.nick_name);
+            sessionStorage.setItem("user_id", response.data.user_id);
             sessionStorage.setItem("user_name", response.data.user_name);
+            sessionStorage.setItem("nick_name", response.data.nick_name);
+            sessionStorage.setItem("password", response.data.password);
+            sessionStorage.setItem("photo_url", response.data.photo_url);
             alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
             navigate("/mypage");
           } else {
@@ -79,6 +86,7 @@ const Login = () => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            onKeyDown={(e) => handleEnterKey(e)}
           />
         </div>
       </form>

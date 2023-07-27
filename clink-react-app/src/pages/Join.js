@@ -74,11 +74,10 @@ const Join = () => {
               confirmPwd: confirmPwd,
               email: email,
             };
-
             axios
               .post("http://localhost:80/clink/user/join.do", param)
               .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 if (response.data) {
                   alert("회원가입 되었습니다. 로그인해주세요.");
                   navigate("/");

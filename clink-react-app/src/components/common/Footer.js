@@ -17,55 +17,54 @@ const Footer = ({ resources }) => {
     );
   };
 
-  useEffect(() => {
-    // accountNumber2 값이 변경될 때마다 실행되는 로직
-  }, [accountNumber1, accountNumber2]);
+  // useEffect(() => {
+  // accountNumber2 값이 변경될 때마다 실행되는 로직
+  // }, [accountNumber1, accountNumber2]);
 
   // 계좌 있는지 확인하고 세션에 저장
-  function checkAccountHandler() {
-    let param = {
-      user_no: sessionStorage.getItem("user_no"),
-    };
-    axios
-      .post("http://localhost:80/clink/user/checkAccount.do", param)
-      .then((response) => {
-        console.log(response.data);
+  // function checkAccountHandler() {
+  //   let param = {
+  //     user_no: sessionStorage.getItem("user_no"),
+  //   };
+  //   axios
+  //     .post("http://localhost:80/clink/user/checkAccount.do", param)
+  //     .then((response) => {
+  //       console.log(response.data);
 
-        for (let i = 0; i < response.data.length; i++) {
-          if (response.data[i].accountType === 1) {
-            sessionStorage.setItem(
-              "accountType1",
-              response.data[i].accountType
-            );
-            sessionStorage.setItem(
-              "accountNumber1",
-              response.data[i].accountNumber
-            );
-            console.log(
-              "accountNumber1:" + sessionStorage.getItem("accountNumber1")
-            );
-          } else if (response.data[i].accountType === 2) {
-            sessionStorage.setItem(
-              "accountType2",
-              response.data[i].accountType
-            );
-            sessionStorage.setItem(
-              "accountNumber2",
-              response.data[i].accountNumber
-            );
-            console.log(
-              "accountNumber2:" + sessionStorage.getItem("accountNumber2")
-            );
-          } else {
-            console.log("등록된 계좌 없음");
-          }
-        }
-      })
-
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  //       for (let i = 0; i < response.data.length; i++) {
+  //         if (response.data[i].accountType === 1) {
+  //           sessionStorage.setItem(
+  //             "accountType1",
+  //             response.data[i].accountType
+  //           );
+  //           sessionStorage.setItem(
+  //             "accountNumber1",
+  //             response.data[i].accountNumber
+  //           );
+  //           console.log(
+  //             "accountNumber1:" + sessionStorage.getItem("accountNumber1")
+  //           );
+  //         } else if (response.data[i].accountType === 2) {
+  //           sessionStorage.setItem(
+  //             "accountType2",
+  //             response.data[i].accountType
+  //           );
+  //           sessionStorage.setItem(
+  //             "accountNumber2",
+  //             response.data[i].accountNumber
+  //           );
+  //           console.log(
+  //             "accountNumber2:" + sessionStorage.getItem("accountNumber2")
+  //           );
+  //         } else {
+  //           console.log("등록된 계좌 없음");
+  //         }
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
 
   return (
     <>
@@ -113,7 +112,7 @@ const Footer = ({ resources }) => {
                 alt="logo"
                 onClick={() => {
                   imageHandler(image[3].src);
-                  checkAccountHandler();
+                  // checkAccountHandler();
                 }}
               ></img>
             </NavLink>

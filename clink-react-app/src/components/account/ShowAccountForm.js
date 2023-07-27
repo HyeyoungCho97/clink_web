@@ -18,7 +18,7 @@ const ShowAccountForm = () => {
       account_no: account_no,
       user_no: sessionStorage.getItem("user_no"),
       bank_code: bank_code,
-      accountType: 2,
+      account_code: 2,
     };
     axios
       .post("http://localhost:80/clink/user/registAccount.do", param)
@@ -26,11 +26,8 @@ const ShowAccountForm = () => {
         console.log(response.data);
         if (response.data == 1) {
           alert("계좌가 등록되었습니다.");
-          sessionStorage.setItem("accountType2", 2);
-          sessionStorage.setItem("accountNumber2", account_no);
         } else {
           alert("계좌가 정상적으로 등록되지 않았습니다. ");
-          setAccount_no("");
         }
         navigate("/mypage");
       })

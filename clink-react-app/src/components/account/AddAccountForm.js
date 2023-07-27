@@ -26,8 +26,6 @@ const AddAccountForm = () => {
         console.log(response.data);
         if (response.data === 1) {
           alert('계좌가 등록되었습니다.');
-          sessionStorage.setItem('accountType1', 1);
-          sessionStorage.setItem('accountNumber1', account_no);
         } else {
           alert('계좌가 정상적으로 등록되지 않았습니다. ');
           setAccount_no('');
@@ -55,11 +53,24 @@ const AddAccountForm = () => {
               onChange={(e) => setBank_code(e.target.value)}
             >
               <option>은행을 선택하세요</option>
+              <option value="001">한국</option>
+              <option value="002">산업</option>
+              <option value="003">기업</option>
+              <option value="004">국민</option>
+              <option value="005">외환</option>
+              <option value="007">수협</option>
+              <option value="008">수출입</option>
+              <option value="011">농협</option>
+              <option value="020">우리</option>
+              <option value="023">SC제일</option>
+              <option value="027">씨티</option>
+              <option value="045">새마을금고</option>
+              <option value="071">우체국</option>
+              <option value="081">하나</option>
               <option value="088">신한</option>
-              <option value="111">우리</option>
-              <option value="222">국민</option>
-              <option value="333">기업</option>
-              <option value="444">농협</option>
+              <option value="089">케이</option>
+              <option value="090">카카오</option>
+              <option value="092">토스</option>
               {/* erd보고 바꾸기(코드는 3자리) */}
             </Form.Select>
             <br />

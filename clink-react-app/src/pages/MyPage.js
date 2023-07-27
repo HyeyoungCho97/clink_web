@@ -3,47 +3,80 @@ import { useNavigate } from "react-router-dom";
 import pig from "../assets/pig.png";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import "../styles/MyPage.scss";
 import AddAccount from "../components/account/AddAccount";
 import ShowAccount from "../components/account/ShowAccount";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/MyPage.scss";
 
 const MyPage = () => {
-  const [user_name, setUser_ame] = useState("");
-  const [nick_name, setNick_name] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPwd, setConfirmPwd] = useState("");
-  const [userInfo, setUserInfo] = useState(0);
+  // const [confirmPwd, setConfirmPwd] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    nickname: "",
+    password: "",
+  });
+  const [new_name, setNew_name] = useState("");
+  const [new_nickname, setNew_nickname] = useState("");
+  const [new_password, setNew_Password] = useState("");
+
+  const [addAccountNo, setAddAccountNo] = useState("");
+  const [addAccountBankCode, setAddAccountBankCode] = useState("");
+  const [showAccountNo, setShowAccountNo] = useState("");
+  const [showAccountBankCode, setShowAccountBankCode] = useState("");
   const navigate = useNavigate();
-  const accountNumber1 = sessionStorage.getItem("accountNumber1");
-  const accountNumber2 = sessionStorage.getItem("accountNumber2");
 
   useEffect(() => {
-    setUserInfo(sessionStorage.getItem("user_id"));
-  }, []);
+    // 계좌 정보불러오기
+    let param = {
+      user_no: sessionStorage.getItem("user_no"),
+    };
+    axios
+      .post("http://localhost:80/clink/user/checkAccount.do", param)
+      .then((response) => {
+        console.log(response.data);
 
-  useEffect(() => {
-    // 개인정보 수정용
-    // const storedNickname = sessionStorage.getItem('nick_name');
-    // setNick_name(storedNickname);
-    // const storedName = sessionStorage.getItem('user_name');
-    // setUser_ame(storedName);
-  }, []);
+        for (let i = 0; i < response.data.length; i++) {
+          // 저축계좌 등록
+          // 은행 json 파일에서 가져오기
 
-  // 로그아웃(세션제거)
-  function logoutHandler() {
-    sessionStorage.clear();
-    navigate("/");
-  }
+          if (response.data[i].account_code === "1") {
+            setAddAccountNo(response.data[i].account_no);
+            if (response.data[i].bank_code == "088") {
+              setAddAccountBankCode("신한");
+            } else if (response.data[i].bank_code == "011") {
+              setAddAccountBankCode("우리");
+            }
+            console.log(addAccountNo);
+            // 소비계좌 등록
+          } else if (response.data[i].account_code === "2") {
+            setShowAccountNo(response.data[i].account_no);
+            if (response.data[i].bank_code == "088") {
+              setShowAccountBankCode("신한");
+            } else if (response.data[i].bank_code == "011") {
+              setShowAccountBankCode("우리");
+            }
+            console.log(showAccountNo);
+            // 등록된 계좌 없음 이해안됨
+          } else {
+            console.log("등록된 계좌 없음");
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // 로그인 확인용
+    // setUserInfo(sessionStorage.getItem("user_id"));
+  }, [AddAccount, ShowAccount]);
 
   // 개인정보 수정
-  function updateHandler() {
+  function updateInfoHandler() {
     let param = {
-      user_name: user_name,
-      nick_name: nick_name,
-      password: password,
-      confirmPwd: confirmPwd,
+      user_name: new_name,
+      nick_name: new_nickname,
+      password: new_password,
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
@@ -51,11 +84,13 @@ const MyPage = () => {
       .then((response) => {
         console.log(response.data);
         if (response.data === "success") {
-          alert("수정되었습니다.");
-          // setUser_ame('');
-          // setNick_name('');
-          // setPassword('');
-          // setConfirmPwd('');
+          alert("개인정보가 수정되었습니다.");
+          setUserInfo({
+            ...userInfo,
+            name: new_name,
+            nickname: new_nickname,
+            password: new_password,
+          });
         } else if (response.data === "fail") {
           alert("정상적으로 처리되지 않았습니다.");
         }
@@ -66,89 +101,127 @@ const MyPage = () => {
       });
   }
 
+  // 프로필 사진
+  function profileHandler() {}
+
+  // 로그아웃(세션제거)
+  function logoutHandler() {
+    sessionStorage.clear();
+    navigate("/");
+  }
+
   return (
     <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
       <div className="MyPageTitle">
         {sessionStorage.getItem("user_id")} 마이페이지
       </div>
-      {userInfo ? (
-        <>
-          <div className="MyPageProfileBox">
-            <img src={pig} alt="logo" /> &nbsp; &nbsp; &nbsp;
-            <Button className="MyPageProfileBtn">프로필 사진 변경</Button>
+      {/* {userInfo ? ( */}
+      <>
+        <div className="MyPageProfileBox">
+          <img src={pig} alt="logo" /> &nbsp; &nbsp; &nbsp;
+          <form
+            action="profileImage.do"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
+            <input
+              id="file"
+              className="MyPageProfileBtn"
+              type="file"
+              name="file"
+            ></input>
             &nbsp;
-            <Button className="MyPageChoiceBtn">선택</Button>
-          </div>
-          <div className="MyPageAccounttitle">계좌등록</div>
-          <AddAccount
-            className="MyPageAddAccount"
-            accountNumber1={accountNumber1}
-          />
-          <ShowAccount
-            className="MyPageAddAccount"
-            accountNumber2={accountNumber2}
-          />
-          <div className="MyPageInfotitle">개인정보 수정</div>
-          <form action="update.do" method="post">
-            <div className="MyPageInfoBox">
+            <Button
+              className="MyPageChoiceBtn"
+              type="submit"
+              onClick={() => profileHandler()}
+            >
+              확인
+            </Button>
+          </form>
+        </div>
+        <div className="MyPageAccounttitle">계좌등록</div>
+        <AddAccount
+          className="MyPageAddAccount"
+          addAccountNo={addAccountNo}
+          addAccountBankCode={addAccountBankCode}
+        />
+        <ShowAccount
+          className="MyPageAddAccount"
+          showAccountNo={showAccountNo}
+          showAccountBankCode={showAccountBankCode}
+        />
+        <hr className="MypageHr" />
+        <div className="MyPageInfotitle">개인정보 수정</div>
+        <form action="update.do" method="post">
+          <div className="MyPageInfoBox">
+            <div className="MyPageLineBox">
+              {/* const [userInfo, setUserInfo] = useState({name:'', nickname:''});*/}
+
+              <div>닉네임</div>
               <Form.Control
                 type="text"
-                name="nick_name"
-                placeholder={`닉네임 ${nick_name}`}
+                // name="new_nickname"
+                placeholder={`${sessionStorage.getItem("nick_name")}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setNick_name(e.target.value);
+                  setNew_nickname(e.target.value);
                 }}
-                value={nick_name}
+                value={new_nickname}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>이름</div>
               <Form.Control
                 type="text"
                 name="name"
-                placeholder={`이름 ${user_name}`}
+                placeholder={`${sessionStorage.getItem("user_name")}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setUser_ame(e.target.value);
+                  setNew_name(e.target.value);
                 }}
-                value={user_name}
+                value={new_name}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>비밀번호</div>
               <Form.Control
                 type="password"
                 name="password"
-                placeholder="비밀번호"
                 className="joinInput"
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  setNew_Password(e.target.value);
                 }}
-                value={password}
+                value={new_password}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>비밀번호 확인</div>
               <Form.Control
                 type="password"
                 name="passwordConfirm"
-                placeholder="비밀번호 확인"
                 className="joinInput"
-                onChange={(e) => {
-                  setConfirmPwd(e.target.value);
-                }}
-                value={confirmPwd}
               />
-              <br />
-            </div>
-          </form>
-          <div className="MyPageBtnBox">
-            <Button type="submit" onClick={() => updateHandler()}>
-              수정
-            </Button>
-            <br />
-            <br />
-            <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
-              <b>Logout</b>
             </div>
             <br />
           </div>
-        </>
-      ) : (
-        <p>세션 정보가 없습니다</p>
-      )}
+        </form>
+        <div className="MyPageBtnBox">
+          <Button type="submit" onClick={() => updateInfoHandler()}>
+            수정
+          </Button>
+          <br />
+          <br />
+          <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
+            <b>Logout</b>
+          </div>
+          <br />
+        </div>
+      </>
+      {/* ) : ( */}
+      {/* <p>세션 정보가 없습니다</p> */}
+      {/* )} */}
     </div>
   );
 };

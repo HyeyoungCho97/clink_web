@@ -34,14 +34,28 @@
     font-size: 16px;
     font-weight: 600;
     text-align: left;
-    height: 6%;
     padding: 0 0 15px 25px;
     margin: 8% 0 0 0;
   }
-  .MyPageInfoBox > .joinInput {
-    width: 90%;
+  .MyPageInfoBox{
+    width: 88%;
     margin: 0 auto;
-    margin-bottom: 12px;
-    color: gray;
+    margin-top: 5px;
+    .joinInput {
+      width: 70%;
+      height: 38px;
+      margin-bottom: 12px;
+      color: gray;      
+    }
+    .MyPageLineBox{
+      display: flex;
+      justify-content: space-between;
+      line-height: 38px;
+      // flex-grow: 1;
+    }
+  }
+  .MypageHr{
+    width: 90%;
+    margin: 20px auto 10px auto;
   }
 }
