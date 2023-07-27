@@ -3,9 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
 const ShowAccount = ({ showAccountNo, showAccountBankCode }) => {
-  // useEffect(() => {
-    // accountNumber2 값이 변경될 때마다 실행되는 로직
-  // }, [accountNumber2]); 
 
   return (
     <div className="addAccount">

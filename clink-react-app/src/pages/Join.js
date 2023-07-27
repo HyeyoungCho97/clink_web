@@ -19,7 +19,7 @@ const Join = () => {
 
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
-
+  const [warningEmail, setWarningEmail] = useState("");
 
   useEffect(() => {
     if (password !== confirmPwd) {
@@ -40,6 +40,27 @@ const Join = () => {
           setWarningId("사용할 수 있는 아이디입니다.");
         } else if (response.data === "fail") {
           setWarningId("사용 중인 아이디입니다.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setWarningId("다시 시도하세요");
+      });
+  }
+
+  // 이메일 인증
+  function emailAuthHandler() {
+    console.log("이메일 주소:" + email);
+    alert("인증번호가 전송되었습니다.");
+    let email = { email: email };
+    axios
+      .post("http://localhost/clink/user/emailAuth.do", email)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === "success") {
+          setWarningEmail("사용할 수 있는 아이디입니다.");
+        } else if (response.data === "fail") {
+          setWarningEmail("사용 중인 아이디입니다.");
         }
       })
       .catch((error) => {
@@ -124,7 +145,7 @@ const Join = () => {
               variant="outline-secondary"
               onChange={(e) => {
                 setUser_id(e.target.value);
-                checkDuplicateId()
+                checkDuplicateId();
               }}
               value={user_id}
             />
@@ -168,11 +189,27 @@ const Join = () => {
                 setEmail(e.target.value);
               }}
             />
-            <Button variant="outline-secondary" id="JoinIdentifyBtn">
+            <Button
+              variant="outline-secondary"
+              id="JoinIdentifyBtn"
+              onClick={() => emailAuthHandler()}
+            >
               본인인증하기
             </Button>
           </InputGroup>
+          <div></div>
+          <Form.Control
+            type="text"
+            name="emailAuthNumber"
+            placeholder="인증번호"
+            className="joinInput"
+            maxLength="6"
+            // onChange={(e) => {
+            //   setPassword(e.target.value);
+            // }}
+          />
         </div>
+        <div>{warningEmail}</div>
       </form>
       <div className="JoinBtnBox">
         <Button

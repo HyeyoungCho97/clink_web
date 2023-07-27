@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import AddAccount from "../components/account/AddAccount";
 import ShowAccount from "../components/account/ShowAccount";
+import bankCategory from "../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/MyPage.scss";
 
@@ -35,29 +36,21 @@ const MyPage = () => {
       .post("http://localhost:80/clink/user/checkAccount.do", param)
       .then((response) => {
         console.log(response.data);
-
+        // 은행 json 파일에서 가져오기
         for (let i = 0; i < response.data.length; i++) {
           // 저축계좌 등록
-          // 은행 json 파일에서 가져오기
-
           if (response.data[i].account_code === "1") {
             setAddAccountNo(response.data[i].account_no);
-            if (response.data[i].bank_code == "088") {
-              setAddAccountBankCode("신한");
-            } else if (response.data[i].bank_code == "011") {
-              setAddAccountBankCode("우리");
-            }
-            console.log(addAccountNo);
+            setAddAccountBankCode(
+              bankCategory.bank[response.data[i].bank_code]
+            );
             // 소비계좌 등록
           } else if (response.data[i].account_code === "2") {
             setShowAccountNo(response.data[i].account_no);
-            if (response.data[i].bank_code == "088") {
-              setShowAccountBankCode("신한");
-            } else if (response.data[i].bank_code == "011") {
-              setShowAccountBankCode("우리");
-            }
-            console.log(showAccountNo);
-            // 등록된 계좌 없음 이해안됨
+            setShowAccountBankCode(
+              bankCategory.bank[response.data[i].bank_code]
+            );
+            // 등록된 계좌 없음
           } else {
             console.log("등록된 계좌 없음");
           }
@@ -69,7 +62,7 @@ const MyPage = () => {
 
     // 로그인 확인용
     // setUserInfo(sessionStorage.getItem("user_id"));
-  }, [AddAccount, ShowAccount]);
+  }, []);
 
   // 개인정보 수정
   function updateInfoHandler() {

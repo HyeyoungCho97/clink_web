@@ -1,41 +1,62 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import account from '../../assets/account.png';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/AddAccountForm.scss';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import account from "../../assets/account.png";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import bankCategory from "../../dataCode/bankCategory.json";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../styles/AddAccountForm.scss";
 
+// 저축계좌
 const AddAccountForm = () => {
   const navigate = useNavigate();
-  const [account_no, setAccount_no] = useState('');
-  const [bank_code, setBank_code] = useState('');
+  const [account_no, setAccount_no] = useState("");
+  const [bank_code, setBank_code] = useState("");
 
+  // 은행 선택
+  let bankSelect = [];
+  for (let i = 0; i < 18; i++) {
+    bankSelect.push(
+      <option value={i} key={i}>
+        {bankCategory.bank[i]}
+      </option>
+    );
+  }
+
+  // 계좌 등록
   function AddAccountHandler() {
-    let param = {
-      account_no: account_no,
-      user_no: sessionStorage.getItem('user_no'),
-      bank_code: bank_code,
-      accountType: 1,
-    };
-    axios
-      .post('http://localhost:80/clink/user/registAccount.do', param)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data === 1) {
-          alert('계좌가 등록되었습니다.');
-        } else {
-          alert('계좌가 정상적으로 등록되지 않았습니다. ');
-          setAccount_no('');
-        }
-        navigate('/mypage');
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('계좌가 정상적으로 등록되지 않았습니다.');
-      });
+    if (account_no.length < 12) {
+      alert("계좌번호를 다시 확인해주세요");
+    } else if (isNaN(account_no)) {
+      alert("계좌번호에 문자가 포함되어 있습니다.");
+    } else if (bank_code == null || bank_code == "") {
+      alert("은행을 선택해주세요");
+    } else {
+      let param = {
+        account_no: account_no,
+        user_no: sessionStorage.getItem("user_no"),
+        bank_code: bank_code,
+        account_code: 1,
+      };
+      axios
+        .post("http://localhost:80/clink/user/registAccount.do", param)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data === 1) {
+            alert("계좌가 등록되었습니다.");
+          } else {
+            alert("계좌가 정상적으로 등록되지 않았습니다. ");
+            setAccount_no("");
+          }
+          navigate("/mypage");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("계좌가 정상적으로 등록되지 않았습니다.");
+        });
+    }
   }
 
   return (
@@ -51,27 +72,10 @@ const AddAccountForm = () => {
               aria-label="Default select example"
               value={bank_code}
               onChange={(e) => setBank_code(e.target.value)}
+              // defaultValue={bankSelect[15]}
+              // placeholder="은행선택"
             >
-              <option>은행을 선택하세요</option>
-              <option value="001">한국</option>
-              <option value="002">산업</option>
-              <option value="003">기업</option>
-              <option value="004">국민</option>
-              <option value="005">외환</option>
-              <option value="007">수협</option>
-              <option value="008">수출입</option>
-              <option value="011">농협</option>
-              <option value="020">우리</option>
-              <option value="023">SC제일</option>
-              <option value="027">씨티</option>
-              <option value="045">새마을금고</option>
-              <option value="071">우체국</option>
-              <option value="081">하나</option>
-              <option value="088">신한</option>
-              <option value="089">케이</option>
-              <option value="090">카카오</option>
-              <option value="092">토스</option>
-              {/* erd보고 바꾸기(코드는 3자리) */}
+              {bankSelect}
             </Form.Select>
             <br />
             <Form.Control
