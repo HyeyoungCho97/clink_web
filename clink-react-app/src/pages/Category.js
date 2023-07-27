@@ -4,7 +4,7 @@ import CommunityCategory from '../components/community/CategoryTab';
 import CommunityFilter from '../components/community/CommunityFilter';
 import CommunityPost from '../components/community/CommunityPost';
 import CommunityPostButton from '../components/community/CommunityPostButton';
-import "../styles/community/CommunityContainer.scss";
+import '../styles/community/CommunityContainer.scss';
 // import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
@@ -14,11 +14,12 @@ export default function Community() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState(1);
+  const [hashtag, setHashtag] = useState('');
   const [categoryNo, setCategoryNo] = useState();
   const location = useLocation();
   useEffect(() => {
-    console.log(Number(new URLSearchParams(location.search).get('category_no')));
     const lo = Number(new URLSearchParams(location.search).get('category_no'));
+    setCategoryNo(lo);
     const fetchPosts = async () => {
       try {
         // 요청이 시작 할 때에는 error 와 posts 를 초기화하고
@@ -27,21 +28,23 @@ export default function Community() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          "http://localhost/community/posts?category_no=" +
+          'http://localhost/community/posts?category_no=' +
             lo +
-            "&filter=" +
-            filter
+            '&filter=' +
+            filter +
+            '&hashtag=' +
+            hashtag
         );
-        console.log(response);
+        console.log(hashtag);
         setPosts(response.data); // 데이터는 response.data 안에 들어있습니다.
+        console.log(response.data);
       } catch (e) {
         setError(e);
       }
       setLoading(false);
     };
-
     fetchPosts();
-  }, [location, filter]);
+  }, [location, filter, categoryNo, hashtag]);
 
   if (loading) return <div>로딩중..</div>;
   if (error) return <div>에러가 발생했습니다</div>;
@@ -66,10 +69,17 @@ export default function Community() {
     <div className="CommunityContainer">
       <CommunityHeader></CommunityHeader>
       <CommunityCategory
+        setHashtag={setHashtag}
         filter={filter}
         setFilter={setFilter}
+        categoryNo={categoryNo}
       ></CommunityCategory>
-      <CommunityFilter setFilter={setFilter} filter={filter}></CommunityFilter>
+      <CommunityFilter
+        setFilter={setFilter}
+        filter={filter}
+        setHashtag={setHashtag}
+        categoryNo={categoryNo}
+      ></CommunityFilter>
       {posts.map((post, id) => (
         <CommunityPost post={post} key={id}></CommunityPost>
       ))}

@@ -2,12 +2,17 @@ import '../../styles/community/CommunityCategoryTab.scss';
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 
-export default function CommunityCategory({ setFilter, categoryNo }) {
+export default function CommunityCategory({
+  setFilter,
+  categoryNo,
+  setHashtag,
+}) {
   //카테고리별 카테고리탭
   // const navigate = useNavigate();
   const onclick = () => {
     console.log(typeof categoryNo);
     setFilter(1);
+    setHashtag('');
   };
   return (
     <div className="CommunityCategoryContainer">
