@@ -9,17 +9,31 @@ import {
 } from 'react-bootstrap-icons';
 import Logo from '../../assets/maru.jpg';
 import Button from 'react-bootstrap/Button';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import AdditionalButton from './AdditionalButton';
 
 export default function CommunityPost({ post, key }) {
   const [likes, setLikes] = useState(0);
   const [isLike, setIsLike] = useState(false);
+  const [isMine, setIsMine] = useState(false);
+
+  const location = useLocation();
 
   useEffect(() => {
     if (post && post.likes) {
       setLikes(post.likes);
     }
-  }, [post]);
+    if(register_id === sessionStorage.user_id
+      && 
+      location.pathname ==="/community/post") {
+      setIsMine(true);
+    }
+    console.log("isMine change :" + isMine);
+    console.log(
+      location.pathname
+    );
+  }, [post, isMine]);
+
 
   const clickLike = () => {
     if (isLike === false) {
@@ -48,7 +62,7 @@ export default function CommunityPost({ post, key }) {
         className="CommunityPostContainer"
         onClick={(event) => {
           event.stopPropagation();
-          navigate('/community/post?boardNo=' + board_no);
+          navigate('/community/post?board_no=' + board_no);
         }}
       >
         <div className="CommunityPostTags">
@@ -75,36 +89,16 @@ export default function CommunityPost({ post, key }) {
             </div>
 
             <div className="menu">
+            {isMine &&
               <ThreeDotsVertical
                 onClick={(event) => {
                   setView(!view);
                   event.stopPropagation();
                 }}
               />
+            }
               {view && (
-                <ul
-                  className="sub"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <li
-                    href="#"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    &nbsp;글 수정
-                  </li>
-                  <li
-                    href="#"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    &nbsp;글 삭제
-                  </li>
-                </ul>
+                <AdditionalButton register_id={register_id}></AdditionalButton>
               )}
             </div>
           </div>

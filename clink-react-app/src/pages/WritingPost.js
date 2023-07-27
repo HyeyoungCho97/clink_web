@@ -16,6 +16,7 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
+  
   const insertPost = () => {
     let params = {
       boardTitle: inputPost.title,

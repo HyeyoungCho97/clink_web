@@ -20,6 +20,7 @@ import MyPage from './pages/MyPage';
 
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
+import EditPost from './pages/EditPost';
 
 function App() {
   const resources = [
@@ -62,6 +63,7 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/community/post/*" element={<Post />}></Route>
             <Route path="/community/writing" element={<WritingPost />}></Route>
+            <Route path="/community/post/update" element={<EditPost />}></Route>
           </Route>
           <Route path="/*" element={<NotFound />}></Route>
         </Routes>
