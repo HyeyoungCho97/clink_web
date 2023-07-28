@@ -40,7 +40,7 @@ export default function WritingPost() {
       axios.post('http://localhost:80/community/post/insert', params);
       // console.log(params.board_title, params.board_content);
       window.location.href =
-        'http://localhost:3000/community/posts/?categoryNo=' +
+        'http://localhost:3000/community/posts?category_no=' +
         inputPost.categoryNo +
         '&&filter=1';
     }
