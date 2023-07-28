@@ -56,7 +56,6 @@ export default function CommunityPost({ post, key }) {
   const postHash = () => {
     const hashlist = hashtag_content.split(',');
     const list = [];
-    console.log(hashlist.length);
     for (let i = 0; i < hashlist.length; i++) {
       list.push(
         <Button
@@ -65,7 +64,7 @@ export default function CommunityPost({ post, key }) {
           key={i}
           style={{ marginRight: '5px' }}
         >
-          {hashlist[i]}
+          {'#' + hashlist[i]}
         </Button>
       );
     }
