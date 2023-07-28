@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/MainCalendar.scss";
 import ChallengeTable from "./ChallengeTable";
 import ChallengeBarChart from "./ChallengeBarChart";
@@ -7,7 +7,7 @@ import Calendar from "react-calendar";
 import axios from "axios";
 import moment from "moment";
 
-const ChallengeGraph = ({ today, week }) => {
+const ChallengeGraph = ({ today, week, openModal }) => {
   const [value, onChange] = useState(new Date());
   const [data, setData] = useState(today);
 
@@ -20,8 +20,7 @@ const ChallengeGraph = ({ today, week }) => {
   const getData = async () => {
     //console.log("click");
     const address =
-      "http://localhost:80/challenge/refresh.do?userNo=" +
-      sessionStorage.getItem("userNo") +
+      "http://localhost:80/challenge/pay-info?userNo=00000" +
       "&startDate=" +
       moment(value[0]).format("YYYY-MM-DD") +
       "&endDate=" +
@@ -29,15 +28,6 @@ const ChallengeGraph = ({ today, week }) => {
     const response = await axios.get(address);
     //console.log(response);
     setData(response.data.today);
-    /*
-      .then((response) => {
-        //console.log(response.data.today);
-        setData(response.data.today);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      */
   };
   //console.log(today);
   //console.log(data);
@@ -53,7 +43,7 @@ const ChallengeGraph = ({ today, week }) => {
         selectRange={true}
         className={"calendar"}
       />
-      <ChallengeTable date={value} detail={data} />
+      <ChallengeTable date={value} detail={data} openModal={openModal} />
       <ChallengeBarChart data={week} />
       <ChallengePieChart data={week} />
     </>

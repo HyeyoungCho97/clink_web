@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/Challenge.scss";
+import "../styles/challenge/Challenge.scss";
 import ChallengeTitle from "../components/Challenge/ChallengeTitle";
 import ChallengeGoal from "../components/Challenge/ChallengeGoal";
 import Header from "../components/common/Header";
@@ -15,19 +15,19 @@ const Challenge = () => {
   const [weekData, setWeekData] = useState([]);
 
   useEffect(() => {
-    const address =
-      "http://localhost:80/challenge/index.do?userNo=" +
-      sessionStorage.getItem("userNo");
+    const address = "http://localhost:80/challenge/main-info?userNo=00000";
+    //+sessionStorage.getItem("userNo");
     axios
       .get(address)
       .then((response) => {
-        //console.log(response);
+        //console.log(response.data.chart);
+        let chart = response.data.chart;
         setChallengeTitleText(response.data.title);
         setChallengeDescruotuibText(response.data.description);
         setMax(response.data.goal);
         setValue(response.data.value);
         setTodayData(response.data.today);
-        setWeekData(response.data.week);
+        setWeekData(chart);
       })
       .catch((error) => {
         console.log(error);

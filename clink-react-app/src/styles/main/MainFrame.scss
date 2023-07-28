@@ -38,6 +38,7 @@
 
   .main-hello {
     color: #ffffff;
+    margin-bottom: 10px;
     font-size: 20px;
     height: 30px;
     font-weight: bolder;
@@ -64,6 +65,7 @@
     font-weight: 900;
     font-size: 14px;
     margin-top: 10px;
+    height: 95px;
   }
 
   .main-calendarGraph {
@@ -76,7 +78,7 @@
 
   .main-savingsYesterday {
     height: 150px;
-    color: #ffffff;
+    color: #000000;
     background-color: #0d6efd;
     background-position: right;
     // Test
@@ -84,7 +86,21 @@
     transform-style: preserve-3d;
     transform: rotateZ(0deg);
     margin-top: 20px;
+
+    .mainCoin{
+      position: relative;
+      float: right;
+      height: 100px;
+      width: 100px;
+      margin-top: 30px;
+      margin-right: 10px;
+    }
+
+    .mainCoin:hover{
+      transform: rotateY( 180deg )
+    }
   }
+
   @keyframes cardRotate {
     60% {
       transform: rotateY(90deg);
@@ -112,7 +128,6 @@
     //transform: rotateY(180deg);
     animation: cardRotate 1.8s;
   }
-
   .main-savingsAll {
     color: aliceblue;
   }
@@ -121,5 +136,11 @@
     background-color: #ffffff;
     margin-top: 20px;
     font-size: 14px;
+
+    #emphasis{
+      font-weight: 900;
+      text-decoration: underline;
+      font-size: 14px;
+    }
   }
 }
