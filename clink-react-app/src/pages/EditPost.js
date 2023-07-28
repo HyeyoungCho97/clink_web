@@ -71,7 +71,7 @@ export default function EditPost() {
     };
     axios.post('http://localhost/community/post/update', params);
     window.location.href =
-      'http://localhost:3000/community/posts/?categoryNo=1&&filter=1';
+      'http://localhost:3000/community/posts?category_no=1&&filter=1';
   };
 
   if (loading) return <div>로딩중..</div>;
