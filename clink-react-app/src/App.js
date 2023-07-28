@@ -16,6 +16,8 @@ import Challenge from "./pages/Challenge";
 import MyPage from "./pages/MyPage";
 import ShowAccountForm from "./components/account/ShowAccountForm";
 import AddAccountForm from "./components/account/AddAccountForm";
+import AddAccountUpdate from "./components/account/AddAccountUpdate";
+import ShowAccountUpdate from "./components/account/ShowAccountUpdate";
 
 function App() {
   const resources = [
@@ -50,10 +52,10 @@ function App() {
           <Route path="/find-id" element={<FindId />}></Route>
           <Route path="/find-pwd" element={<FindPwd />}></Route>
           <Route path="/add-account-form" element={<AddAccountForm />}></Route>
-          <Route
-            path="/show-account-form"
-            element={<ShowAccountForm />}
-          ></Route>
+          <Route path="/show-account-form" element={<ShowAccountForm />}></Route>
+          <Route path="/add-account-update" element={<AddAccountUpdate />}></Route>
+          <Route path="/show-account-update" element={<ShowAccountUpdate />}></Route>
+          
           <Route element={<Footer resources={resources} />}>
             <Route path="/main" element={<TestView />} />
             <Route path="/challenge" element={<Challenge />} />

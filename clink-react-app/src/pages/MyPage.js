@@ -20,6 +20,8 @@ const MyPage = () => {
   const [new_name, setNew_name] = useState("");
   const [new_nickname, setNew_nickname] = useState("");
   const [new_password, setNew_Password] = useState("");
+  const [file, setFile] = useState(null);
+  const [newfile, setNewfile] = useState("");
 
   const [addAccountNo, setAddAccountNo] = useState("");
   const [addAccountBankCode, setAddAccountBankCode] = useState("");
@@ -95,7 +97,27 @@ const MyPage = () => {
   }
 
   // 프로필 사진
-  function profileHandler() {}
+  function profileHandler() {
+    let formData = new FormData(); // new FromData()로 새로운 객체 생성
+    formData.append("user_no", sessionStorage.getItem("user_no"));
+    formData.append("file", file);
+    axios
+      .post("http://localhost:80/clink/user/photo-url.do", formData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          alert("프로필 사진이 수정되었습니다.");
+          setNewfile(response.data);
+          // 이미지 src 바꾸기
+        } else {
+          alert("정상적으로 처리되지 않았습니다.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("다시 시도하세요");
+      });
+  }
 
   // 로그아웃(세션제거)
   function logoutHandler() {
@@ -111,28 +133,29 @@ const MyPage = () => {
       {/* {userInfo ? ( */}
       <>
         <div className="MyPageProfileBox">
-          <img src={pig} alt="logo" /> &nbsp; &nbsp; &nbsp;
-          <form
-            action="profileImage.do"
-            method="post"
-            enctype="multipart/form-data"
-          >
+          <img src={require("../assets/pig.png")} alt="logo" /> &nbsp; &nbsp;
+          &nbsp;
+          <div className="MyPageProfileLeftBox">
+            {/* <form
+              action="photo-url.do"
+              method="post"
+              enctype="multipart/form-data"
+            > */}
             <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
             <input
               id="file"
-              className="MyPageProfileBtn"
+              // className="MyPageProfileBtn"
+              className="MyPageChoiceBtn"
               type="file"
               name="file"
+              onChange={(e) => setFile(e.target.files[0])}
             ></input>
             &nbsp;
-            <Button
-              className="MyPageChoiceBtn"
-              type="submit"
-              onClick={() => profileHandler()}
-            >
-              확인
-            </Button>
-          </form>
+            {/* </form> */}
+          </div>
+          <Button type="submit" onClick={() => profileHandler()}>
+            확인
+          </Button>
         </div>
         <div className="MyPageAccounttitle">계좌등록</div>
         <AddAccount

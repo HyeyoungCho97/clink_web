@@ -1,28 +1,37 @@
 .MyPageContainer {
   width: 100%;
   height: 100%;
+  
   .MyPageTitle {
     font-size: 23px;
     font-weight: 900;
     text-align: left;
     padding: 40px;
-    // color: #0d6efd;
   }
   .MyPageProfileBox {
-    height: 15%;
-    margin-bottom: 10%;
+    height: 25%;
+    // margin-bottom: 10%;
+    margin: 0 auto;
+    // flex-direction: column;
+    display: flex;
+    flex: 2;
     img {
       width: 65px;
       height: 65px;
       border: 2px solid hwb(216 1% 3%);
       border-radius: 50%;
+      flex:1;
     }
     .MyPageProfileBtn {
       width: 150px;
     }
     .MyPageChoiceBtn {
+      border: none;
       background-color: #ffffff;
       color: #0d6efd;
+    }
+    .MyPageProfileLeftBox{
+      flex:3;
     }
   }
   .MyPageAddAccount {
@@ -37,7 +46,7 @@
     padding: 0 0 15px 25px;
     margin: 8% 0 0 0;
   }
-  .MyPageInfoBox{
+  .MyPageInfoBox {
     width: 88%;
     margin: 0 auto;
     margin-top: 5px;
@@ -45,16 +54,16 @@
       width: 70%;
       height: 38px;
       margin-bottom: 12px;
-      color: gray;      
+      color: gray;
     }
-    .MyPageLineBox{
+    .MyPageLineBox {
       display: flex;
       justify-content: space-between;
       line-height: 38px;
       // flex-grow: 1;
     }
   }
-  .MypageHr{
+  .MypageHr {
     width: 90%;
     margin: 20px auto 10px auto;
   }
