@@ -86,6 +86,8 @@ const MyPage = () => {
             nickname: new_nickname,
             password: new_password,
           });
+          sessionStorage.setItem("user_name", userInfo.name);
+          sessionStorage.setItem("nick_name", userInfo.nickname);
         } else if (response.data === "fail") {
           alert("정상적으로 처리되지 않았습니다.");
         }
@@ -97,7 +99,6 @@ const MyPage = () => {
   }
 
   // 프로필 사진
-  // useEffect(()=>{
   function profileHandler() {
     let formData = new FormData(); // new FromData()로 새로운 객체 생성
     formData.append("user_no", sessionStorage.getItem("user_no"));
@@ -109,8 +110,6 @@ const MyPage = () => {
         if (response.data) {
           alert("프로필 사진이 수정되었습니다.");
           setNewfile(response.data);
-          // setNewfile(response.data);
-          // 이미지 src 바꾸기
         } else {
           alert("정상적으로 처리되지 않았습니다.");
         }
@@ -120,7 +119,6 @@ const MyPage = () => {
         alert("다시 시도하세요");
       });
   }
-  // },[])
 
   // 로그아웃(세션제거)
   function logoutHandler() {
@@ -136,9 +134,12 @@ const MyPage = () => {
       {/* {userInfo ? ( */}
       <>
         <div className="MyPageProfileBox">
-          {/* <img src={require("../assets/pig.png")} alt="logo" /> &nbsp; &nbsp; */}
-          <img src={`http://localhost/${newfile}`} alt="logo" /> &nbsp; &nbsp;
-          &nbsp;
+          {newfile ? (
+            <img src={`http://localhost/${newfile}`} alt="logo" />
+          ) : (
+            <img src={require("../assets/pig.png")} alt="logo" />
+          )}
+          &nbsp; &nbsp;&nbsp;
           <div className="MyPageProfileLeftBox">
             <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
             <input
@@ -171,13 +172,12 @@ const MyPage = () => {
         <form action="update.do" method="post">
           <div className="MyPageInfoBox">
             <div className="MyPageLineBox">
-              {/* const [userInfo, setUserInfo] = useState({name:'', nickname:''});*/}
-
               <div>닉네임</div>
               <Form.Control
                 type="text"
                 // name="new_nickname"
-                placeholder={`${sessionStorage.getItem("nick_name")}`}
+                // placeholder={}
+                placeholder={`${sessionStorage.getItem("user_name")}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_nickname(e.target.value);
@@ -190,7 +190,7 @@ const MyPage = () => {
               <Form.Control
                 type="text"
                 name="name"
-                placeholder={`${sessionStorage.getItem("user_name")}`}
+                placeholder={`${sessionStorage.getItem("nick_name")}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_name(e.target.value);
