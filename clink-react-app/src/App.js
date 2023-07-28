@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Post from './pages/Post';
 import WritingPost from './pages/WritingPost';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useMemo, useState } from 'react';
 import NotFound from './pages/NotFound';
 import TestView from './pages/MainFrame';
 import Community from './pages/CommunityTempl';
@@ -15,11 +14,10 @@ import Join from './pages/Join';
 import FindId from './pages/FindId';
 import FindPwd from './pages/FindPwd';
 import Challenge from './pages/Challenge';
-
 import MyPage from './pages/MyPage';
-import axios from 'axios';
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
+import EditPost from './pages/EditPost';
 
 function App() {
   const resources = [
@@ -62,6 +60,7 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/community/post/*" element={<Post />}></Route>
             <Route path="/community/writing" element={<WritingPost />}></Route>
+            <Route path="/community/post/update" element={<EditPost />}></Route>
           </Route>
           <Route path="/*" element={<NotFound />}></Route>
         </Routes>

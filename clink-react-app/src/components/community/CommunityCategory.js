@@ -24,6 +24,7 @@ const dum = [
   },
 ];
 function Category() {
+  //커뮤니티 페이지의 상단 카테고리
   const [contents, setContents] = useState(dum);
   const onClick = (src) => {
     setContents(
@@ -40,7 +41,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[0].src);
-            navigate('/community/posts?categoryNo=3&&filter=1');
+            navigate('/community/posts?category_no=3&filter=0'); //카테고리 번호와 필터를 함께 보냄
           }}
           className="contentIcon"
           src={best}
@@ -49,7 +50,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[1].src);
-            navigate('/community/posts?categoryNo=1&&filter=1');
+            navigate('/community/posts?category_no=1&filter=0');
           }}
           className="contentIcon"
           src={free}
@@ -58,7 +59,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[2].src);
-            navigate('/community/posts?categoryNo=2&&filter=1');
+            navigate('/community/posts?category_no=2&filter=0');
           }}
           className="contentIcon"
           src={infoc}
@@ -67,7 +68,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[3].src);
-            navigate('/community/posts?categoryNo=0&&filter=1');
+            navigate('/community/posts?category_no=0&filter=0');
           }}
           className="contentIcon"
           src={announcement}

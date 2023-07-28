@@ -10,12 +10,30 @@ export default function PostTagInput({ inputPost, setInputPost }) {
   const [inputs, setInputs] = useState({
     tagname: '',
   });
+  useEffect(() => {
+    console.log(inputPost);
+    if (inputPost.hashtag_content !== undefined) {
+      const tagL = inputPost.hashtag_content.split(',');
+      const li = [];
+      for (let i = 0; i < tagL.length; i++) {
+        const tag = {
+          id: nextId.current,
+          tagname: tagL[i],
+        };
+        li.push(tag);
+        nextId.current += 1;
+      }
+      setTags(li);
+      setInputPost({ ...inputPost, tagList: li });
+      console.log(inputPost);
+    }
+  }, []);
   const { tagname } = inputs;
   const onChange = (event) => {
     const { name, value } = event.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value, //양쪽 공백 막기
     });
   };
   const nextId = useRef(1);
@@ -28,14 +46,22 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     } else {
       const tag = {
         id: nextId.current,
-        tagname,
+        tagname: tagname.trim(),
       };
+      for (let i = 0; i < tags.length; i++) {
+        if (tags[i].tagname === tag.tagname) {
+          alert('해시태그가 중복되었습니다.');
+          setInputs({
+            tagname: '',
+          });
+          return;
+        }
+      }
       setTags([...tags, tag]);
       setInputs({
         tagname: '',
       });
       setInputPost({ ...inputPost, tagList: [...tags, tag] });
-      console.log(inputPost);
       nextId.current += 1;
     }
   };
@@ -44,9 +70,7 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     // = user.id 가 id 인 것을 제거함
     event.stopPropagation();
     setTags(tags.filter((tag) => tag.id !== id));
-    console.log(tags);
   };
-
   // useEffect(() => {
   //   const fetchTags = async () => {
   //     try {
@@ -84,7 +108,7 @@ export default function PostTagInput({ inputPost, setInputPost }) {
       <div className="SetTag">
         {tags.map((tag) => (
           <Button tag={tag} key={tag.id} variant="outline-primary">
-            {tag.tagname}
+            {'#' + tag.tagname.trim()}
             <X onClick={(event) => onRemove(event, tag.id)} />
           </Button>
         ))}
