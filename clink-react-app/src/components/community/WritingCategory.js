@@ -7,8 +7,8 @@ export default function WritingCategory({ inputPost, setInputPost }) {
   const [radioValue, setRadioValue] = useState('1');
 
   const radios = [
-    { name: '정보', value: '2' },
     { name: '자유', value: '1' },
+    { name: '정보', value: '2' },
   ];
   return (
     <div>

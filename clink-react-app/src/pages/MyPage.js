@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AddAccount from "../components/AddAccount";
-import ShowAccount from "../components/ShowAccount";
-import pig from "../assets/pig.png";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
-import "../styles/MyPage.scss";
-import Footer from "../components/common/Footer";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AddAccount from '../components/AddAccount';
+import ShowAccount from '../components/ShowAccount';
+import pig from '../assets/pig.png';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import '../styles/MyPage.scss';
+import Footer from '../components/common/Footer';
 
 const MyPage = () => {
-  const [userName, setUserName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [confirmPwd, setConfirmPwd] = useState("");
+  const [userName, setUserName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [confirmPwd, setConfirmPwd] = useState('');
   const [userInfo, setUserInfo] = useState(0);
   const navigate = useNavigate();
-  const accountNumber1 = sessionStorage.getItem("accountNumber1");
-  const accountNumber2 = sessionStorage.getItem("accountNumber2");
+  const accountNumber1 = sessionStorage.getItem('accountNumber1');
+  const accountNumber2 = sessionStorage.getItem('accountNumber2');
 
   useEffect(() => {
-    setUserInfo(sessionStorage.getItem("userId"));
+    setUserInfo(sessionStorage.getItem('user_id'));
   }, []);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const MyPage = () => {
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate("/");
+    navigate('/');
   }
 
   // 개인정보 수정
@@ -45,32 +45,32 @@ const MyPage = () => {
       nickname: nickname,
       pwd: pwd,
       confirmPwd: confirmPwd,
-      userNo: sessionStorage.getItem("userNo"),
+      userNo: sessionStorage.getItem('userNo'),
     };
     axios
-      .post("http://localhost:80/clink/user/update.do", param)
+      .post('http://localhost:80/clink/user/update.do', param)
       .then((response) => {
         console.log(response.data);
-        if (response.data === "success") {
-          alert("수정되었습니다.");
+        if (response.data === 'success') {
+          alert('수정되었습니다.');
           // setUserName('');
           // setNickname('');
           // setPwd('');
           // setConfirmPwd('');
-        } else if (response.data === "fail") {
-          alert("정상적으로 처리되지 않았습니다.");
+        } else if (response.data === 'fail') {
+          alert('정상적으로 처리되지 않았습니다.');
         }
       })
       .catch((error) => {
         console.log(error);
-        alert("다시 시도하세요");
+        alert('다시 시도하세요');
       });
   }
 
   return (
-    <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
+    <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
       <div className="MyPageTitle">
-        {sessionStorage.getItem("userId")} 마이페이지
+        {sessionStorage.getItem('userId')} 마이페이지
       </div>
       {userInfo ? (
         <>
@@ -141,7 +141,7 @@ const MyPage = () => {
             </Button>
             <br />
             <br />
-            <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
+            <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
               <b>Logout</b>
             </div>
             <br />

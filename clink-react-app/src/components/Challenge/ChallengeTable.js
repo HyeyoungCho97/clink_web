@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import moment from "moment";
-import ChallengeTableCard from "./ChallengeTableCard";
-import category from "../../dataCode/expenseCategory.json";
+import moment from 'moment';
+import ChallengeTableCard from './ChallengeTableCard';
+import category from '../../dataCode/expenseCategory.json';
 
 const ChallengeTable = ({ date, detail, openModal }) => {
   // const forceUpdate =React.useCallback(()=>updateS)
@@ -45,8 +45,8 @@ const ChallengeTable = ({ date, detail, openModal }) => {
   return (
     <div className="ChallengeTable">
       <div id="SelectedDate">
-        {moment(date[0]).format("MM월 DD일")} ~{" "}
-        {moment(date[1]).format("MM월 DD일")}
+        {moment(date[0]).format('MM월 DD일')} ~{' '}
+        {moment(date[1]).format('MM월 DD일')}
       </div>
       {result}
     </div>
