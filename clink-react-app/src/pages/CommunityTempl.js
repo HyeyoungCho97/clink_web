@@ -1,4 +1,3 @@
-import { Route, Routes } from 'react-router-dom';
 import Category from '../components/community/CommunityCategory';
 import FinInfo from '../components/community/finInfo';
 import ListPrint from '../components/community/listPrint';

@@ -11,7 +11,7 @@ const ChallengeBarChart = ({ data }) => {
     idx['date'] = week[new Date(date).getDay()];
     for (let i = 1; i < 10; i++) {
       idx[category.category[String(i)]] = idx['c' + i];
-      delete idx['c' + i];
+      //delete idx["c" + i];
     }
   });
   //console.log(data);

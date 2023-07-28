@@ -1,69 +1,69 @@
-import '../styles/MainFrame.scss';
+import '../styles/main/MainFrame.scss';
 import CalendarGraph from '../components/main/CalendarGraph.js';
 import MainBackgroundImage from '../images/main_background.svg';
 import React, { useEffect, useState } from 'react';
+import Header from '../components/common/Header.js';
 import MainHello from '../components/main/MainHello.js';
 import MainQuote from '../components/main/MainQuote.js';
 import MainSavingTotal from '../components/main/MainSavingTotal.js';
 import MainReport from '../components/main/MainReport.js';
 import axios from 'axios';
 
-const now = new Date();
-const name = 'chatgpt';
+sessionStorage.setItem('userNo', '00000');
+sessionStorage.setItem('userNickName', 'gpt영');
+sessionStorage.setItem('userName', '김지영');
 let userId = sessionStorage.getItem('userId');
 if (userId == null) userId = 'chatgpt';
 
-const TestView = (props) => {
+const MainFrame = (props) => {
+  const [badge, setBadge] = useState([]);
   const [quote, setQuote] = useState([]);
+  const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
-  const [dayData, setDayData] = useState([]);
-  const [continuesDate, setContinuesDate] = useState(-1);
+
+  const [continuesDate, setContinuesDate] = useState(1);
+
+  //연속일수 구하는 함수
+  function getContinuesDate(dayData) {
+    let cDate = 1;
+    let continueity = true;
+    let idx = 0;
+    while (continueity) {
+      //하루차이나면 +1
+      if (
+        (new Date(dayData[idx].day).getTime() -
+          new Date(dayData[idx + 1].day).getTime()) /
+          (1000 * 60 * 60 * 24) ===
+        1
+      ) {
+        cDate = cDate + 1;
+        idx = idx + 1;
+      } else {
+        //아니면 종료
+        continueity = false;
+      }
+    }
+    setContinuesDate(cDate);
+    //console.log(continuesDate);
+  }
 
   useEffect(() => {
     const getUserData = async () => {
       await axios
-        .get('http://localhost:80/main/info?userId=' + userId)
+        .get(
+          'http://localhost:80/main/info?userNo=' +
+            sessionStorage.getItem('userNo')
+        )
         .then((Response) => {
-          console.log(Response.data);
-          setQuote([Response.data.quote.author, Response.data.quote.contents]);
-
-          setReportData({
-            sum: Response.data.vo.sum,
-            month: now.getMonth() + 1,
-            day: now.getDay(),
-            high: Response.data.vo.high,
-            low: Response.data.vo.low,
-            avg: Response.data.vo.avg,
-            challenge: Response.data.vo.challenge,
-            category: 'food',
-          });
-
-          const tempData = [];
-          Response.data.monthData.forEach((number) => {
-            tempData.push({ value: number.val, day: number.date });
-          });
-          setDayData(tempData);
-
-          let cDate = 0;
-          for (let i = dayData.length - 1; i >= 1; i--) {
-            if (
-              new Date(dayData[i].day).getTime() / 10000 -
-                new Date(dayData[i - 1].day).getTime() / 10000 >=
-                9000 ===
-              true
-            )
-              break;
-            else {
-              ++cDate;
-              setContinuesDate(cDate);
-            }
-          }
-          setContinuesDate(cDate);
-
-          console.log(dayData[dayData.length - 1].day);
+          //console.log(Response.data);
+          setBadge(Response.data.badge);
+          setQuote(Response.data.quote);
+          setStreakData(Response.data.streakData);
+          setReportData(Response.data.report);
+          getContinuesDate(Response.data.streakData.streakData);
         })
-        .catch((Error) => {
-          console.log('API Error');
+        .catch((error) => {
+          console.log(error);
         });
     };
     getUserData();
@@ -78,23 +78,25 @@ const TestView = (props) => {
           paddingBottom: '20%',
         }}
       >
-        <MainHello name={name} />
+        <Header />
+        <MainHello badge={badge} />
         <MainQuote quote={quote} />
-        {dayData && continuesDate >= 0 && (
-          <div className="main-calendarGraph">
-            <CalendarGraph data={dayData} continuesDate={continuesDate} />
-          </div>
-        )}
+
         {reportData && (
           <MainSavingTotal
-            saving={reportData.sum}
-            totalSave={reportData.challenge}
+            saving={reportData.yesterday_saving}
+            totalSave={reportData.total_saving}
           />
         )}
-        {reportData && <MainReport name={name} data={reportData} />}
+
+        {streakData && (
+          <CalendarGraph data={streakData} continuesDate={continuesDate} />
+        )}
+
+        {reportData && <MainReport data={reportData} />}
       </div>
     </>
   );
 };
 
-export default TestView;
+export default MainFrame;
