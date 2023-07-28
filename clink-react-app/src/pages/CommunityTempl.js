@@ -1,3 +1,4 @@
+import { Route, Routes } from 'react-router-dom';
 import Category from '../components/community/CommunityCategory';
 import FinInfo from '../components/community/finInfo';
 import ListPrint from '../components/community/listPrint';
@@ -15,6 +16,9 @@ function Community({ list }) {
     const fetchData = async () => {
       //뉴스 api를 호출
       try {
+        //   const ID_KEY = 'FaodiymBSIFGKB1jVbkU';
+        //   const SECRET_KEY = 'rz1LWa559t';
+        const newsAPIKey = 'e797558e0c3c4523940a90152d3872c2';
         const response = await axios.get(
           'https://newsapi.org/v2/top-headlines?country=kr&category=business&apiKey=' +
             newsAPIKey
