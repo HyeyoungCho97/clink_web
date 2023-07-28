@@ -1,70 +1,14 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./Footer.css";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import '../../styles/common/Footer.css';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 const Footer = ({ resources }) => {
   const [image, setImage] = useState(resources);
-  const accountNumber1 = sessionStorage.getItem("accountNumber1");
-  const accountNumber2 = sessionStorage.getItem("accountNumber2");
-
-  const imageHandler = (src) => {
-    setImage(
-      image.map((item) =>
-        item.src === src
-          ? { ...item, select: true }
-          : { ...item, select: false }
-      )
-    );
-  };
-
-  // useEffect(() => {
-  // accountNumber2 값이 변경될 때마다 실행되는 로직
-  // }, [accountNumber1, accountNumber2]);
-
-  // 계좌 있는지 확인하고 세션에 저장
-  // function checkAccountHandler() {
-  //   let param = {
-  //     user_no: sessionStorage.getItem("user_no"),
-  //   };
-  //   axios
-  //     .post("http://localhost:80/clink/user/checkAccount.do", param)
-  //     .then((response) => {
-  //       console.log(response.data);
-
-  //       for (let i = 0; i < response.data.length; i++) {
-  //         if (response.data[i].accountType === 1) {
-  //           sessionStorage.setItem(
-  //             "accountType1",
-  //             response.data[i].accountType
-  //           );
-  //           sessionStorage.setItem(
-  //             "accountNumber1",
-  //             response.data[i].accountNumber
-  //           );
-  //           console.log(
-  //             "accountNumber1:" + sessionStorage.getItem("accountNumber1")
-  //           );
-  //         } else if (response.data[i].accountType === 2) {
-  //           sessionStorage.setItem(
-  //             "accountType2",
-  //             response.data[i].accountType
-  //           );
-  //           sessionStorage.setItem(
-  //             "accountNumber2",
-  //             response.data[i].accountNumber
-  //           );
-  //           console.log(
-  //             "accountNumber2:" + sessionStorage.getItem("accountNumber2")
-  //           );
-  //         } else {
-  //           console.log("등록된 계좌 없음");
-  //         }
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
+  const [lo, setLoc] = useState();
+  const location = useLocation();
+  useEffect(() => {
+    setLoc(location.pathname.split('/')[1]);
+  }, [location]);
 
   return (
     <>
@@ -72,48 +16,34 @@ const Footer = ({ resources }) => {
       <div className="FooterContainer">
         <div className="FooterBox">
           <div className="FooterIcon">
-            <NavLink to="/Main">
+            <NavLink to="/Main" className="a" id="img1">
               <img
-                src={image[0].select === false ? image[0].src : image[0].resrc}
+                src={lo === 'Main' ? image[0].resrc : image[0].src}
                 alt="logo"
-                onClick={() => {
-                  imageHandler(image[0].src);
-                }}
               ></img>
             </NavLink>
           </div>
           <div className="FooterIcon">
-            <NavLink to="/challenge">
+            <NavLink to="/challenge" className="a" id="img2">
               <img
-                src={image[1].select === false ? image[1].src : image[1].resrc}
+                src={lo === 'challenge' ? image[1].resrc : image[1].src}
                 alt="logo"
-                onClick={() => {
-                  imageHandler(image[1].src);
-                }}
               ></img>
             </NavLink>
           </div>
           <div className="FooterIcon">
-            <NavLink to="/community">
+            <NavLink to="/community" className="a" id="img3">
               <img
-                src={image[2].select === false ? image[2].src : image[2].resrc}
-                // src={image[2].src}
+                src={lo === 'community' ? image[2].resrc : image[2].src}
                 alt="logo"
-                onClick={() => {
-                  imageHandler(image[2].src);
-                }}
               ></img>
             </NavLink>
           </div>
           <div className="FooterIcon">
-            <NavLink to="/mypage">
+            <NavLink to="/mypage" className="a" id="img4">
               <img
-                src={image[3].select === false ? image[3].src : image[3].resrc}
+                src={lo === 'mypage' ? image[3].resrc : image[3].src}
                 alt="logo"
-                onClick={() => {
-                  imageHandler(image[3].src);
-                  // checkAccountHandler();
-                }}
               ></img>
             </NavLink>
           </div>

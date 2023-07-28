@@ -18,28 +18,25 @@ import ShowAccountForm from "./components/account/ShowAccountForm";
 import AddAccountForm from "./components/account/AddAccountForm";
 import AddAccountUpdate from "./components/account/AddAccountUpdate";
 import ShowAccountUpdate from "./components/account/ShowAccountUpdate";
+import EditPost from "./pages/EditPost";
 
 function App() {
   const resources = [
     {
-      src: "/images/main.png",
-      resrc: "/images/clickMain.png",
-      select: true,
+      src: '/images/main.png',
+      resrc: '/images/clickMain.png',
     },
     {
-      src: "/images/chall.png",
-      resrc: "/images/clickChaa.png",
-      select: false,
+      src: '/images/chall.png',
+      resrc: '/images/clickChaa.png',
     },
     {
-      src: "/images/commu.png",
-      resrc: "/images/ClickCommu.png",
-      select: false,
+      src: '/images/commu.png',
+      resrc: '/images/ClickCommu.png',
     },
     {
-      src: "/images/myinfo.png",
-      resrc: "/images/clickInfo.png",
-      select: false,
+      src: '/images/myinfo.png',
+      resrc: '/images/clickInfo.png',
     },
   ];
 
@@ -60,10 +57,12 @@ function App() {
             <Route path="/main" element={<TestView />} />
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/community" element={<Community />} />
-            <Route path="/community/category" element={<Category />}></Route>
+            <Route path="/community/posts" element={<Category />}></Route>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/community/post/*" element={<Post />}></Route>
             <Route path="/community/writing" element={<WritingPost />}></Route>
+            <Route path="/community/post/update" element={<EditPost />}></Route>
+
           </Route>
           <Route path="/*" element={<NotFound />}></Route>
         </Routes>

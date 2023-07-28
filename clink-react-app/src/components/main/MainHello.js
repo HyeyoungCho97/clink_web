@@ -1,5 +1,14 @@
-const MainHello = ({ name }) => {
-  return <div className="main-hello">저축 초보자 {name}님 안녕하세요 !</div>;
+import badgeCode from "../../dataCode/Badge.json";
+const MainHello = ({ badge }) => {
+  return (
+    <>
+      <div className="main-hello">
+        <div id="badgeName">{badgeCode.BadgeCode[badge.user_badge_code]}</div>
+        <div id="userName">{sessionStorage.getItem("userNickName")}님</div>
+        <div id="hello">안녕하세요 !</div>
+      </div>
+    </>
+  );
 };
 
 export default MainHello;

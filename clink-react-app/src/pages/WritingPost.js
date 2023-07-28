@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/WritingPost.scss';
+import '../styles/community/WritingPost.scss';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import CommunityHeader from '../components/community/CommunityHeader';
@@ -16,12 +16,18 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
+
   const insertPost = () => {
+    const arr = [];
+    for (let i = 0; i < inputPost.tagList.length; i++) {
+      arr.push(inputPost.tagList[i].tagname);
+    }
+    console.log(inputPost.tagList.join());
     let params = {
-      boardTitle: inputPost.title,
-      boardContent: inputPost.content,
-      boardCategoryNo: inputPost.categoryNo,
-      hashTagVo: inputPost.tagList,
+      board_title: inputPost.title,
+      board_content: inputPost.content,
+      category_no: inputPost.categoryNo,
+      hashtag_content: arr.join(),
     };
     if (params.boardTitle.trim() === '' || params.boardContent.trim() === '') {
       alert('제목 또는 내용을 입력해주세요!');

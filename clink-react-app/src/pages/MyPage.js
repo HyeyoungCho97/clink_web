@@ -66,6 +66,13 @@ const MyPage = () => {
     // setUserInfo(sessionStorage.getItem("user_id"));
   }, []);
 
+
+  // 로그아웃(세션제거)
+  function logoutHandler() {
+    sessionStorage.clear();
+    navigate('/');
+  }
+
   // 개인정보 수정
   function updateInfoHandler() {
     let param = {
@@ -75,7 +82,7 @@ const MyPage = () => {
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post("http://localhost:80/clink/user/update.do", param)
+      .post('http://localhost:80/clink/user/update.do', param)
       .then((response) => {
         console.log(response.data);
         if (response.data === "success") {
@@ -94,7 +101,7 @@ const MyPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("다시 시도하세요");
+        alert('다시 시도하세요');
       });
   }
 
@@ -127,7 +134,7 @@ const MyPage = () => {
   }
 
   return (
-    <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
+    <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
       <div className="MyPageTitle">
         {sessionStorage.getItem("user_id")} 마이페이지
       </div>

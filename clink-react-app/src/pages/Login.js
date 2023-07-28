@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import pig from "../assets/pig.png";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/Login.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import pig from '../assets/pig.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/Login.scss';
 
 const Login = () => {
   const navigate = useNavigate();

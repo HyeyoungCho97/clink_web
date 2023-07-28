@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeft } from 'react-bootstrap-icons';
-import '../../styles/CommunityHeader.scss';
+import '../../styles/community/CommunityHeader.scss';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 export default function CommunityHeader() {
@@ -12,7 +12,7 @@ export default function CommunityHeader() {
           <ChevronLeft
             onClick={(event) => {
               event.stopPropagation();
-              navigate('/community');
+              navigate(-1);
             }}
           ></ChevronLeft>
           &nbsp;커뮤니티
