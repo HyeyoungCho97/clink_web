@@ -97,6 +97,7 @@ const MyPage = () => {
   }
 
   // 프로필 사진
+  // useEffect(()=>{
   function profileHandler() {
     let formData = new FormData(); // new FromData()로 새로운 객체 생성
     formData.append("user_no", sessionStorage.getItem("user_no"));
@@ -108,6 +109,7 @@ const MyPage = () => {
         if (response.data) {
           alert("프로필 사진이 수정되었습니다.");
           setNewfile(response.data);
+          // setNewfile(response.data);
           // 이미지 src 바꾸기
         } else {
           alert("정상적으로 처리되지 않았습니다.");
@@ -118,6 +120,7 @@ const MyPage = () => {
         alert("다시 시도하세요");
       });
   }
+  // },[])
 
   // 로그아웃(세션제거)
   function logoutHandler() {
@@ -133,14 +136,10 @@ const MyPage = () => {
       {/* {userInfo ? ( */}
       <>
         <div className="MyPageProfileBox">
-          <img src={require("../assets/pig.png")} alt="logo" /> &nbsp; &nbsp;
+          {/* <img src={require("../assets/pig.png")} alt="logo" /> &nbsp; &nbsp; */}
+          <img src={`http://localhost/${newfile}`} alt="logo" /> &nbsp; &nbsp;
           &nbsp;
           <div className="MyPageProfileLeftBox">
-            {/* <form
-              action="photo-url.do"
-              method="post"
-              enctype="multipart/form-data"
-            > */}
             <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
             <input
               id="file"
@@ -151,11 +150,10 @@ const MyPage = () => {
               onChange={(e) => setFile(e.target.files[0])}
             ></input>
             &nbsp;
-            {/* </form> */}
+            <Button type="submit" onClick={() => profileHandler()}>
+              확인
+            </Button>
           </div>
-          <Button type="submit" onClick={() => profileHandler()}>
-            확인
-          </Button>
         </div>
         <div className="MyPageAccounttitle">계좌등록</div>
         <AddAccount
