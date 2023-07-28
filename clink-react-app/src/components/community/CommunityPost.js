@@ -16,24 +16,31 @@ export default function CommunityPost({ post, key }) {
   const [likes, setLikes] = useState(0);
   const [isLike, setIsLike] = useState(false);
   const [isMine, setIsMine] = useState(false);
-
   const location = useLocation();
+  const {
+    board_title,
+    board_no,
+    board_content,
+    register_datetime,
+    register_id,
+    board_like_count,
+    hashtag_content,
+    board_views,
+  } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
 
   useEffect(() => {
     if (post && post.likes) {
       setLikes(post.likes);
     }
-    if(register_id === sessionStorage.user_id
-      && 
-      location.pathname ==="/community/post") {
+    if (
+      register_id === sessionStorage.user_id &&
+      location.pathname === '/community/post'
+    ) {
       setIsMine(true);
     }
-    console.log("isMine change :" + isMine);
-    console.log(
-      location.pathname
-    );
+    // console.log('isMine change :' + isMine);
+    // console.log(location.pathname);
   }, [post, isMine]);
-
 
   const clickLike = () => {
     if (isLike === false) {
@@ -44,18 +51,25 @@ export default function CommunityPost({ post, key }) {
     setIsLike(!isLike);
   };
 
-  const {
-    board_title,
-    board_no,
-    board_content,
-    register_datetime, 
-		register_id, 
-		board_like_count,
-		hashtag_content,
-    board_views
-  } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
   const navigate = useNavigate();
   const [view, setView] = useState(false);
+  const postHash = () => {
+    const hashlist = hashtag_content.split(',');
+    const list = [];
+    for (let i = 0; i < hashlist.length; i++) {
+      list.push(
+        <Button
+          variant="primary"
+          size="sm"
+          key={i}
+          style={{ marginRight: '5px' }}
+        >
+          {'#' + hashlist[i]}
+        </Button>
+      );
+    }
+    return list;
+  };
   return (
     <>
       <div
@@ -65,17 +79,7 @@ export default function CommunityPost({ post, key }) {
           navigate('/community/post?board_no=' + board_no);
         }}
       >
-        <div className="CommunityPostTags">
-          <Button variant="primary" size="sm">
-            #안녕
-          </Button>{' '}
-          <Button variant="primary" size="sm">
-            #안녕
-          </Button>{' '}
-          <Button variant="primary" size="sm">
-            #안녕
-          </Button>{' '}
-        </div>
+        <div className="CommunityPostTags">{postHash()}</div>
         <div className="CommunityPost">
           <div className="PostProfileDiv">
             <div className="CommunityPostProfile">
@@ -89,14 +93,14 @@ export default function CommunityPost({ post, key }) {
             </div>
 
             <div className="menu">
-            {isMine &&
-              <ThreeDotsVertical
-                onClick={(event) => {
-                  setView(!view);
-                  event.stopPropagation();
-                }}
-              />
-            }
+              {isMine && (
+                <ThreeDotsVertical
+                  onClick={(event) => {
+                    setView(!view);
+                    event.stopPropagation();
+                  }}
+                />
+              )}
               {view && (
                 <AdditionalButton register_id={register_id}></AdditionalButton>
               )}

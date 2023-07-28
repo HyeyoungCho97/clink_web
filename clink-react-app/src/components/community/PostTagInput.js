@@ -10,6 +10,24 @@ export default function PostTagInput({ inputPost, setInputPost }) {
   const [inputs, setInputs] = useState({
     tagname: '',
   });
+  useEffect(() => {
+    console.log(inputPost);
+    if (inputPost.hashtag_content !== undefined) {
+      const tagL = inputPost.hashtag_content.split(',');
+      const li = [];
+      for (let i = 0; i < tagL.length; i++) {
+        const tag = {
+          id: nextId.current,
+          tagname: tagL[i],
+        };
+        li.push(tag);
+        nextId.current += 1;
+      }
+      setTags(li);
+      setInputPost({ ...inputPost, tagList: li });
+      console.log(inputPost);
+    }
+  }, []);
   const { tagname } = inputs;
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -53,7 +71,6 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     event.stopPropagation();
     setTags(tags.filter((tag) => tag.id !== id));
   };
-
   // useEffect(() => {
   //   const fetchTags = async () => {
   //     try {

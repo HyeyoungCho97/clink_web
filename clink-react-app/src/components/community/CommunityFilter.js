@@ -1,10 +1,53 @@
 import '../../styles/community/CommunityFilter.scss';
-import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-export default function CommunityFilter({ filter, setFilter }) {
+export default function CommunityFilter({
+  filter,
+  setFilter,
+  categoryNo,
+  setHashtag,
+}) {
+  const [hashList, setHashList] = useState([]);
+  useEffect(() => {
+    const listSet = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:80/community/hot-hashtag?category_no=' + categoryNo
+        );
+        // console.log(response);
+        setHashList(response.data);
+        // console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    listSet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // const hashClick = (e) => {
+  //   setHashtag(e.target.textContent);
+  // };
+  const hashtagList = () => {
+    const list = [];
+    for (let i = 0; i < hashList.length; i++) {
+      list.push(
+        <Button
+          variant="primary"
+          size="sm"
+          key={i}
+          style={{ marginRight: '5px' }}
+          onClick={(e) => setHashtag(e.target.textContent.replace('#', ''))}
+        >
+          {hashList[i]}
+        </Button>
+      );
+    }
+    return list;
+  };
   return (
     <div className="CommunityFilterContainer">
       <DropdownButton
@@ -21,17 +64,7 @@ export default function CommunityFilter({ filter, setFilter }) {
           인기순
         </Dropdown.Item>
       </DropdownButton>
-      <div className="CommunityTagList">
-        <Button variant="primary" size="sm">
-          #안녕
-        </Button>{' '}
-        <Button variant="primary" size="sm">
-          #집가고싶다
-        </Button>{' '}
-        <Button variant="primary" size="sm">
-          #안녕
-        </Button>{' '}
-      </div>
+      <div className="CommunityTagList">{hashtagList()}</div>
     </div>
   );
 }

@@ -18,13 +18,13 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
-  
+
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
-      arr.push('#' + inputPost.tagList[i].tagname);
+      arr.push(inputPost.tagList[i].tagname);
     }
-    console.log(arr.join());
+    console.log(inputPost.tagList.join());
     let params = {
       board_title: inputPost.title,
       board_content: inputPost.content,
