@@ -15,8 +15,8 @@ export default function Community() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState(1);
   const [hashtag, setHashtag] = useState('');
-  const [categoryNo, setCategoryNo] = useState();
   const location = useLocation();
+  const [categoryNo, setCategoryNo] = useState(1);
   useEffect(() => {
     const lo = Number(new URLSearchParams(location.search).get('category_no'));
     setCategoryNo(lo);
@@ -74,20 +74,18 @@ export default function Community() {
         setFilter={setFilter}
         categoryNo={categoryNo}
       ></CommunityCategory>
+
       <CommunityFilter
         setFilter={setFilter}
         filter={filter}
         setHashtag={setHashtag}
         categoryNo={categoryNo}
       ></CommunityFilter>
+
       {posts.map((post, id) => (
         <CommunityPost post={post} key={id}></CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
-      {/* <br />
-      <br />
-      <br />
-      <br /> */}
     </div>
   );
 }

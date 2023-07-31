@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 function Community({ list }) {
   const [data, setData] = useState(null);
+  const [newsdata, setNewsdata] = useState(null);
   const [HotPost, setHotPost] = useState([]);
   const [HotFreePost, setHotFreePost] = useState([]);
   const [HotInfoPost, setHotInfoPost] = useState([]);
@@ -44,10 +45,12 @@ function Community({ list }) {
         const response = await axios.get(
           'http://localhost:80/community/hot-posts'
         );
-        setHotPost(response.data.hotPost);
-        setHotFreePost(response.data.hotFreePost);
-        setHotInfoPost(response.data.hotInfoPost);
-        setHotAnnPost(response.data.hotAnnPost);
+        setHotPost(response.data[0].hotPost);
+        setHotFreePost(response.data[0].hotFreePost);
+        setHotInfoPost(response.data[0].hotInfoPost);
+        setHotAnnPost(response.data[0].hotAnnPost);
+        setNewsdata(response.data[1]);
+        console.log(response.data[1]);
       } catch (e) {
         console.log('나는 에러스');
       }
@@ -57,7 +60,7 @@ function Community({ list }) {
   return (
     <div className="contents" style={{ paddingBottom: '20%' }}>
       <Category />
-      {data && <FinInfo data={data} />}
+      {newsdata && <FinInfo newsdata={newsdata} />}
       {HotPost && <ListPrint list={HotPost} title={'실시간 인기글'} />}
       {HotFreePost && <ListPrint list={HotFreePost} title={'자유 인기글'} />}
       {HotInfoPost && <ListPrint list={HotInfoPost} title={'정보 인기글'} />}
