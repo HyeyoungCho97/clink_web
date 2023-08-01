@@ -139,6 +139,7 @@ const MyPage = () => {
         {sessionStorage.getItem("user_id")} 마이페이지
       </div>
       {/* {userInfo ? ( */}
+      <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
@@ -146,9 +147,11 @@ const MyPage = () => {
           ) : (
             <img src={require("../assets/pig.png")} alt="logo" />
           )}
+          <div className="MyPageProfileBox">
+            <label for="file">
+            <div className="MyPageProfileSelectBtn">파일 선택</div>
+            </label>
           &nbsp; &nbsp;&nbsp;
-          <div className="MyPageProfileLeftBox">
-            <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
             <input
               id="file"
               // className="MyPageProfileBtn"
@@ -156,8 +159,7 @@ const MyPage = () => {
               type="file"
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
-            ></input>
-            &nbsp;
+            />
             <Button type="submit" onClick={() => profileHandler()}>
               확인
             </Button>
