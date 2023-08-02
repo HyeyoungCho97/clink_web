@@ -16,6 +16,25 @@ export default function Community() {
   const [filter, setFilter] = useState(1);
   const [hashtag, setHashtag] = useState('');
   const [categoryNo, setCategoryNo] = useState();
+  const [ScrollY, setScrollY] = useState(0);
+  
+
+  const onScroll = (e) => {
+    const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  if (scrollTop + clientHeight >= scrollHeight) {
+    console.log(true);
+  }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+
+    };
+  }, []);  
   const location = useLocation();
   useEffect(() => {
     const lo = Number(new URLSearchParams(location.search).get('category_no'));
@@ -81,13 +100,13 @@ export default function Community() {
         categoryNo={categoryNo}
       ></CommunityFilter>
       {posts.map((post, id) => (
-        <CommunityPost post={post} key={id}></CommunityPost>
+        <CommunityPost post={post} key={id} ></CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
-      {/* <br />
       <br />
       <br />
-      <br /> */}
+      <br />
+      <br />
     </div>
   );
 }
