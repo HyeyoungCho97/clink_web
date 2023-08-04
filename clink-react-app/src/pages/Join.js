@@ -196,7 +196,7 @@ const Join = () => {
           <div>{warningPwd}</div>
           <InputGroup className="joinInput">
             <Form.Control
-              placeholder="이메일"
+              placeholder="이메일*"
               type="email"
               name="email"
               value={userInfo.email}
@@ -215,7 +215,7 @@ const Join = () => {
             className="joinInput"
             type="text"
             name="emailAuthNum"
-            placeholder="인증번호"
+            placeholder="인증번호*"
             maxLength="9"
             value={userInfo.emailAuthNum}
             onChange={handleInputChange}
