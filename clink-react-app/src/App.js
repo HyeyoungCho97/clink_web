@@ -18,6 +18,7 @@ import MyPage from './pages/MyPage';
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
 import EditPost from './pages/EditPost';
+import RegisterChallenge from './components/register/RegisterChallenge';
 
 function App() {
   const resources = [
@@ -53,6 +54,7 @@ function App() {
             element={<ConsumptionAccountForm />}
           ></Route>
           <Route element={<Footer resources={resources} />}>
+            <Route path="/register" element={<RegisterChallenge />} />
             <Route path="/main" element={<TestView />} />
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/community" element={<Community />} />
