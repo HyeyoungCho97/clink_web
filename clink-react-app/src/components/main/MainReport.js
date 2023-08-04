@@ -5,7 +5,10 @@ const MainReport = ({ data }) => {
   let month = moment(data.yesterday).month() + 1;
   let day = moment(data.yesterday).date() + 1;
   let name = sessionStorage.getItem("userName");
-  let percent = (data.categoryAmount / data.yesterday_used) * 100;
+  let percent = Math.round(
+    (data.categoryAmount / data.yesterday_used) * 100,
+    2
+  );
   return (
     <div className="main-report">
       <div style={{ padding: 10 }}>
