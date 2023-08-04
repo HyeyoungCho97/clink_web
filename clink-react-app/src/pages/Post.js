@@ -4,15 +4,15 @@ import PostCommentInput from "../components/community/PostCommentInput";
 import PostComment from "../components/community/PostComment";
 import CommunityHeader from "../components/community/CommunityHeader";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
-export default function Post( ) {
+import { useLocation } from "react-router-dom";
+export default function Post() {
   const location = useLocation();
 
   const [posts, setPosts] = useState(null);
   const [comments, setComments] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const fetchPostsComments = async () => {
       try {
@@ -22,10 +22,12 @@ export default function Post( ) {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const responsePost = await axios.get(
-          'http://localhost/community/post'+ location.search
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
+            location.search
         );
         const responseComment = await axios.get(
-          'http://localhost/community/post/comment'+ location.search
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment" +
+            location.search
         );
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
         setComments(responseComment.data);
@@ -47,10 +49,7 @@ export default function Post( ) {
       <CommunityHeader></CommunityHeader>
       <CommunityPost post={posts}></CommunityPost>
       {comments.map((comment, id) => (
-        <PostComment
-          comment={comment}
-          key={id}
-        ></PostComment>
+        <PostComment comment={comment} key={id}></PostComment>
       ))}
       <PostCommentInput></PostCommentInput>
       <br />
@@ -59,7 +58,6 @@ export default function Post( ) {
       <br />
       <br />
       <br />
-
     </div>
   );
 }

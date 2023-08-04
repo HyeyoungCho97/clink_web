@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import pig from '../assets/pig.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Login.scss';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import pig from "../assets/pig.png";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/Login.scss";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Login = () => {
       handleLoginSubmit();
     }
   };
-// 로그인
+  // 로그인
   const handleLoginSubmit = () => {
     if (user_id.trim() === "" || password.trim() === "") {
       setUser_id("");
@@ -33,7 +33,10 @@ const Login = () => {
       };
       console.log(user_id, password);
       axios
-        .post("http://localhost:80/clink/user/login.do", param)
+        .post(
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/login.do",
+          param
+        )
         .then((response) => {
           console.log(response.data);
           if (response.data) {

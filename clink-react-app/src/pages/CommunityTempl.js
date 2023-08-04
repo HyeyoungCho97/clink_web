@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
-import Category from '../components/community/CommunityCategory';
-import FinInfo from '../components/community/finInfo';
-import ListPrint from '../components/community/listPrint';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Route, Routes } from "react-router-dom";
+import Category from "../components/community/CommunityCategory";
+import FinInfo from "../components/community/finInfo";
+import ListPrint from "../components/community/listPrint";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Community({ list }) {
   const [data, setData] = useState(null);
@@ -18,9 +18,9 @@ function Community({ list }) {
       try {
         //   const ID_KEY = 'FaodiymBSIFGKB1jVbkU';
         //   const SECRET_KEY = 'rz1LWa559t';
-        const newsAPIKey = 'e797558e0c3c4523940a90152d3872c2';
+        const newsAPIKey = "e797558e0c3c4523940a90152d3872c2";
         const response = await axios.get(
-          'https://newsapi.org/v2/top-headlines?country=kr&category=business&apiKey=' +
+          "https://newsapi.org/v2/top-headlines?country=kr&category=business&apiKey=" +
             newsAPIKey
         );
         const d = response.data.articles;
@@ -42,26 +42,26 @@ function Community({ list }) {
     const listSet = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:80/community/hot-posts'
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/hot-posts"
         );
         setHotPost(response.data.hotPost);
         setHotFreePost(response.data.hotFreePost);
         setHotInfoPost(response.data.hotInfoPost);
         setHotAnnPost(response.data.hotAnnPost);
       } catch (e) {
-        console.log('나는 에러스');
+        console.log("나는 에러스");
       }
     };
     listSet();
   }, []);
   return (
-    <div className="contents" style={{ paddingBottom: '20%' }}>
+    <div className="contents" style={{ paddingBottom: "20%" }}>
       <Category />
       {data && <FinInfo data={data} />}
-      {HotPost && <ListPrint list={HotPost} title={'실시간 인기글'} />}
-      {HotFreePost && <ListPrint list={HotFreePost} title={'자유 인기글'} />}
-      {HotInfoPost && <ListPrint list={HotInfoPost} title={'정보 인기글'} />}
-      {HotAnnPost && <ListPrint list={HotAnnPost} title={'공지사항'} />}
+      {HotPost && <ListPrint list={HotPost} title={"실시간 인기글"} />}
+      {HotFreePost && <ListPrint list={HotFreePost} title={"자유 인기글"} />}
+      {HotInfoPost && <ListPrint list={HotInfoPost} title={"정보 인기글"} />}
+      {HotAnnPost && <ListPrint list={HotAnnPost} title={"공지사항"} />}
     </div>
   );
 }
