@@ -70,7 +70,7 @@ const MyPage = () => {
   return (
     <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
       <div className="MyPageTitle">
-        {sessionStorage.getItem('userId')} 마이페이지
+        {sessionStorage.getItem('user_id')} 마이페이지
       </div>
       {userInfo ? (
         <>

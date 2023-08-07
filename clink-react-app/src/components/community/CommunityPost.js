@@ -53,6 +53,7 @@ export default function CommunityPost({ post, key }) {
 
   const navigate = useNavigate();
   const [view, setView] = useState(false);
+
   const postHash = () => {
     const hashlist = hashtag_content.split(',');
     const list = [];
@@ -70,6 +71,7 @@ export default function CommunityPost({ post, key }) {
     }
     return list;
   };
+
   return (
     <>
       <div

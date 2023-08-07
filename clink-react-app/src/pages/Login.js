@@ -14,47 +14,47 @@ const Login = () => {
   const [pwd, setPwd] = useState('');
 
   const handleLoginSubmit = () => {
-    sessionStorage.setItem('user_id', 'test');
-    sessionStorage.setItem('user_name', '테스트용');
-    sessionStorage.setItem('nick_name', '닉네임테스트');
-    navigate('/mypage');
-    // if (userId.trim() === "" || pwd.trim() === "") {
-    //   setuserId("");
-    //   setPwd("");
-    //   console.log(userId);
-    //   alert("아이디 또는 패스워드를 입력해주세요");
-    // } else {
-    //   var param = {
-    //     userId: userId,
-    //     pwd: pwd,
-    //   };
-    //   console.log(userId, pwd);
-    //   axios
-    //     .post("http://localhost:80/clink/user/login.do", param)
-    //     .then((response) => {
-    //       console.log(
-    //         response.data.userId,
-    //         response.data.userNo,
-    //         response.data.nickname
-    //       );
-    //       if (response.data) {
-    //         sessionStorage.setItem("userId", response.data.userId);
-    //         sessionStorage.setItem("userNo", response.data.userNo);
-    //         sessionStorage.setItem("nickname", response.data.nickname);
-    //         sessionStorage.setItem("userName", response.data.userName);
-    //         alert(sessionStorage.getItem("userId") + " 로그인되었습니다.");
-    //         navigate("/mypage");
-    //       } else {
-    //         alert("다시 시도하세요");
-    //         setuserId("");
-    //         setPwd("");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       alert("다시 시도하세요");
-    //     });
-    // }
+    // sessionStorage.setItem('user_id', 'test');
+    // sessionStorage.setItem('user_name', '테스트용');
+    // sessionStorage.setItem('nick_name', '닉네임테스트');
+    // navigate('/mypage');
+    if (userId.trim() === '' || pwd.trim() === '') {
+      setuserId('');
+      setPwd('');
+      console.log(userId);
+      alert('아이디 또는 패스워드를 입력해주세요');
+    } else {
+      var param = {
+        user_id: userId,
+        password: pwd,
+      };
+      console.log(userId, pwd);
+      axios
+        .post('http://localhost:80/clink/user/login.do', param)
+        .then((response) => {
+          console.log(
+            response.data.user_id,
+            response.data.user_no,
+            response.data.nick_name
+          );
+          if (response.data) {
+            sessionStorage.setItem('user_id', response.data.user_id);
+            sessionStorage.setItem('user_no', response.data.user_no);
+            sessionStorage.setItem('nick_name', response.data.nick_name);
+            sessionStorage.setItem('user_name', response.data.use_name);
+            alert(sessionStorage.getItem('user_id') + ' 로그인되었습니다.');
+            navigate('/mypage');
+          } else {
+            alert('다시 시도하세요');
+            setuserId('');
+            setPwd('');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('다시 시도하세요');
+        });
+    }
   };
 
   return (

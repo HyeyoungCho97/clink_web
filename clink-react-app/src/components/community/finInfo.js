@@ -15,7 +15,6 @@ function FinInfo({ newsdata }) {
         </SwiperSlide>
       );
     }
-
     return list;
   };
   return (
