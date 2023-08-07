@@ -3,7 +3,7 @@ import category from "../../dataCode/expenseCategory.json";
 
 const MainReport = ({ data }) => {
   let month = moment(data.yesterday).month() + 1;
-  let day = moment(data.yesterday).date() + 1;
+  let day = moment(data.yesterday).date();
   let name = sessionStorage.getItem("userName");
   let percent = Math.round(
     (data.categoryAmount / data.yesterday_used) * 100,
