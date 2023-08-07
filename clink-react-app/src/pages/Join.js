@@ -16,6 +16,11 @@ const Join = () => {
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [email, setEmail] = useState("");
+  const [certification, setCertification] = useState("");
+  const [inputCertification, setInputCertification] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
+  
+  
 
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
@@ -48,25 +53,42 @@ const Join = () => {
       });
   }
 
-  // 이메일 인증
-  function emailAuthHandler() {
+  // 이메일 인증 번호보내기 && 사용중인 이메일인지 확인하기
+  const emailAuthSandHandler = async (e) => {
     console.log("이메일 주소:" + email);
-    alert("인증번호가 전송되었습니다.");
-    let email = { email: email };
-    axios
-      .post("http://localhost/clink/user/emailAuth.do", email)
+    await axios({
+      method: "post",
+      url: "http://localhost/clink/user/emailAuth.do",
+      data: {
+        email,
+      },
+    })
       .then((response) => {
         console.log(response.data);
-        if (response.data === "success") {
-          setWarningEmail("사용할 수 있는 아이디입니다.");
-        } else if (response.data === "fail") {
-          setWarningEmail("사용 중인 아이디입니다.");
+        if (response.data !== "fail") {
+          alert("인증번호가 전송되었습니다.");
+          setWarningEmail("이메일로 인증번호를 전송했습니다.");
+          setCertification(response.data);
+        } else {
+          setWarningEmail("사용 중인 이메일입니다.");
         }
       })
       .catch((error) => {
         console.log(error);
         setWarningId("다시 시도하세요");
       });
+  };
+
+  function emailAuthHandler(e) {
+    if(certification === inputCertification)
+    {
+      alert("인증이 완료되었습니다.")
+      setWarningEmail("인증이 완료되었습니다.");
+      setEmailCheck(true);
+    }
+    else {
+      alert("다시 입력해주세요.")
+    }
   }
 
   // 회원가입
@@ -80,6 +102,8 @@ const Join = () => {
       alert("이름을 입력해주세요.");
     } else if (confirmPwd.trim() === "") {
       alert("비밀번호 확인을 입력해주세요.");
+    } else if (!emailCheck) {
+      alert("이메일 인증을 해주세요.");
     } else {
       let id = { user_id: user_id };
       axios
@@ -192,22 +216,30 @@ const Join = () => {
             <Button
               variant="outline-secondary"
               id="JoinIdentifyBtn"
+              onClick={() => emailAuthSandHandler()}
+            >
+              인증번호보내기
+            </Button>
+          </InputGroup>
+          <div></div>
+          <InputGroup className="joinInput">
+            <Form.Control
+              type="text"
+              name="emailAuthNumber"
+              placeholder="인증번호"
+              maxLength="8"
+              onChange={(e) => {
+                setInputCertification(e.target.value);
+              }}
+            />
+            <Button
+              variant="outline-secondary"
+              id="JoinIdentifyBtn"
               onClick={() => emailAuthHandler()}
             >
               본인인증하기
             </Button>
           </InputGroup>
-          <div></div>
-          <Form.Control
-            type="text"
-            name="emailAuthNumber"
-            placeholder="인증번호"
-            className="joinInput"
-            maxLength="6"
-            // onChange={(e) => {
-            //   setPassword(e.target.value);
-            // }}
-          />
         </div>
         <div>{warningEmail}</div>
       </form>
