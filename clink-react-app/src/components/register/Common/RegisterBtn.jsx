@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import '../../styles/MyPage.scss';
+import '../../../styles/MyPage.scss';
 const RegisterBtn = ({ btnType }) => {
   return (
     <>

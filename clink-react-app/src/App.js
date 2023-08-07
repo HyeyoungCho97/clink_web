@@ -1,5 +1,4 @@
 import './App.css';
-
 import Category from './pages/Category.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Post from './pages/Post';
@@ -18,8 +17,8 @@ import MyPage from './pages/MyPage';
 import AddAccountForm from './components/AddAccountForm';
 import ConsumptionAccountForm from './components/ConsumptionAccountForm';
 import EditPost from './pages/EditPost';
-import RegisterChallenge from './components/register/RegisterChallenge';
-
+import RegisterChallenge from './components/register/RegisterChallenge/RegisterChallenge';
+import NoChallengeForm from './components/register/NoChallenge/NoChallengeForm';
 function App() {
   const resources = [
     {
@@ -55,6 +54,7 @@ function App() {
           ></Route>
           <Route element={<Footer resources={resources} />}>
             <Route path="/register" element={<RegisterChallenge />} />
+            <Route path="/noChallenge" element={<NoChallengeForm />} />
             <Route path="/main" element={<TestView />} />
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/community" element={<Community />} />

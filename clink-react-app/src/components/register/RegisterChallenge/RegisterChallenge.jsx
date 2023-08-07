@@ -1,22 +1,14 @@
-import BackgroundCircle from './BackgroundCircle';
-import { BsPlus } from 'react-icons/bs';
 import ChallengeForm from './ChallengeFrom';
-import '../../styles/register/RegisterChallenge.css';
+import '../../../styles/register/RegisterChallenge.css';
 import AddAcountForm from './AddAcountForm';
 import ChallengePrice from './ChallengePrice';
-import RegisterBtn from './RegisterBtn';
-import Nochallenge from './NoChallenge';
+import RegisterBtn from '../Common/RegisterBtn';
+import CommonTitle from '../Common/CommonTitle';
 
 const RegisterChallenge = () => {
   return (
-    <div className="RegisterChallengeWrap">
-      <BackgroundCircle />
-      <h1 className="RegisterTitle">
-        새로운 목표
-        <BsPlus />
-      </h1>
-      <Nochallenge />
-      {/* <AddAcountForm />
+    <CommonTitle>
+      <AddAcountForm />
       <ChallengeForm />
       <ChallengePrice />
       <div
@@ -25,8 +17,8 @@ const RegisterChallenge = () => {
       >
         <RegisterBtn btnType={'등록'} />
         <RegisterBtn btnType={'취소'} />
-      </div> */}
-    </div>
+      </div>
+    </CommonTitle>
   );
 };
 export default RegisterChallenge;

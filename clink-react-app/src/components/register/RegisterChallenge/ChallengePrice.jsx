@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import Title from './Title';
-import Form from 'react-bootstrap/Form';
+import Title from '../Common/Title';
 import MinMaxForm from './MinMaxForm';
 const ChallengePrice = () => {
   const [value, setValue] = useState(0);
   const onchange = (e) => {
-    console.log(e.target.value);
     setValue(e.target.value);
   };
   return (

@@ -1,4 +1,3 @@
-import '../../styles/register/RegisterChallenge.css';
 const BackgroundCircle = () => {
   return (
     <>
