@@ -2,7 +2,7 @@ FROM node:18.17.0 as builder
 WORKDIR /app
 ENV PATH /app/node_module/.bin:$PATH
 
-copy . /app
+copy clink-react-app/ /app
 RUN npm install 
 RUN npm run build
 
