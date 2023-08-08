@@ -29,12 +29,13 @@ export default function WritingPost() {
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
     };
-    if (params.boardTitle.trim() === '' || params.boardContent.trim() === '') {
+    //trim 오류나서 우선 지우고 테스트중
+    if (inputPost.boardTitle === '' || inputPost.boardContent === '') {
       alert('제목 또는 내용을 입력해주세요!');
     } else {
-      axios.post('http://localhost:80/insertPost', params);
+      axios.post('http://localhost:80/community/post/insert', params);
       window.location.href =
-        'http://localhost:3000/community/category/?categoryNo=' +
+        'http://localhost:3000/community/posts?category_no=' +
         inputPost.categoryNo +
         '&&filter=1';
     }
