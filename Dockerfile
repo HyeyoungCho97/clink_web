@@ -7,8 +7,8 @@ RUN npm install
 RUN npm run build
 
 FROM nginx
-RUN rm -rf /etc/nginx/conf.d
-COPY /var/jenkins_home/property/default.conf /etc/nginx
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY /var/jenkins_home/property/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/clink-react-app/build /usr/share/nginx/html
 
 EXPOSE 80
