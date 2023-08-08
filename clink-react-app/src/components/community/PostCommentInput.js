@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 
-export default function PostCommentInput({ comment, parentCommentId }) {
+export default function PostCommentInput({ comment }) {
   const location = useLocation();
   const apiLink =
     "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment/insert";
@@ -27,7 +27,6 @@ export default function PostCommentInput({ comment, parentCommentId }) {
         board_no: comment_boardNo,
         register_id: comment_commentWriter,
         comment_content: comment_commentContent,
-        parent_id: parentCommentId,
       })
       .then((response) => {
         window.location.replace(
@@ -44,21 +43,12 @@ export default function PostCommentInput({ comment, parentCommentId }) {
     <div className="CommentContainer">
       <Form action={apiLink} method="post" onSubmit={handleSubmit}>
         <Form.Group controlId="formComment">
-          {parentCommentId === 0 ? (
-            <Form.Control
-              type="text"
-              name="commentContent"
-              placeholder="댓글을 입력하세요..."
-              onChange={handleChange_commentContent}
-            />
-          ) : (
-            <Form.Control
-              type="text"
-              name="commentContent"
-              placeholder="대댓글을 입력하세요..."
-              onChange={handleChange_commentContent}
-            />
-          )}
+          <Form.Control
+            type="text"
+            name="commentContent"
+            placeholder="댓글을 입력하세요..."
+            onChange={handleChange_commentContent}
+          />
           <Form.Control
             type="hidden"
             name="commentWriter"
