@@ -13,7 +13,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
 import axios from 'axios';
 
-export default function CommunityPost({ post, key, commentCount }) {
+export default function CommunityPost({ post, commentCount }) {
   const {
     board_title,
     board_no,
