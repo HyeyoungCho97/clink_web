@@ -1,60 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import pig from "../assets/pig.png";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import axios from "axios";
-import AddAccount from "../components/account/AddAccount";
-import ShowAccount from "../components/account/ShowAccount";
-import bankCategory from "../dataCode/bankCategory.json";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/MyPage.scss";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import pig from '../assets/pig.png';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import AddAccount from '../components/account/AddAccount';
+import ShowAccount from '../components/account/ShowAccount';
+import bankCategory from '../dataCode/bankCategory.json';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/MyPage.scss';
 
 const MyPage = () => {
   // const [confirmPwd, setConfirmPwd] = useState("");
   const [userInfo, setUserInfo] = useState({
-    name: "",
-    nickname: "",
-    password: "",
+    name: '',
+    nickname: '',
+    password: '',
   });
-  const [new_name, setNew_name] = useState("");
-  const [new_nickname, setNew_nickname] = useState("");
-  const [new_password, setNew_Password] = useState("");
+  const [new_name, setNew_name] = useState('');
+  const [new_nickname, setNew_nickname] = useState('');
+  const [new_password, setNew_Password] = useState('');
   const [file, setFile] = useState(null);
-  const [newfile, setNewfile] = useState("");
+  const [newfile, setNewfile] = useState('');
 
-  const [addAccountNo, setAddAccountNo] = useState("");
-  const [addAccountBankCode, setAddAccountBankCode] = useState("");
-  const [showAccountNo, setShowAccountNo] = useState("");
-  const [showAccountBankCode, setShowAccountBankCode] = useState("");
+  const [addAccountNo, setAddAccountNo] = useState('');
+  const [addAccountBankCode, setAddAccountBankCode] = useState('');
+  const [showAccountNo, setShowAccountNo] = useState('');
+  const [showAccountBankCode, setShowAccountBankCode] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     // 계좌 정보불러오기
     let param = {
-      user_no: sessionStorage.getItem("user_no"),
+      user_no: sessionStorage.getItem('user_no'),
     };
     axios
-      .post("http://localhost:80/clink/user/checkAccount.do", param)
+      .post('http://localhost:80/clink/user/checkAccount.do', param)
       .then((response) => {
         console.log(response.data);
         // 은행 json 파일에서 가져오기
         for (let i = 0; i < response.data.length; i++) {
           // 저축계좌 등록
-          if (response.data[i].account_code === "1") {
+          if (response.data[i].account_code === '1') {
             setAddAccountNo(response.data[i].account_no);
             setAddAccountBankCode(
               bankCategory.bank[response.data[i].bank_code]
             );
             // 소비계좌 등록
-          } else if (response.data[i].account_code === "2") {
+          } else if (response.data[i].account_code === '2') {
             setShowAccountNo(response.data[i].account_no);
             setShowAccountBankCode(
               bankCategory.bank[response.data[i].bank_code]
             );
             // 등록된 계좌 없음
           } else {
-            console.log("등록된 계좌 없음");
+            console.log('등록된 계좌 없음');
           }
         }
       })
@@ -69,7 +69,7 @@ const MyPage = () => {
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate("/");
+    navigate('/');
   }
 
   // 개인정보 수정
@@ -78,68 +78,64 @@ const MyPage = () => {
       user_name: new_name,
       nick_name: new_nickname,
       password: new_password,
-      user_no: sessionStorage.getItem("user_no"),
+      user_no: sessionStorage.getItem('user_no'),
     };
     axios
-      .post("http://localhost:80/clink/user/update.do", param)
+      .post('http://localhost:80/clink/user/update.do', param)
       .then((response) => {
         console.log(response.data);
-        if (response.data === "success") {
-          alert("개인정보가 수정되었습니다.");
+        if (response.data === 'success') {
+          alert('개인정보가 수정되었습니다.');
           setUserInfo({
             ...userInfo,
             name: new_name,
             nickname: new_nickname,
             password: new_password,
           });
-          sessionStorage.setItem("user_name", userInfo.name);
-          sessionStorage.setItem("nick_name", userInfo.nickname);
-        } else if (response.data === "fail") {
-          alert("정상적으로 처리되지 않았습니다.");
+          sessionStorage.setItem('user_name', userInfo.name);
+          sessionStorage.setItem('nick_name', userInfo.nickname);
+        } else if (response.data === 'fail') {
+          alert('정상적으로 처리되지 않았습니다.');
         }
       })
       .catch((error) => {
         console.log(error);
-        alert("다시 시도하세요");
+        alert('다시 시도하세요');
       });
   }
 
   // 프로필 사진
   function profileHandler() {
     let formData = new FormData(); // new FromData()로 새로운 객체 생성
-    formData.append("user_no", sessionStorage.getItem("user_no"));
-    formData.append("file", file);
+    formData.append('user_no', sessionStorage.getItem('user_no'));
+    formData.append('file', file);
     axios
-      .post("http://localhost:80/clink/user/photo-url.do", formData)
+      .post('http://localhost:80/clink/user/photo-url.do', formData)
       .then((response) => {
         console.log(response.data);
         if (response.data) {
-          alert("프로필 사진이 수정되었습니다.");
+          alert('프로필 사진이 수정되었습니다.');
           setNewfile(response.data);
         } else {
-          alert("정상적으로 처리되지 않았습니다.");
+          alert('정상적으로 처리되지 않았습니다.');
         }
       })
       .catch((error) => {
         console.log(error);
-        alert("다시 시도하세요");
+        alert('다시 시도하세요');
       });
   }
 
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate("/");
+    navigate('/');
   }
 
   return (
-    <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
+    <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
       <div className="MyPageTitle">
-<<<<<<< HEAD
         {sessionStorage.getItem('user_id')} 마이페이지
-=======
-        {sessionStorage.getItem("user_id")} 마이페이지
->>>>>>> 7f479957d8e2ba6a40e0bc79aa9dc5ba261d2ef0
       </div>
       {/* {userInfo ? ( */}
       <div className="MyPageProfileTitle">프로필 사진 등록</div>
@@ -148,7 +144,7 @@ const MyPage = () => {
           {newfile ? (
             <img src={`http://localhost/${newfile}`} alt="logo" />
           ) : (
-            <img src={require("../assets/pig.png")} alt="logo" />
+            <img src={require('../assets/pig.png')} alt="logo" />
           )}
           <div className="MyPageProfileBox">
             <label for="file">
@@ -189,7 +185,7 @@ const MyPage = () => {
                 type="text"
                 // name="new_nickname"
                 // placeholder={`${userInfo.name}`}
-                placeholder={`${sessionStorage.getItem("user_name")}`}
+                placeholder={`${sessionStorage.getItem('user_name')}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_nickname(e.target.value);
@@ -202,7 +198,7 @@ const MyPage = () => {
               <Form.Control
                 type="text"
                 name="name"
-                placeholder={`${sessionStorage.getItem("nick_name")}`}
+                placeholder={`${sessionStorage.getItem('nick_name')}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_name(e.target.value);
@@ -239,7 +235,7 @@ const MyPage = () => {
           </Button>
           <br />
           <br />
-          <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
+          <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
             <b>Logout</b>
           </div>
           <br />
