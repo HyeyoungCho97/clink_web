@@ -1,35 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AddAccount from '../components/AddAccount';
-import ShowAccount from '../components/ShowAccount';
 import pig from '../assets/pig.png';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import AddAccount from '../components/account/AddAccount';
+import ShowAccount from '../components/account/ShowAccount';
+import bankCategory from '../dataCode/bankCategory.json';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/MyPage.scss';
-import Footer from '../components/common/Footer';
 
 const MyPage = () => {
-  const [userName, setUserName] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [confirmPwd, setConfirmPwd] = useState('');
-  const [userInfo, setUserInfo] = useState(0);
+  // const [confirmPwd, setConfirmPwd] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    nickname: '',
+    password: '',
+  });
+  const [new_name, setNew_name] = useState('');
+  const [new_nickname, setNew_nickname] = useState('');
+  const [new_password, setNew_Password] = useState('');
+  const [file, setFile] = useState(null);
+  const [newfile, setNewfile] = useState('');
+
+  const [addAccountNo, setAddAccountNo] = useState('');
+  const [addAccountBankCode, setAddAccountBankCode] = useState('');
+  const [showAccountNo, setShowAccountNo] = useState('');
+  const [showAccountBankCode, setShowAccountBankCode] = useState('');
   const navigate = useNavigate();
-  const accountNumber1 = sessionStorage.getItem('accountNumber1');
-  const accountNumber2 = sessionStorage.getItem('accountNumber2');
 
   useEffect(() => {
-    setUserInfo(sessionStorage.getItem('user_id'));
-  }, []);
+    // 계좌 정보불러오기
+    let param = {
+      user_no: sessionStorage.getItem('user_no'),
+    };
+    axios
+      .post('http://localhost:80/clink/user/checkAccount.do', param)
+      .then((response) => {
+        console.log(response.data);
+        // 은행 json 파일에서 가져오기
+        for (let i = 0; i < response.data.length; i++) {
+          // 저축계좌 등록
+          if (response.data[i].account_code === '1') {
+            setAddAccountNo(response.data[i].account_no);
+            setAddAccountBankCode(
+              bankCategory.bank[response.data[i].bank_code]
+            );
+            // 소비계좌 등록
+          } else if (response.data[i].account_code === '2') {
+            setShowAccountNo(response.data[i].account_no);
+            setShowAccountBankCode(
+              bankCategory.bank[response.data[i].bank_code]
+            );
+            // 등록된 계좌 없음
+          } else {
+            console.log('등록된 계좌 없음');
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-  useEffect(() => {
-    // 개인정보 수정용
-    // const storedNickname = sessionStorage.getItem('nickname');
-    // setNickname(storedNickname);
-    // const storedName = sessionStorage.getItem('userName');
-    // setUserName(storedName);
+    // 로그인 확인용
+    // setUserInfo(sessionStorage.getItem("user_id"));
   }, []);
 
   // 로그아웃(세션제거)
@@ -39,24 +73,27 @@ const MyPage = () => {
   }
 
   // 개인정보 수정
-  function updateHandler() {
+  function updateInfoHandler() {
     let param = {
-      userName: userName,
-      nickname: nickname,
-      pwd: pwd,
-      confirmPwd: confirmPwd,
-      userNo: sessionStorage.getItem('userNo'),
+      user_name: new_name,
+      nick_name: new_nickname,
+      password: new_password,
+      user_no: sessionStorage.getItem('user_no'),
     };
     axios
       .post('http://localhost:80/clink/user/update.do', param)
       .then((response) => {
         console.log(response.data);
         if (response.data === 'success') {
-          alert('수정되었습니다.');
-          // setUserName('');
-          // setNickname('');
-          // setPwd('');
-          // setConfirmPwd('');
+          alert('개인정보가 수정되었습니다.');
+          setUserInfo({
+            ...userInfo,
+            name: new_name,
+            nickname: new_nickname,
+            password: new_password,
+          });
+          sessionStorage.setItem('user_name', userInfo.name);
+          sessionStorage.setItem('nick_name', userInfo.nickname);
         } else if (response.data === 'fail') {
           alert('정상적으로 처리되지 않았습니다.');
         }
@@ -67,89 +104,146 @@ const MyPage = () => {
       });
   }
 
+  // 프로필 사진
+  function profileHandler() {
+    let formData = new FormData(); // new FromData()로 새로운 객체 생성
+    formData.append('user_no', sessionStorage.getItem('user_no'));
+    formData.append('file', file);
+    axios
+      .post('http://localhost:80/clink/user/photo-url.do', formData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          alert('프로필 사진이 수정되었습니다.');
+          setNewfile(response.data);
+        } else {
+          alert('정상적으로 처리되지 않았습니다.');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('다시 시도하세요');
+      });
+  }
+
+  // 로그아웃(세션제거)
+  function logoutHandler() {
+    sessionStorage.clear();
+    navigate('/');
+  }
+
   return (
     <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
       <div className="MyPageTitle">
         {sessionStorage.getItem('user_id')} 마이페이지
       </div>
-      {userInfo ? (
-        <>
+      {/* {userInfo ? ( */}
+      <div className="MyPageProfileTitle">프로필 사진 등록</div>
+      <>
+        <div className="MyPageProfileBox">
+          {newfile ? (
+            <img src={`http://localhost/${newfile}`} alt="logo" />
+          ) : (
+            <img src={require('../assets/pig.png')} alt="logo" />
+          )}
           <div className="MyPageProfileBox">
-            <img src={pig} alt="logo" /> &nbsp; &nbsp; &nbsp;
-            <Button className="MyPageProfileBtn">프로필 사진 변경</Button>
-            &nbsp;
-            <Button className="MyPageChoiceBtn">선택</Button>
+            <label htmlFor="file">
+              <div className="MyPageProfileSelectBtn">파일 선택</div>
+            </label>
+            &nbsp; &nbsp;&nbsp;
+            <input
+              id="file"
+              // className="MyPageProfileBtn"
+              className="MyPageChoiceBtn"
+              type="file"
+              name="file"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+            <Button type="submit" onClick={() => profileHandler()}>
+              확인
+            </Button>
           </div>
-          <div className="MyPageAccounttitle">계좌등록</div>
-          <AddAccount
-            className="MyPageAddAccount"
-            accountNumber1={accountNumber1}
-          />
-          <ShowAccount
-            className="MyPageAddAccount"
-            accountNumber2={accountNumber2}
-          />
-          <div className="MyPageInfotitle">개인정보 수정</div>
-          <form action="update.do" method="post">
-            <div className="MyPageInfoBox">
+        </div>
+        <div className="MyPageAccounttitle">계좌등록</div>
+        <AddAccount
+          className="MyPageAddAccount"
+          addAccountNo={addAccountNo}
+          addAccountBankCode={addAccountBankCode}
+        />
+        <ShowAccount
+          className="MyPageAddAccount"
+          showAccountNo={showAccountNo}
+          showAccountBankCode={showAccountBankCode}
+        />
+        <hr className="MypageHr" />
+        <div className="MyPageInfotitle">개인정보 수정</div>
+        <form action="update.do" method="post">
+          <div className="MyPageInfoBox">
+            <div className="MyPageLineBox">
+              <div>닉네임</div>
               <Form.Control
                 type="text"
-                name="nickname"
-                placeholder={`닉네임 ${nickname}`}
+                // name="new_nickname"
+                // placeholder={`${userInfo.name}`}
+                placeholder={`${sessionStorage.getItem('user_name')}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setNickname(e.target.value);
+                  setNew_nickname(e.target.value);
                 }}
-                value={nickname}
+                value={new_nickname}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>이름</div>
               <Form.Control
                 type="text"
                 name="name"
-                placeholder={`이름 ${userName}`}
+                placeholder={`${sessionStorage.getItem('nick_name')}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setUserName(e.target.value);
+                  setNew_name(e.target.value);
                 }}
-                value={userName}
+                value={new_name}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>비밀번호</div>
               <Form.Control
                 type="password"
                 name="password"
-                placeholder="비밀번호"
                 className="joinInput"
                 onChange={(e) => {
-                  setPwd(e.target.value);
+                  setNew_Password(e.target.value);
                 }}
-                value={pwd}
+                value={new_password}
               />
+            </div>
+            <div className="MyPageLineBox">
+              <div>비밀번호 확인</div>
               <Form.Control
                 type="password"
                 name="passwordConfirm"
-                placeholder="비밀번호 확인"
                 className="joinInput"
-                onChange={(e) => {
-                  setConfirmPwd(e.target.value);
-                }}
-                value={confirmPwd}
               />
-              <br />
-            </div>
-          </form>
-          <div className="MyPageBtnBox">
-            <Button type="submit" onClick={() => updateHandler()}>
-              수정
-            </Button>
-            <br />
-            <br />
-            <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
-              <b>Logout</b>
             </div>
             <br />
           </div>
-        </>
-      ) : (
-        <p>세션 정보가 없습니다</p>
-      )}
+        </form>
+        <div className="MyPageBtnBox">
+          <Button type="submit" onClick={() => updateInfoHandler()}>
+            수정
+          </Button>
+          <br />
+          <br />
+          <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
+            <b>Logout</b>
+          </div>
+          <br />
+        </div>
+      </>
+      {/* ) : ( */}
+      {/* <p>세션 정보가 없습니다</p> */}
+      {/* )} */}
     </div>
   );
 };

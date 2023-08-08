@@ -27,17 +27,8 @@ const MainSavingTotal = ({ saving, totalSave }) => {
   };
 
   return (
-    <div
-      className="main-savingsYesterday"
-      style={{
-        backgroundImage: "url(" + SavingBackgroundImage + ")",
-      }}
-      onClick={handleClickButton}
-    >
-      <div
-        className="mainCoin"
-        style={{ backgroundImage: "url(" + SavingCoin + ")" }}
-      />
+    <div className="main-savingsYesterday" onClick={handleClickButton}>
+      <div className="mainCoin" />
       <p
         style={{
           textAlign: "left",
@@ -59,7 +50,7 @@ const MainSavingTotal = ({ saving, totalSave }) => {
           color: "white",
         }}
       >
-        {amount.toLocaleString()}원 {"\n"}
+        {amount}원 {"\n"}
       </p>
       <p
         style={{

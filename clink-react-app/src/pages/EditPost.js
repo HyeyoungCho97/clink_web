@@ -26,7 +26,7 @@ export default function EditPost() {
   const [error, setError] = useState(null);
 
   const location = useLocation();
-  const updatePostAPILink = 'http://localhost/community/post/update';
+  const updatePostAPILink = 'http://localhost:80/community/post/update';
   const query = queryString.parse(location.search);
   const post_board_no = Number(query.board_no);
 

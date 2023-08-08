@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
-import '../styles/community/WritingPost.scss';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import CommunityHeader from '../components/community/CommunityHeader';
-import WritingCategory from '../components/community/WritingCategory';
-import PostTagInput from '../components/community/PostTagInput';
-import axios from 'axios';
-import { Navigate } from 'react-router-dom';
-import { Link } from 'react-bootstrap-icons';
+import React, { useState } from "react";
+import "../styles/community/WritingPost.scss";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import CommunityHeader from "../components/community/CommunityHeader";
+import WritingCategory from "../components/community/WritingCategory";
+import PostTagInput from "../components/community/PostTagInput";
+import axios from "axios";
 
 export default function WritingPost() {
   const [inputPost, setInputPost] = useState({
     categoryNo: 1,
-    title: '',
-    content: '',
+    title: "",
+    content: "",
     tagList: [],
   });
 
@@ -29,14 +27,15 @@ export default function WritingPost() {
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
     };
-    if (params.boardTitle.trim() === '' || params.boardContent.trim() === '') {
-      alert('제목 또는 내용을 입력해주세요!');
+    //trim 오류나서 우선 지우고 테스트중
+    if (inputPost.boardTitle === "" || inputPost.boardContent === "") {
+      alert("제목 또는 내용을 입력해주세요!");
     } else {
-      axios.post('http://localhost:80/insertPost', params);
+      axios.post("http://localhost:80/community/post/insert", params);
       window.location.href =
-        'http://localhost:3000/community/category/?categoryNo=' +
+        "http://localhost:3000/community/posts?category_no=" +
         inputPost.categoryNo +
-        '&&filter=1';
+        "&&filter=1";
     }
     //console.log(inputPost.tagList);
   };
@@ -78,7 +77,7 @@ export default function WritingPost() {
           onClick={() => {
             insertPost();
           }}
-          style={{ width: '80%' }}
+          style={{ width: "80%" }}
         >
           글 작성
         </Button>

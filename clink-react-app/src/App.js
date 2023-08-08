@@ -14,8 +14,10 @@ import FindId from './pages/FindId';
 import FindPwd from './pages/FindPwd';
 import Challenge from './pages/Challenge';
 import MyPage from './pages/MyPage';
-import AddAccountForm from './components/AddAccountForm';
-import ConsumptionAccountForm from './components/ConsumptionAccountForm';
+import ShowAccountForm from './components/account/ShowAccountForm';
+import AddAccountForm from './components/account/AddAccountForm';
+import AddAccountUpdate from './components/account/AddAccountUpdate';
+import ShowAccountUpdate from './components/account/ShowAccountUpdate';
 import EditPost from './pages/EditPost';
 import RegisterChallenge from './components/register/RegisterChallenge/RegisterChallenge';
 import NoChallengeForm from './components/register/NoChallenge/NoChallengeForm';
@@ -49,9 +51,18 @@ function App() {
           <Route path="/find-pwd" element={<FindPwd />}></Route>
           <Route path="/add-account-form" element={<AddAccountForm />}></Route>
           <Route
-            path="/consumption-account-form"
-            element={<ConsumptionAccountForm />}
+            path="/show-account-form"
+            element={<ShowAccountForm />}
           ></Route>
+          <Route
+            path="/add-account-update"
+            element={<AddAccountUpdate />}
+          ></Route>
+          <Route
+            path="/show-account-update"
+            element={<ShowAccountUpdate />}
+          ></Route>
+
           <Route element={<Footer resources={resources} />}>
             <Route path="/register" element={<RegisterChallenge />} />
             <Route path="/noChallenge" element={<NoChallengeForm />} />

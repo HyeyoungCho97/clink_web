@@ -1,5 +1,5 @@
-import AddAccount from '../../AddAccount';
-import ShowAccount from '../../ShowAccount';
+import AddAccount from '../../account/AddAccount';
+import ShowAccount from '../../account/ShowAccount';
 import Title from '../Common/Title';
 
 const AddAcountForm = () => {

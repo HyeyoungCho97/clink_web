@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
-import Category from '../components/community/CommunityCategory';
-import FinInfo from '../components/community/finInfo';
-import ListPrint from '../components/community/listPrint';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Route, Routes } from "react-router-dom";
+import Category from "../components/community/CommunityCategory";
+import FinInfo from "../components/community/finInfo";
+import ListPrint from "../components/community/listPrint";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Community({ list }) {
   const [data, setData] = useState(null);
@@ -17,7 +17,7 @@ function Community({ list }) {
     const listSet = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:80/community/hot-posts'
+          "http://localhost:80/community/hot-posts"
         );
         setHotPost(response.data[0].hotPost);
         setHotFreePost(response.data[0].hotFreePost);
@@ -26,19 +26,19 @@ function Community({ list }) {
         setNewsdata(response.data[1]);
         console.log(response.data[1]);
       } catch (e) {
-        console.log('나는 에러스');
+        console.log("나는 에러스");
       }
     };
     listSet();
   }, []);
   return (
-    <div className="contents" style={{ paddingBottom: '20%' }}>
+    <div className="contents" style={{ paddingBottom: "20%" }}>
       <Category />
       {newsdata && <FinInfo newsdata={newsdata} />}
-      {HotPost && <ListPrint list={HotPost} title={'실시간 인기글'} />}
-      {HotFreePost && <ListPrint list={HotFreePost} title={'자유 인기글'} />}
-      {HotInfoPost && <ListPrint list={HotInfoPost} title={'정보 인기글'} />}
-      {HotAnnPost && <ListPrint list={HotAnnPost} title={'공지사항'} />}
+      {HotPost && <ListPrint list={HotPost} title={"실시간 인기글"} />}
+      {HotFreePost && <ListPrint list={HotFreePost} title={"자유 인기글"} />}
+      {HotInfoPost && <ListPrint list={HotInfoPost} title={"정보 인기글"} />}
+      {HotAnnPost && <ListPrint list={HotAnnPost} title={"공지사항"} />}
     </div>
   );
 }
