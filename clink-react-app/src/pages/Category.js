@@ -8,6 +8,7 @@ import "../styles/community/CommunityContainer.scss";
 // import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Loading from "../assets/Spinner-1s-200px.gif";
 
 export default function Community() {
   const [posts, setPosts] = useState(null);
