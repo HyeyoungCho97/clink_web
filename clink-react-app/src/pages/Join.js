@@ -20,8 +20,6 @@ const Join = () => {
     emailAuthNum: "",
   });
   const [authcode, setAuthcode] = useState("");
-
-
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
@@ -108,18 +106,6 @@ const Join = () => {
         console.log(error);
         setWarningId("다시 시도하세요");
       });
-  };
-
-  function emailAuthHandler(e) {
-    if(certification === inputCertification)
-    {
-      alert("인증이 완료되었습니다.")
-      setWarningEmail("인증이 완료되었습니다.");
-      setEmailCheck(true);
-    }
-    else {
-      alert("다시 입력해주세요.")
-    }
   }
 
   // 회원가입
@@ -133,8 +119,6 @@ const Join = () => {
       alert("이름을 입력해주세요.");
     } else if (userInfo.confirmPwd.trim() === "") {
       alert("비밀번호 확인을 입력해주세요.");
-    } else if (!emailCheck) {
-      alert("이메일 인증을 해주세요.");
     } else {
       // let id = { user_id: userInfo.user_id };
       // axios
@@ -262,7 +246,16 @@ const Join = () => {
               본인인증하기
             </Button>
           </InputGroup>
-
+          <div></div>
+          <Form.Control
+            className="joinInput"
+            type="text"
+            name="emailAuthNum"
+            placeholder="인증번호*"
+            maxLength="9"
+            value={userInfo.emailAuthNum}
+            onChange={handleInputChange}
+          />
         </div>
         <div>{warningEmail}</div>
       </form>
