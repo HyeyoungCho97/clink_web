@@ -1,19 +1,19 @@
-import '../styles/main/MainFrame.scss';
-import CalendarGraph from '../components/main/CalendarGraph.js';
-import MainBackgroundImage from '../images/main_background.svg';
-import React, { useEffect, useState } from 'react';
-import Header from '../components/common/Header.js';
-import MainHello from '../components/main/MainHello.js';
-import MainQuote from '../components/main/MainQuote.js';
-import MainSavingTotal from '../components/main/MainSavingTotal.js';
-import MainReport from '../components/main/MainReport.js';
-import axios from 'axios';
+import "../styles/main/MainFrame.scss";
+import CalendarGraph from "../components/main/CalendarGraph.js";
+import MainBackgroundImage from "../images/main_background.svg";
+import React, { useEffect, useState } from "react";
+import Header from "../components/common/Header.js";
+import MainHello from "../components/main/MainHello.js";
+import MainQuote from "../components/main/MainQuote.js";
+import MainSavingTotal from "../components/main/MainSavingTotal.js";
+import MainReport from "../components/main/MainReport.js";
+import axios from "axios";
 
-sessionStorage.setItem('userNo', '00000');
-sessionStorage.setItem('userNickName', 'gpt영');
-sessionStorage.setItem('userName', '김지영');
-let userId = sessionStorage.getItem('userId');
-if (userId == null) userId = 'chatgpt';
+sessionStorage.setItem("userNo", "00000");
+sessionStorage.setItem("userNickName", "gpt영");
+sessionStorage.setItem("userName", "김지영");
+let userId = sessionStorage.getItem("userId");
+if (userId == null) userId = "chatgpt";
 
 const MainFrame = (props) => {
   const [badge, setBadge] = useState([]);
@@ -51,8 +51,8 @@ const MainFrame = (props) => {
     const getUserData = async () => {
       await axios
         .get(
-          'http://localhost:80/main/info?userNo=' +
-            sessionStorage.getItem('userNo')
+          "http://localhost:80/main/info?userNo=" +
+            sessionStorage.getItem("userNo")
         )
         .then((Response) => {
           //console.log(Response.data);
@@ -74,8 +74,8 @@ const MainFrame = (props) => {
       <div
         className="main-div"
         style={{
-          backgroundImage: 'url(' + MainBackgroundImage + ')',
-          paddingBottom: '20%',
+          backgroundImage: "url(" + MainBackgroundImage + ")",
+          paddingBottom: "20%",
         }}
       >
         <Header />
