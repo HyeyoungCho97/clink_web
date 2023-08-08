@@ -13,11 +13,11 @@ import "../styles/MyPage.scss";
 const MyPage = () => {
   // const [confirmPwd, setConfirmPwd] = useState("");
   const [userInfo, setUserInfo] = useState({
+    id: "",
     name: "",
     nickname: "",
     password: "",
   });
-  const [new_name, setNew_name] = useState("");
   const [new_nickname, setNew_nickname] = useState("");
   const [new_password, setNew_Password] = useState("");
   const [file, setFile] = useState(null);
@@ -31,14 +31,27 @@ const MyPage = () => {
 
   useEffect(() => {
     // 계좌 정보불러오기
+
     let param = {
       user_no: sessionStorage.getItem("user_no"),
     };
+    console.log("param:" + param);
+
     axios
-      .post("http://localhost:80/clink/user/checkAccount.do", param)
+      .post("http://localhost:80/clink/user/get-userInfo.do", param)
       .then((response) => {
-        console.log(response.data);
-        // 은행 json 파일에서 가져오기
+        // console.log("userInfo 가져온 것: " + JSON.stringify(response));
+        console.log(response.data[0]);
+
+        console.log(response.data[0].user_id);
+        setUserInfo({
+          ...userInfo,
+          id: response.data[0].user_id,
+          nickname: response.data[0].nick_name,
+          password: response.data[0].password,
+        });
+
+        // 등록된 계좌 가져오기
         for (let i = 0; i < response.data.length; i++) {
           // 저축계좌 등록
           if (response.data[i].account_code === "1") {
@@ -75,7 +88,6 @@ const MyPage = () => {
   // 개인정보 수정
   function updateInfoHandler() {
     let param = {
-      user_name: new_name,
       nick_name: new_nickname,
       password: new_password,
       user_no: sessionStorage.getItem("user_no"),
@@ -88,7 +100,6 @@ const MyPage = () => {
           alert("개인정보가 수정되었습니다.");
           setUserInfo({
             ...userInfo,
-            name: new_name,
             nickname: new_nickname,
             password: new_password,
           });
@@ -134,26 +145,23 @@ const MyPage = () => {
 
   return (
     <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
-      <div className="MyPageTitle">
-        {sessionStorage.getItem("user_id")} 마이페이지
-      </div>
+      <div className="MyPageTitle">{userInfo.id} 마이페이지</div>
       {/* {userInfo ? ( */}
       <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
-            <img src={`http://localhost/${newfile}`} alt="logo" />
+            <img src={`http://localhost/img/${newfile}`} alt="logo" />
           ) : (
             <img src={require("../assets/pig.png")} alt="logo" />
           )}
           <div className="MyPageProfileBox">
-            <label for="file">
+            <label htmlFor="file">
               <div className="MyPageProfileSelectBtn">파일 선택</div>
             </label>
             &nbsp; &nbsp;&nbsp;
             <input
               id="file"
-              // className="MyPageProfileBtn"
               className="MyPageChoiceBtn"
               type="file"
               name="file"
@@ -183,27 +191,12 @@ const MyPage = () => {
               <div>닉네임</div>
               <Form.Control
                 type="text"
-                // name="new_nickname"
-                // placeholder={`${userInfo.name}`}
-                placeholder={`${sessionStorage.getItem("user_name")}`}
+                placeholder={`${userInfo.nickname}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_nickname(e.target.value);
                 }}
                 value={new_nickname}
-              />
-            </div>
-            <div className="MyPageLineBox">
-              <div>이름</div>
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder={`${sessionStorage.getItem("nick_name")}`}
-                className="joinInput"
-                onChange={(e) => {
-                  setNew_name(e.target.value);
-                }}
-                value={new_name}
               />
             </div>
             <div className="MyPageLineBox">

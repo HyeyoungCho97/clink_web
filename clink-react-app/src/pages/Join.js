@@ -24,7 +24,7 @@ const Join = () => {
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
-  let confirmID;
+  let confirmID; // 아이디 중복체크용
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -59,25 +59,6 @@ const Join = () => {
   //       setWarningId("다시 시도하세요");
   //     });
   // }, [userInfo.user_id]);
-
-  // 아이디 중복체크
-  // function checkDuplicateId() {
-  //   let id = { user_id: userInfo.user_id };
-  //   axios
-  //     .post("http://localhost/clink/user/check-duplicate-id.do", id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       if (response.data === "success") {
-  //         setWarningId("사용할 수 있는 아이디입니다.");
-  //       } else if (response.data === "fail") {
-  //         setWarningId("사용 중인 아이디입니다.");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setWarningId("다시 시도하세요");
-  //     });
-  // }
 
   // 이메일 인증
   function handleEmailAuth() {
@@ -137,15 +118,6 @@ const Join = () => {
         email: userInfo.email,
       };
 
-      // const accessToken = localStorage.getItem("accessToken");
-      // console.log("accessToken:" + accessToken);
-      // if (!accessToken) {
-      // alert("로그인이 필요합니다.");
-      // 로그인 페이지로 리다이렉트 또는 다른 처리를 수행
-      // return;
-      // }
-      // 헤더에 답아서 API호출
-      // const authHeader = { Authorization: `Bearer ${accessToken}` };
       console.log(param);
       axios
         .post(

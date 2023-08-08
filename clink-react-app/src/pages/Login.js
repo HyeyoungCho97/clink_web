@@ -82,6 +82,7 @@ const Login = () => {
         if (res.data) {
           console.log(res.data.user_no);
           sessionStorage.setItem("user_no", res.data.user_no);
+          sessionStorage.setItem("user_id", res.data.user_id);
           setUser_no(res.data.user_no);
           alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
           navigate("/mypage");
