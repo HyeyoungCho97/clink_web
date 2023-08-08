@@ -1,15 +1,22 @@
 import Form from 'react-bootstrap/Form';
+import Title from '../Common/Title';
 
-const ChalltengeTitleForm = () => {
+const ChalltengeTitleForm = ({ title, set }) => {
+  const onChange = (e) => {
+    set(e.target.value);
+    console.log(e.target.value);
+  };
   return (
     <>
-      <Form.Group className="" controlId="formPost">
+      <Title title={title} />
+      <Form.Group className="">
         <Form.Control
           type="text"
-          placeholder="챌린지 제목을 입력하세요"
-          className="challengeTitle"
+          id={title}
+          placeholder={title + '을 입력하세요'}
+          className="challenge_title"
+          onChange={onChange}
         />
-        <br />
       </Form.Group>
     </>
   );
