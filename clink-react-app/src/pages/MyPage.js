@@ -35,7 +35,10 @@ const MyPage = () => {
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post("http://localhost:80/clink/user/checkAccount.do", param)
+      .post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/checkAccount.do",
+        param
+      )
       .then((response) => {
         console.log(response.data);
         // 은행 json 파일에서 가져오기
@@ -81,7 +84,10 @@ const MyPage = () => {
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post("http://localhost:80/clink/user/update.do", param)
+      .post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/update.do",
+        param
+      )
       .then((response) => {
         console.log(response.data);
         if (response.data === "success") {
@@ -110,7 +116,10 @@ const MyPage = () => {
     formData.append("user_no", sessionStorage.getItem("user_no"));
     formData.append("file", file);
     axios
-      .post("http://localhost:80/clink/user/photo-url.do", formData)
+      .post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/photo-url.do",
+        formData
+      )
       .then((response) => {
         console.log(response.data);
         if (response.data) {
@@ -142,7 +151,10 @@ const MyPage = () => {
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
-            <img src={`http://localhost/${newfile}`} alt="logo" />
+            <img
+              src={`http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/${newfile}`}
+              alt="logo"
+            />
           ) : (
             <img src={require("../assets/pig.png")} alt="logo" />
           )}

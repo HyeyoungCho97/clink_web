@@ -19,7 +19,7 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
       user_no: user_no,
       challenge_no: challenge_no,
     };
-    await axios.post('http://localhost:80/challenge/register', param);
+    await axios.post('http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/register', param);
   };
   return (
     <>

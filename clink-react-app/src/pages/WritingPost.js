@@ -31,9 +31,12 @@ export default function WritingPost() {
     if (inputPost.boardTitle === "" || inputPost.boardContent === "") {
       alert("제목 또는 내용을 입력해주세요!");
     } else {
-      axios.post("http://localhost:80/community/post/insert", params);
+      axios.post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/insert",
+        params
+      );
       window.location.href =
-        "http://localhost:3000/community/posts?category_no=" +
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/posts?category_no=" +
         inputPost.categoryNo +
         "&&filter=1";
     }

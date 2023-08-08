@@ -42,7 +42,10 @@ const Login = () => {
 
         // 토큰 발급용
         axios
-          .post("http://localhost:80/generateToken", param)
+          .post(
+            "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/generateToken",
+            param
+          )
           .then((response) => {
             if (response.data) {
               console.log(response.data);

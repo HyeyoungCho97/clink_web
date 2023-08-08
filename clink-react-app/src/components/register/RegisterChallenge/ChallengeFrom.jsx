@@ -11,7 +11,7 @@ const ChallengeForm = () => {
   return (
     <Form
       className="FromWrap"
-      action="http://localhost:80/challenge/register"
+      action="http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/register"
       method="post"
     >
       <ChalltengeTitleForm title={'챌린지 제목'} set={setChallenge_title} />

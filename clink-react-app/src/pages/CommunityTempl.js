@@ -17,7 +17,7 @@ function Community({ list }) {
     const listSet = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:80/community/hot-posts"
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/hot-posts"
         );
         setHotPost(response.data[0].hotPost);
         setHotFreePost(response.data[0].hotFreePost);

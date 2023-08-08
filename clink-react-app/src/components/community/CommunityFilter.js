@@ -18,7 +18,8 @@ export default function CommunityFilter({
     const listSet = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:80/community/hot-hashtag?category_no=" + 1
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/hot-hashtag?category_no=" +
+            1
         );
         // console.log(response);
         setHashList(response.data);

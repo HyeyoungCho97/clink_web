@@ -41,7 +41,10 @@ const AddAccountForm = () => {
         account_code: 1,
       };
       axios
-        .post("http://localhost:80/clink/user/registAccount.do", param)
+        .post(
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/registAccount.do",
+          param
+        )
         .then((response) => {
           console.log(response.data);
           if (response.data === 1) {
