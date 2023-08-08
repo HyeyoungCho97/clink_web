@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import CommunityHeader from "../components/community/CommunityHeader";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import PostTagInput from "../components/community/PostTagInput";
-import Button from "react-bootstrap/esm/Button";
-import Form from "react-bootstrap/Form";
-import queryString from "query-string";
+import React, { useEffect, useState } from 'react';
+import CommunityHeader from '../components/community/CommunityHeader';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import PostTagInput from '../components/community/PostTagInput';
+import Button from 'react-bootstrap/esm/Button';
+import Form from 'react-bootstrap/Form';
+import queryString from 'query-string';
 
 export default function EditPost() {
   const [inputPost, setInputPost] = useState({
-    board_content: "",
+    board_content: '',
     board_like_count: null,
     board_no: null,
-    board_title: "",
+    board_title: '',
     board_views: null,
     category_no: null,
-    hashtag_content: "",
-    register_datetime: "",
+    hashtag_content: '',
+    register_datetime: '',
     register_id: null,
     update_datetime: null,
     update_id: null,
@@ -26,8 +26,7 @@ export default function EditPost() {
   const [error, setError] = useState(null);
 
   const location = useLocation();
-  const updatePostAPILink =
-    "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/update";
+  const updatePostAPILink = 'http://localhost:80/community/post/update';
   const query = queryString.parse(location.search);
   const post_board_no = Number(query.board_no);
 
@@ -43,7 +42,7 @@ export default function EditPost() {
         setLoading(true);
 
         const responsePost = await axios.get(
-          "http://localhost/community/post" + location.search
+          'http://localhost/community/post' + location.search
         );
         setInputPost(responsePost.data);
 
@@ -70,9 +69,9 @@ export default function EditPost() {
       register_id: inputPost.register_id,
       board_no: inputPost.board_no,
     };
-    axios.post("http://localhost/community/post/update", params);
+    axios.post('http://localhost/community/post/update', params);
     window.location.href =
-      "http://localhost:3000/community/posts?category_no=1&&filter=1";
+      'http://localhost:3000/community/posts?category_no=1&&filter=1';
   };
 
   if (loading) return <div>로딩중..</div>;
@@ -105,7 +104,7 @@ export default function EditPost() {
           inputPost={inputPost}
           setInputPost={setInputPost}
         ></PostTagInput>
-        <Button type="button" style={{ width: "80%" }} onClick={updatePost}>
+        <Button type="button" style={{ width: '80%' }} onClick={updatePost}>
           수정 완료
         </Button>
       </Form>
