@@ -1,6 +1,6 @@
 FROM node:18.17.0 as builder
 WORKDIR /app
-ENV PATH /app/node_module/.bin:$PATH
+#ENV PATH /app/node_module/.bin:$PATH
 
 copy clink-react-app/ /app
 RUN npm install -g npm@9.8.1
