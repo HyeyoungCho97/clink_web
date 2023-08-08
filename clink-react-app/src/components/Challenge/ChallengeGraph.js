@@ -20,7 +20,7 @@ const ChallengeGraph = ({ today, week, openModal }) => {
   const getData = async () => {
     //console.log("click");
     const address =
-      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-info?userNo=00000" +
+      "http://localhost:80/challenge/pay-info?userNo=00000" +
       "&startDate=" +
       moment(value[0]).format("YYYY-MM-DD") +
       "&endDate=" +

@@ -75,7 +75,7 @@ const Login = () => {
       };
       try {
         const res = await axios.post(
-          "http://localhost:80/clink/user/login.do",
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/login.do",
           { user_id: user_id, password: password },
           {
             headers: authHeader,
@@ -115,7 +115,7 @@ const Login = () => {
 
         const tokens = { accessToken, refreshToken };
         const res = await axios.post(
-          "http://localhost:80/refreshToken",
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/refreshToken",
           tokens
         );
         localStorage.setItem("accessToken", res.data.accessToken);
