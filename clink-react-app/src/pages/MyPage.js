@@ -184,9 +184,8 @@ const MyPage = () => {
               <Form.Control
                 type="text"
                 // name="new_nickname"
-                // placeholder={}
                 // placeholder={`${userInfo.name}`}
-                // placeholder={`${sessionStorage.getItem("user_name")}`}
+                placeholder={`${sessionStorage.getItem("user_name")}`}
                 className="joinInput"
                 onChange={(e) => {
                   setNew_nickname(e.target.value);

@@ -24,6 +24,7 @@ const Join = () => {
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
+  let confirmID;
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -38,6 +39,26 @@ const Join = () => {
       setWarningPwd("");
     }
   }, [userInfo.password, userInfo.confirmPwd]);
+
+  // useEffect(() => {
+  //   let id = { user_id: userInfo.user_id };
+  //   axios
+  //     .post("http://localhost/clink/user/check-duplicate-id.do", id)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       if (response.data === "success") {
+  //         setWarningId("사용할 수 있는 아이디입니다.");
+  //         confirmID = 1;
+  //       } else if (response.data === "fail") {
+  //         setWarningId("사용 중인 아이디입니다.");
+  //         confirmID = 0;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setWarningId("다시 시도하세요");
+  //     });
+  // }, [userInfo.user_id]);
 
   // 아이디 중복체크
   // function checkDuplicateId() {
@@ -100,47 +121,63 @@ const Join = () => {
     } else if (userInfo.confirmPwd.trim() === "") {
       alert("비밀번호 확인을 입력해주세요.");
     } else {
-      let id = { user_id: userInfo.user_id };
+      // let id = { user_id: userInfo.user_id };
+      // axios
+      //   .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
+      //   .then((response) => {
+      //     console.log(response.data);
+      // if (confirmID == 1) {
+      setWarningId("사용할 수 있는 아이디입니다.");
+      var param = {
+        user_name: userInfo.user_name,
+        user_id: userInfo.user_id,
+        nick_name: userInfo.nick_name,
+        password: userInfo.password,
+        confirmPwd: userInfo.confirmPwd,
+        email: userInfo.email,
+      };
+
+      // const accessToken = localStorage.getItem("accessToken");
+      // console.log("accessToken:" + accessToken);
+      // if (!accessToken) {
+      // alert("로그인이 필요합니다.");
+      // 로그인 페이지로 리다이렉트 또는 다른 처리를 수행
+      // return;
+      // }
+      // 헤더에 답아서 API호출
+      // const authHeader = { Authorization: `Bearer ${accessToken}` };
+      console.log(param);
       axios
-        .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
+        .post(
+          "http://localhost:80/clink/user/join.do",
+          param
+          // ,{ headers: authHeader,}
+        )
         .then((response) => {
-          console.log(response.data);
-          if (response.data === "success") {
-            var param = {
-              user_name: userInfo.user_name,
-              user_id: userInfo.user_id,
-              nick_name: userInfo.nick_name,
-              password: userInfo.password,
-              confirmPwd: userInfo.confirmPwd,
-              email: userInfo.email,
-            };
-            axios
-              .post("http://localhost:80/clink/user/join.do", param)
-              .then((response) => {
-                // console.log(response.data);
-                if (response.data) {
-                  alert("회원가입 되었습니다. 로그인해주세요.");
-                  navigate("/");
-                } else {
-                  alert("다시 시도하세요");
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-                alert("회원가입에 실패했습니다.");
-              });
-          } else if (response.data === "fail") {
-            alert("사용 중인 아이디입니다.");
-            setUserInfo((prev) => ({
-              ...prev,
-              user_id: "",
-            }));
+          // console.log(response.data);
+          if (response.data) {
+            alert("회원가입 되었습니다. 로그인해주세요.");
+            navigate("/");
+          } else {
+            alert("다시 시도하세요");
           }
         })
         .catch((error) => {
           console.log(error);
-          alert("다시 시도하세요");
+          alert("회원가입에 실패했습니다.");
         });
+      // } else {
+      // setWarningId("사용 중인 아이디입니다.");
+      // setUserInfo((prev) => ({
+      //   ...prev,
+      //   user_id: "",
+      // }));
+      // }
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      //   alert("다시 시도하세요");
+      // });
     }
   }
   return (
