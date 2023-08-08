@@ -50,7 +50,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[1].src);
-            navigate('/community/posts?category_no=1&filter=0');
+            navigate('/community/posts?category_no=1&filter=0&filter=0');
           }}
           className="contentIcon"
           src={free}

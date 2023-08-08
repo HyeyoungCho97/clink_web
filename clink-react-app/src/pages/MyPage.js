@@ -35,10 +35,7 @@ const MyPage = () => {
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post(
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/checkAccount.do",
-        param
-      )
+      .post("http://localhost:80/clink/user/checkAccount.do", param)
       .then((response) => {
         console.log(response.data);
         // 은행 json 파일에서 가져오기
@@ -141,6 +138,7 @@ const MyPage = () => {
         {sessionStorage.getItem("user_id")} 마이페이지
       </div>
       {/* {userInfo ? ( */}
+      <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
@@ -148,9 +146,11 @@ const MyPage = () => {
           ) : (
             <img src={require("../assets/pig.png")} alt="logo" />
           )}
-          &nbsp; &nbsp;&nbsp;
-          <div className="MyPageProfileLeftBox">
-            <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
+          <div className="MyPageProfileBox">
+            <label for="file">
+              <div className="MyPageProfileSelectBtn">파일 선택</div>
+            </label>
+            &nbsp; &nbsp;&nbsp;
             <input
               id="file"
               // className="MyPageProfileBtn"
@@ -158,8 +158,7 @@ const MyPage = () => {
               type="file"
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
-            ></input>
-            &nbsp;
+            />
             <Button type="submit" onClick={() => profileHandler()}>
               확인
             </Button>
@@ -185,7 +184,7 @@ const MyPage = () => {
               <Form.Control
                 type="text"
                 // name="new_nickname"
-                // placeholder={}
+                // placeholder={`${userInfo.name}`}
                 placeholder={`${sessionStorage.getItem("user_name")}`}
                 className="joinInput"
                 onChange={(e) => {
