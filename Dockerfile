@@ -6,6 +6,7 @@ copy clink-react-app/ /app
 RUN npm cache clean --force
 #RUN npm remove @babel/plugin-proposal-private-property-in-object
 #RUN npm add --dev @babel/plugin-proposal-private-property-in-object
+RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
 RUN npm install 
 RUN npm run build
 
