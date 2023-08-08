@@ -66,11 +66,10 @@ const MyPage = () => {
     // setUserInfo(sessionStorage.getItem("user_id"));
   }, []);
 
-
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate('/');
+    navigate("/");
   }
 
   // 개인정보 수정
@@ -82,7 +81,7 @@ const MyPage = () => {
       user_no: sessionStorage.getItem("user_no"),
     };
     axios
-      .post('http://localhost:80/clink/user/update.do', param)
+      .post("http://localhost:80/clink/user/update.do", param)
       .then((response) => {
         console.log(response.data);
         if (response.data === "success") {
@@ -101,7 +100,7 @@ const MyPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert('다시 시도하세요');
+        alert("다시 시도하세요");
       });
   }
 
@@ -134,11 +133,12 @@ const MyPage = () => {
   }
 
   return (
-    <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
+    <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
       <div className="MyPageTitle">
         {sessionStorage.getItem("user_id")} 마이페이지
       </div>
       {/* {userInfo ? ( */}
+      <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
@@ -146,9 +146,11 @@ const MyPage = () => {
           ) : (
             <img src={require("../assets/pig.png")} alt="logo" />
           )}
-          &nbsp; &nbsp;&nbsp;
-          <div className="MyPageProfileLeftBox">
-            <label for="file">프로필 사진 선택</label>&nbsp;&nbsp;
+          <div className="MyPageProfileBox">
+            <label for="file">
+              <div className="MyPageProfileSelectBtn">파일 선택</div>
+            </label>
+            &nbsp; &nbsp;&nbsp;
             <input
               id="file"
               // className="MyPageProfileBtn"
@@ -156,8 +158,7 @@ const MyPage = () => {
               type="file"
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
-            ></input>
-            &nbsp;
+            />
             <Button type="submit" onClick={() => profileHandler()}>
               확인
             </Button>
@@ -183,7 +184,7 @@ const MyPage = () => {
               <Form.Control
                 type="text"
                 // name="new_nickname"
-                // placeholder={}
+                // placeholder={`${userInfo.name}`}
                 placeholder={`${sessionStorage.getItem("user_name")}`}
                 className="joinInput"
                 onChange={(e) => {

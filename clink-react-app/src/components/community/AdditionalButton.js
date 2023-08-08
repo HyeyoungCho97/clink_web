@@ -14,14 +14,18 @@ export default function AdditionalButton() {
   const handleDelete = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line no-restricted-globals
-    var deleteOk = confirm('정말로 게시글을 삭제하겠습니까?');
-    if(deleteOk) {
+    var deleteOk = confirm("정말로 게시글을 삭제하겠습니까?");
+    if (deleteOk) {
       await axios
-        .post("http://localhost/community/post/delete", null, {
-          params: {
-            board_no: target_board_no,
-          },
-        })
+        .post(
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/delete",
+          null,
+          {
+            params: {
+              board_no: target_board_no,
+            },
+          }
+        )
         .then((response) => {
           navigate(-1);
         })
