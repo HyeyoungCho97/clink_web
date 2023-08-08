@@ -63,10 +63,7 @@ const Join = () => {
   function checkDuplicateId() {
     let id = { user_id: userInfo.user_id };
     axios
-      .post(
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/check-duplicate-id.do",
-        id
-      )
+      .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
       .then((response) => {
         console.log(response.data);
         if (response.data === "success") {

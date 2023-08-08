@@ -15,8 +15,7 @@ const Challenge = () => {
   const [weekData, setWeekData] = useState([]);
 
   useEffect(() => {
-    const address =
-      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/main-info?userNo=00000";
+    const address = "http://localhost:80/challenge/main-info?userNo=00000";
     //+sessionStorage.getItem("userNo");
     axios
       .get(address)

@@ -23,12 +23,10 @@ export default function Post() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const responsePost = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
+          "http://localhost:80/community/post" + location.search
         );
         const responseComment = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment" +
-            location.search
+          "http://localhost:80/community/post/comment" + location.search
         );
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
         console.log(responsePost.data);

@@ -70,7 +70,7 @@ export default function EditPost() {
       register_id: inputPost.register_id,
       board_no: inputPost.board_no,
     };
-    axios.post("http://localhost/community/post/update", params);
+    axios.post("http://localhost:80/community/post/update", params);
     window.location.href =
       "http://localhost:3000/community/posts?category_no=1&&filter=1";
   };
