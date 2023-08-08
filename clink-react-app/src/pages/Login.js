@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import pig from '../assets/pig.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Login.scss';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import pig from "../assets/pig.png";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/Login.scss";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,11 +20,11 @@ const Login = () => {
       handleLoginSubmit();
     }
   };
-
+  // 로그인
   const handleLoginSubmit = async () => {
-    if (user_id.trim() === '' || password.trim() === '') {
-      setUser_id('');
-      setPassword('');
+    if (user_id.trim() === "" || password.trim() === "") {
+      setUser_id("");
+      setPassword("");
       console.log(user_id);
       alert('아이디 또는 패스워드를 입력해주세요');
     } else {
@@ -72,7 +72,7 @@ const Login = () => {
       };
       try {
         const res = await axios.post(
-          'http://localhost:80/clink/user/login.do',
+          'http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000:80/clink/user/login.do',
           { user_id: user_id, password: password },
           {
             headers: authHeader,

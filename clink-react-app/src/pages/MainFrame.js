@@ -51,7 +51,7 @@ const MainFrame = (props) => {
     const getUserData = async () => {
       await axios
         .get(
-          "http://localhost:80/main/info?userNo=" +
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/main/info?userNo=" +
             sessionStorage.getItem("userNo")
         )
         .then((Response) => {

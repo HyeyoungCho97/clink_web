@@ -60,23 +60,26 @@ const Join = () => {
   // }, [userInfo.user_id]);
 
   // 아이디 중복체크
-  // function checkDuplicateId() {
-  //   let id = { user_id: userInfo.user_id };
-  //   axios
-  //     .post("http://localhost/clink/user/check-duplicate-id.do", id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       if (response.data === "success") {
-  //         setWarningId("사용할 수 있는 아이디입니다.");
-  //       } else if (response.data === "fail") {
-  //         setWarningId("사용 중인 아이디입니다.");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setWarningId("다시 시도하세요");
-  //     });
-  // }
+  function checkDuplicateId() {
+    let id = { user_id: userInfo.user_id };
+    axios
+      .post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/check-duplicate-id.do",
+        id
+      )
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === "success") {
+          setWarningId("사용할 수 있는 아이디입니다.");
+        } else if (response.data === "fail") {
+          setWarningId("사용 중인 아이디입니다.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setWarningId("다시 시도하세요");
+      });
+  }
 
   // 이메일 인증
   function handleEmailAuth() {
