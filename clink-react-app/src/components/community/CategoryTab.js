@@ -16,13 +16,8 @@ export default function CommunityCategory({
   };
   return (
     <div className="CommunityCategoryContainer">
-<<<<<<< HEAD
       <NavLink to="/community/posts?category_no=0&filter=0" onClick={onclick}>
         {categoryNo === 0 ? <p className="selec">베스트</p> : <p>베스트</p>}
-=======
-      <NavLink to="/community/posts?category_no=3&&filter=0" onClick={onclick}>
-        {categoryNo === 3 ? <p className="selec">베스트</p> : <p>베스트</p>}
->>>>>>> parent of e881745 (Add reply view)
       </NavLink>
       <NavLink to="/community/posts?category_no=1&filter=0" onClick={onclick}>
         {categoryNo === 1 ? <p className="selec">자유</p> : <p>자유</p>}
@@ -30,13 +25,8 @@ export default function CommunityCategory({
       <NavLink to="/community/posts?category_no=2&filter=0" onClick={onclick}>
         {categoryNo === 2 ? <p className="selec">정보</p> : <p>정보</p>}
       </NavLink>
-<<<<<<< HEAD
       <NavLink to="/community/posts?category_no=3&filter=0" onClick={onclick}>
         {categoryNo === 3 ? <p className="selec">공지사항</p> : <p>공지사항</p>}
-=======
-      <NavLink to="/community/posts?category_no=0&&filter=0" onClick={onclick}>
-        {categoryNo === 0 ? <p className="selec">공지사항</p> : <p>공지사항</p>}
->>>>>>> parent of e881745 (Add reply view)
       </NavLink>
     </div>
   );
