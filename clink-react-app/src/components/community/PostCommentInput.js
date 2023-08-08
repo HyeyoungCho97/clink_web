@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import queryString from "query-string";
 
 
-export default function PostCommentInput({comment, parentCommentId}) {
+export default function PostCommentInput({comment}) {
   const location = useLocation();
   const apiLink = 'http://localhost/community/post/comment/insert'
   const [comment_commentContent, comment_setCommentContent] = useState("");
@@ -26,8 +26,7 @@ export default function PostCommentInput({comment, parentCommentId}) {
       .post(apiLink, {
         board_no : comment_boardNo,
         register_id : comment_commentWriter,
-        comment_content : comment_commentContent,
-        parent_id : parentCommentId
+        comment_content : comment_commentContent
       })
       .then((response) => {
         window.location.replace('http://localhost:3000/community/post'+location.search);
@@ -41,10 +40,7 @@ export default function PostCommentInput({comment, parentCommentId}) {
     <div className='CommentContainer'>
         <Form action={apiLink} method="post" onSubmit={handleSubmit}>
             <Form.Group controlId="formComment">
-                {parentCommentId === 0 
-                ? <Form.Control type='text' name="commentContent" placeholder='댓글을 입력하세요...' onChange={handleChange_commentContent}/>
-                :<Form.Control type='text' name="commentContent" placeholder='대댓글을 입력하세요...' onChange={handleChange_commentContent}/>
-                }
+                <Form.Control type='text' name="commentContent" placeholder='댓글을 입력하세요...' onChange={handleChange_commentContent}/>
                 <Form.Control type='hidden' name="commentWriter" value={comment_commentWriter}/>
                 <Form.Control type='hidden' name="boardNo" value={comment_boardNo}/>
             </Form.Group>

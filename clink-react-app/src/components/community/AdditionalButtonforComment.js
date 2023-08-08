@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/community/AdditionalButton.scss';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import queryString from 'query-string';
 
-export default function AdditionalButton({ target_comment_id, isMine, setParentCommentId, isReply }) {
-
+export default function AdditionalButton({ target_comment_id }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleDelete = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line no-restricted-globals
@@ -24,10 +28,6 @@ export default function AdditionalButton({ target_comment_id, isMine, setParentC
     }
   };
 
-  const replySet = (e) => {
-    setParentCommentId(target_comment_id);
-  }
-
   return (
     <>
       <ul
@@ -36,16 +36,19 @@ export default function AdditionalButton({ target_comment_id, isMine, setParentC
           event.stopPropagation();
         }}
       >
-        {isMine &&
+        <li
+          href="#"
+          onClick={(event) => {
+            event.stopPropagation();
+            console.log(location.search);
+            navigate('/community/post/update' + location.search);
+          }}
+        >
+          &nbsp;댓글 수정
+        </li>
         <li href="#" onClick={handleDelete}>
-          댓글 삭제
+          &nbsp;댓글 삭제
         </li>
-        }
-        {!isReply &&
-        <li href="#" onClick={replySet}>
-          대댓글 입력
-        </li>
-        }
       </ul>
     </>
   );

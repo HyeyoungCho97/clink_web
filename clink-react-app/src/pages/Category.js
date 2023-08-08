@@ -17,9 +17,12 @@ export default function Community() {
   const [filter, setFilter] = useState(1);
   const [hashtag, setHashtag] = useState("");
   const [categoryNo, setCategoryNo] = useState();
+<<<<<<< HEAD
   const [isFetching, setFetching] = useState(false)
   const [ScrollY, setScrollY] = useState(0);
 
+=======
+>>>>>>> parent of e881745 (Add reply view)
   const location = useLocation();
   
   useEffect(() => {
@@ -90,11 +93,16 @@ export default function Community() {
         <CommunityPost post={post} key={id}></CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
+      {/* <br />
       <br />
       <br />
+<<<<<<< HEAD
       {isFetching && <Loading />}
       <br />
       <br />
+=======
+      <br /> */}
+>>>>>>> parent of e881745 (Add reply view)
     </div>
   );
 }
