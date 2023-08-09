@@ -1,4 +1,4 @@
-FROM node:18.17.0 as builder
+FROM node:14.17.0 as builder
 WORKDIR /app
 #ENV PATH /app/node_module/.bin:$PATH
 
