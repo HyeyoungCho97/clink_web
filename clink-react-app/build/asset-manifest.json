@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.87195913.css",
+    "main.js": "/static/js/main.462a5ff9.js",
+    "static/js/787.9e6518ba.chunk.js": "/static/js/787.9e6518ba.chunk.js",
+    "static/media/mainCoin.svg": "/static/media/mainCoin.cb27ffff49790f06264f6bfbac0ec42a.svg",
+    "static/media/serviceExplain.png": "/static/media/serviceExplain.82ea00565a5de20ba91d.png",
+    "static/media/Spinner-1s-200px.gif": "/static/media/Spinner-1s-200px.2fab3821d7cc7dd9ecde.gif",
+    "static/media/main_quote.svg": "/static/media/main_quote.9981137dd63f6fbf635f89dc5d86b2b1.svg",
+    "static/media/maru.jpg": "/static/media/maru.69a62200a576d1b5f142.jpg",
+    "static/media/account.png": "/static/media/account.d4a4b684ac327741d3be.png",
+    "index.html": "/index.html",
+    "static/media/main_background.svg": "/static/media/main_background.47c529405ed804579800f3c01f782847.svg",
+    "static/media/mainCard.svg": "/static/media/mainCard.0175c2a7107c9f1b42baab3e3061a489.svg",
+    "main.87195913.css.map": "/static/css/main.87195913.css.map",
+    "main.462a5ff9.js.map": "/static/js/main.462a5ff9.js.map",
+    "787.9e6518ba.chunk.js.map": "/static/js/787.9e6518ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87195913.css",
+    "static/js/main.462a5ff9.js"
+  ]
+}

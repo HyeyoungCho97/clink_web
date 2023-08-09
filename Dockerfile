@@ -1,24 +1,14 @@
-FROM node:14.17.0 as builder
-WORKDIR /app
-#ENV PATH /app/node_module/.bin:$PATH
+# prod environment
+FROM nginx:stable-alpine
+# 빌드한 결과물을 /usr/share/nginx/html 으로 복사한다.
+COPY /clink-react-app/build /usr/share/nginx/html
+# 기본 nginx 설정 파일을 삭제한다. (custom 설정과 충돌 방지)
+RUN rm /etc/nginx/conf.d/default.conf
+# custom 설정파일을 컨테이너 내부로 복사한다.
+COPY default.conf /etc/nginx/conf.d
 
-copy clink-react-app/ /app
-#RUN npm install -g npm@9.8.1
-#RUN npm cache clean --force
-#RUN npm remove @babel/plugin-proposal-private-property-in-object
-#RUN npm add --dev @babel/plugin-proposal-private-property-in-object
-#RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
-#RUN npm cache verify
-#RUN npm install 
-#RUN npm run build
-RUN npm install yarn
-RUN yarn #same as npm install
-RUN yarn build
-
-FROM nginx
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/clink-react-app/build /usr/share/nginx/html
-
+# 컨테이너의 80번 포트를 열어준다.
 EXPOSE 80
+
+# nginx 서버를 실행하고 백그라운드로 동작하도록 한다.
 CMD ["nginx", "-g", "daemon off;"]
