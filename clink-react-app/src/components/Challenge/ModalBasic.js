@@ -51,7 +51,7 @@ function ModalBasic({
       axios
         .post(address, param)
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           if (response.data) {
             alert("정상적으로 수정되었습니다.");
             window.location.reload();

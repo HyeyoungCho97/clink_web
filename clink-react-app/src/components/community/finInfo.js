@@ -1,13 +1,25 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 
-import '../../styles/community/finInfo.css';
-import News from './newsAPI';
-function FinInfo({ data }) {
+import "../../styles/community/finInfo.css";
+import News from "./newsAPI";
+function FinInfo({ newsdata }) {
+  const newsList = () => {
+    const list = [];
+    for (let i = 0; i < 10; i++) {
+      list.push(
+        <SwiperSlide className="news" key={i}>
+          <News newsdata={newsdata} idx={i} />
+        </SwiperSlide>
+      );
+    }
+    return list;
+  };
   return (
     <div className="finInfo">
+      {/* <img src={testdata[0].news_img} alt="test"></img> */}
       <p className="finTitle">
         <b>금융뉴스</b>
       </p>
@@ -19,27 +31,7 @@ function FinInfo({ data }) {
         modules={[Pagination, Autoplay]}
         loop={true}
       >
-        <SwiperSlide className="news">
-          <News data={data} idx={1} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={2} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={3} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={4} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={5} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={6} />
-        </SwiperSlide>
-        <SwiperSlide className="news">
-          <News data={data} idx={7} />
-        </SwiperSlide>
+        {newsList()}
       </Swiper>
     </div>
   );

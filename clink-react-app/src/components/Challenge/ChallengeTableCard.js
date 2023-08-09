@@ -45,7 +45,7 @@ const ChallengeTableCard = ({
     //삭제 전 확인
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const address =
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-delete?userNo=00000" +
+        "http://localhost:80/challenge/pay-delete?userNo=00000" +
         "&datetime=" +
         moment(date).format("YYYY-MM-DD ") +
         time +
@@ -65,7 +65,7 @@ const ChallengeTableCard = ({
         });
     }
   }
-
+  // 사용금액에 ',' 찍기, '원' 적기
   let strAmount =
     amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 

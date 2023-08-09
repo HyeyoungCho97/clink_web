@@ -1,15 +1,15 @@
 // import { useEffect, useState } from 'react';
-import '../../styles/community/newsAPI.css';
-function News({ data, idx }) {
+import "../../styles/community/newsAPI.css";
+function News({ idx, newsdata }) {
   return (
     <div>
-      {data && (
+      {newsdata && (
         <div className="newWrap">
-          <a href={data[idx].url} target="blank">
-            <img src={data[idx].urlToImage} alt={data[idx].title} />
+          <a href={newsdata[idx].news_link} target="blank">
+            <img src={newsdata[idx].news_img} alt={newsdata[idx].news_title} />
           </a>
           <p className="newsTitle">
-            <b>{data[idx].title}</b>
+            <b>{newsdata[idx].news_title}</b>
           </p>
         </div>
       )}
