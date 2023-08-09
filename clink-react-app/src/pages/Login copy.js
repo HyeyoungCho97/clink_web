@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import pig from "../assets/pig.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Login.scss";
+import getAuthHeader from "../components/common/AuthHeader";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,14 +29,27 @@ const Login = () => {
       console.log(user_id);
       alert("아이디 또는 패스워드를 입력해주세요");
     } else {
-      //토큰을 생성할 파라미터
       var param = {
         mid: "t3",
         mpw: "t3",
       };
       console.log(user_id, password);
 
-      const res = await axios.post("http://localhost:80/user/login.do", {
+      // console.log("액세스토큰:" + localStorage.getItem("accessToken"));
+      // console.log("리프레시토큰:" + localStorage.getItem("refreshToken"));
+
+      // 발급한 jwt 헤더에 담아서 API호출
+      // accessToken = localStorage.getItem("accessToken");
+      // const headers = getAuthHeader();
+      // const authHeader = {
+      //   Authorization: `Bearer ${accessToken}`,
+      //   "Content-Type": "application/json",
+      // };
+
+      // accessToken = localStorage.getItem("accessToken");
+      // const authHeader = { Authorization: `Bearer ${accessToken}` };
+      // try {
+      const res = await axios.post("http://localhost:80/clink/user/login.do", {
         user_id: user_id,
         password: password,
       });
@@ -45,19 +59,33 @@ const Login = () => {
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
         alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
+
         // jwt 발급용
-        const response = await axios.post(
-          "http://localhost:80/generateToken",
-          param
-        );
-        if (!response.data) {
-          console.log("데이터 없음");
-        } else {
-          console.log(response.data);
-          localStorage.setItem("accessToken", response.data.accessToken);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
-          navigate("/mypage");
-        }
+        axios
+          .post("http://localhost:80/generateToken", param)
+          .then((response) => {
+            if (response.data) {
+              console.log(response.data);
+              localStorage.setItem("accessToken", response.data.accessToken);
+              localStorage.setItem("refreshToken", response.data.refreshToken);
+            }
+          })
+          .catch((err) => {
+            alert("generateToken 에러 다시 시도하세요");
+            if (err.response.data.msg === "Expired Token") {
+              console.log("Refresh Your Token");
+              // 토큰 유효기간이 만료되면 refreshToken 호출
+              try {
+                callRefresh();
+                console.log("new tokens....saved..");
+                return handleLoginSubmit();
+              } catch (refreshErr) {
+                throw refreshErr.response.data.msg;
+              }
+            } //end if
+          });
+
+        navigate("/mypage");
       } else {
         alert("login.do else 에러 다시 시도하세요");
         // 회원가입페이지로 넘어가게~~ navigate("/mypage");
@@ -66,15 +94,15 @@ const Login = () => {
       }
     }
   };
-  // const callRefresh = async () => {
-  //   const accessToken = localStorage.getItem("accessToken");
-  //   const refreshToken = localStorage.getItem("refreshToken");
+  const callRefresh = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
 
-  //   const tokens = { accessToken, refreshToken };
-  //   const res = await axios.post("http://localhost:8080/refreshToken", tokens);
-  //   localStorage.setItem("accessToken", res.data.accessToken);
-  //   localStorage.setItem("refreshToken", res.data.refreshToken);
-  // };
+    const tokens = { accessToken, refreshToken };
+    const res = await axios.post("http://localhost:8080/refreshToken", tokens);
+    localStorage.setItem("accessToken", res.data.accessToken);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
+  };
 
   return (
     <div className="LoginContainer">

@@ -29,54 +29,63 @@ const MyPage = () => {
 
   useEffect(() => {
     // 계좌 정보불러오기
-    const fetchData = async () => {
-      try {
-        const param = {
-          user_no: sessionStorage.getItem("user_no"),
-        };
-
-        const accountResponse = await axios.post(
-          "http://localhost:80/user/checkAccount.do",
-          { param },
-          {
-            headers: getAuthHeader(),
-          }
-        );
-        for (let i = 0; i < accountResponse.data.length; i++) {
-          if (accountResponse.data[i].account_code === "1") {
-            setAddAccountNo(accountResponse.data[i].account_no);
+    let param = {
+      user_no: sessionStorage.getItem("user_no"),
+    };
+    // const accessToken = localStorage.getItem("accessToken");
+    // const authHeader = { Authorization: `Bearer ${accessToken}` };
+    axios
+      .post(
+        "http://localhost:80/user/checkAccount.do",
+        { param },
+        {
+          headers: getAuthHeader(),
+        }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].account_code === "1") {
+            // 저축계좌 등록
+            setAddAccountNo(response.data[i].account_no);
             setAddAccountBankCode(
-              bankCategory.bank[accountResponse.data[i].bank_code]
+              bankCategory.bank[response.data[i].bank_code]
             );
-          } else if (accountResponse.data[i].account_code === "2") {
-            setShowAccountNo(accountResponse.data[i].account_no);
+          } else if (response.data[i].account_code === "2") {
+            // 소비계좌 등록
+            setShowAccountNo(response.data[i].account_no);
             setShowAccountBankCode(
-              bankCategory.bank[accountResponse.data[i].bank_code]
+              bankCategory.bank[response.data[i].bank_code]
             );
           } else {
             console.log("등록된 계좌 없음");
           }
         }
-        const userResponse = await axios.post(
-          "http://localhost:80/user/get-userInfo.do",
-          param,
-          {
-            headers: getAuthHeader(),
-          }
-        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // 유저 정보 가져오기
+    axios
+      .post("http://localhost:80/user/get-userInfo.do", param, {
+        headers: getAuthHeader(),
+      })
+      .then((response) => {
+        // console.log("response: " + JSON.stringify(response));
+        console.log(response);
         setUserInfo({
           ...userInfo,
-          id: userResponse.data.user_id,
-          nickname: userResponse.data.nick_name,
-          password: userResponse.data.password,
+          id: response.data.user_id,
+          nickname: response.data.nick_name,
+          password: response.data.password,
         });
-      } catch (error) {
+      })
+      .catch((error) => {
         console.log(error);
-      }
-    };
+      });
+
     // 로그인 확인용
     // setUserInfo(sessionStorage.getItem("user_id"));
-    fetchData();
   }, []);
 
   // 로그아웃(세션제거)
@@ -86,67 +95,57 @@ const MyPage = () => {
   }
 
   // 개인정보 수정
-  async function updateInfoHandler() {
-    try {
-      const param = {
-        nick_name: userInfo.nickname,
-        password: userInfo.password,
-        user_no: sessionStorage.getItem("user_no"),
-      };
-
-      const response = await axios.post(
-        "http://localhost:80/user/update.do",
-        param,
-        {
-          headers: getAuthHeader(),
+  function updateInfoHandler() {
+    let param = {
+      nick_name: userInfo.nickname,
+      password: userInfo.password,
+      user_no: sessionStorage.getItem("user_no"),
+    };
+    axios
+      .post("http://localhost:80/user/update.do", param, {
+        headers: getAuthHeader(),
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === "success") {
+          alert("개인정보가 수정되었습니다.");
+          setUserInfo({
+            ...userInfo,
+            nickname: userInfo.nickname,
+            password: userInfo.password,
+          });
+          sessionStorage.setItem("nick_name", userInfo.nickname);
+          sessionStorage.setItem("password", userInfo.password);
+        } else if (response.data === "fail") {
+          alert("정상적으로 처리되지 않았습니다.");
         }
-      );
-
-      console.log(response.data);
-      if (response.data === "success") {
-        alert("개인정보가 수정되었습니다.");
-        setUserInfo({
-          ...userInfo,
-          nickname: userInfo.nickname,
-          password: userInfo.password,
-        });
-        sessionStorage.setItem("nick_name", userInfo.nickname);
-        sessionStorage.setItem("password", userInfo.password);
-      } else if (response.data === "fail") {
-        alert("정상적으로 처리되지 않았습니다.");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("다시 시도하세요");
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("다시 시도하세요");
+      });
   }
 
   // 프로필 사진
-  async function profileHandler() {
-    try {
-      const formData = new FormData(); // new FromData()로 새로운 객체 생성
-      formData.append("user_no", sessionStorage.getItem("user_no"));
-      formData.append("file", file);
-
-      const response = await axios.post(
-        "http://localhost:80/user/photo-url.do",
-        formData,
-        {
-          headers: getAuthHeader(),
+  function profileHandler() {
+    let formData = new FormData(); // new FromData()로 새로운 객체 생성
+    formData.append("user_no", sessionStorage.getItem("user_no"));
+    formData.append("file", file);
+    axios
+      .post("http://localhost:80/user/photo-url.do", formData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          alert("프로필 사진이 수정되었습니다.");
+          setNewfile(response.data);
+        } else {
+          alert("정상적으로 처리되지 않았습니다.");
         }
-      );
-
-      console.log(response.data);
-      if (response.data) {
-        alert("프로필 사진이 수정되었습니다.");
-        setNewfile(response.data);
-      } else {
-        alert("정상적으로 처리되지 않았습니다.");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("다시 시도하세요");
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("다시 시도하세요");
+      });
   }
 
   // 로그아웃(세션제거)

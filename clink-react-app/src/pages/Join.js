@@ -36,16 +36,16 @@ const Join = () => {
     if (userInfo.password !== userInfo.confirmPwd) {
       setWarningPwd("비밀번호가 일치하지 않습니다.");
     } else {
-      setWarningPwd("");
+      setWarningPwd("비밀번호가 일치합니다.");
     }
-    if (authcode.trim() === userInfo.emailAuthNum.trim()) {
-      setWarningEmail("인증번호가 일치합니다.");
-    } else {
+    if (authcode.trim() !== userInfo.emailAuthNum.trim()) {
       setWarningEmail("인증번호가 일치하지 않습니다.");
+    } else {
+      setWarningEmail("");
     }
     let id = { user_id: userInfo.user_id };
     axios
-      .post("http://localhost/clink/user/check-duplicate-id.do", id)
+      .post("http://localhost/user/check-duplicate-id.do", id)
       .then((response) => {
         if (response.data === "success") {
           setWarningId("사용할 수 있는 아이디입니다.");
@@ -73,7 +73,7 @@ const Join = () => {
     alert(`${userInfo.email}로 인증번호가 전송되었습니다.`);
     let email = { params: { email: userInfo.email } };
     axios
-      .post("http://localhost/clink/user/emailAuth.do", {}, email)
+      .post("http://localhost/user/emailAuth.do", {}, email)
       .then((response) => {
         console.log(response.data);
         if (response.data) {
@@ -98,49 +98,50 @@ const Join = () => {
       alert("비밀번호를 입력해주세요.");
     } else if (userInfo.user_name.trim() === "") {
       alert("이름을 입력해주세요.");
-    } else if (userInfo.confirmPwd.trim() === "") {
-      alert("비밀번호 확인을 입력해주세요.");
-    } else if (confirmID == 0) {
-      alert("사용중인 아이디입니다.");
-    } else {
-      // if () {
-      setWarningId("사용할 수 있는 아이디입니다.");
-      var param = {
-        user_name: userInfo.user_name,
-        user_id: userInfo.user_id,
-        nick_name: userInfo.nick_name,
-        password: userInfo.password,
-        confirmPwd: userInfo.confirmPwd,
-        email: userInfo.email,
-      };
+    }
+    // else if (userInfo.confirmPwd.trim() === "") {alert("비밀번호 확인을 입력해주세요.");}
+    // else if (confirmID == 0) {
+    //   alert("사용중인 아이디입니다.");
+    // }
+    // else if (userInfo.email.trim() === "") {alert("이메일 주소를 입력해주세요");}
+    else {
+      if (confirmID === 1) {
+        var param = {
+          user_name: userInfo.user_name,
+          user_id: userInfo.user_id,
+          nick_name: userInfo.nick_name,
+          password: userInfo.password,
+          confirmPwd: userInfo.confirmPwd,
+          email: userInfo.email,
+        };
 
-      console.log(param);
-      axios
-        .post(
-          "http://localhost:80/clink/user/join.do",
-          param
-          // ,{ headers: authHeader,}
-        )
-        .then((response) => {
-          // console.log(response.data);
-          if (response.data) {
-            alert("회원가입 되었습니다. 로그인해주세요.");
-            navigate("/");
-          } else {
-            alert("다시 시도하세요");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("회원가입에 실패했습니다.");
-        });
-      // } else {
-      // setWarningId("사용 중인 아이디입니다.");
-      // setUserInfo((prev) => ({
-      //   ...prev,
-      //   user_id: "",
-      // }));
-      // }
+        console.log(param);
+        axios
+          .post(
+            "http://localhost:80/user/join.do",
+            param
+            // ,{ headers: authHeader,}
+          )
+          .then((response) => {
+            // console.log(response.data);
+            if (response.data) {
+              alert("회원가입 되었습니다. 로그인해주세요.");
+              navigate("/");
+            } else {
+              alert("다시 시도하세요");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("회원가입에 실패했습니다.");
+          });
+      } else {
+        alert("사용 중인 아이디입니다.");
+        setUserInfo((prev) => ({
+          ...prev,
+          user_id: "",
+        }));
+      }
       // })
       // .catch((error) => {
       //   console.log(error);
