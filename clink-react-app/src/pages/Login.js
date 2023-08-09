@@ -12,7 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [user_id, setUser_id] = useState("");
   const [password, setPassword] = useState("");
-  const [user_no, setUser_no] = useState("");
 
   // 엔터키 이벤트
   const handleEnterKey = (e) => {
@@ -21,6 +20,7 @@ const Login = () => {
     }
   };
 
+  // 로그인
   const handleLoginSubmit = async () => {
     if (user_id.trim() === "" || password.trim() === "") {
       setUser_id("");
@@ -34,24 +34,24 @@ const Login = () => {
       };
       console.log(user_id, password);
 
-      // 토큰 검증
+      // jwt
       const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
       if (!accessToken) {
         console.log("Cannot Find Access Token");
 
-        // 토큰 발급용
+        // jwt 발급용
         axios
           .post("http://localhost:80/generateToken", param)
           .then((response) => {
             if (response.data) {
-              console.log(response.data);
+              // console.log(response.data);
               localStorage.setItem("accessToken", response.data.accessToken);
               localStorage.setItem("refreshToken", response.data.refreshToken);
-              console.log("accessToken:" + localStorage.getItem("accessToken"));
-              console.log(
-                "refreshToken:" + localStorage.getItem("refreshToken")
-              );
+              // console.log("accessToken:" + localStorage.getItem("accessToken"));
+              // console.log(
+              //   "refreshToken:" + localStorage.getItem("refreshToken")
+              // );
             } else {
               console.log("토큰 생성 실패");
             }
@@ -61,10 +61,10 @@ const Login = () => {
             alert("generateToken 에러 다시 시도하세요");
           });
       }
-      console.log("액세스토큰:" + localStorage.getItem("accessToken"));
-      console.log("리프레시토큰:" + localStorage.getItem("refreshToken"));
+      // console.log("액세스토큰:" + localStorage.getItem("accessToken"));
+      // console.log("리프레시토큰:" + localStorage.getItem("refreshToken"));
 
-      // 헤더에 담아서 API호출
+      // 발급한 jwt 헤더에 담아서 API호출
       console.log("accessToken:" + accessToken);
       const authHeader = {
         Authorization: `Bearer ${accessToken}`,
@@ -80,10 +80,10 @@ const Login = () => {
         );
         console.log(res.data);
         if (res.data) {
-          console.log(res.data.user_no);
+          // console.log(res.data.user_no);
           sessionStorage.setItem("user_no", res.data.user_no);
           sessionStorage.setItem("user_id", res.data.user_id);
-          setUser_no(res.data.user_no);
+          sessionStorage.setItem("nick_name", res.data.nick_name);
           alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
           navigate("/mypage");
         } else {
@@ -163,7 +163,6 @@ const Login = () => {
       </div>
       <div className="LoginButtonBox">
         <Button
-          variant="primary"
           className="LoginSubmitBtn"
           type="submit"
           onClick={() => handleLoginSubmit()}

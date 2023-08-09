@@ -38,27 +38,34 @@ const Join = () => {
     } else {
       setWarningPwd("");
     }
-  }, [userInfo.password, userInfo.confirmPwd]);
-
-  // useEffect(() => {
-  //   let id = { user_id: userInfo.user_id };
-  //   axios
-  //     .post("http://localhost/clink/user/check-duplicate-id.do", id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       if (response.data === "success") {
-  //         setWarningId("사용할 수 있는 아이디입니다.");
-  //         confirmID = 1;
-  //       } else if (response.data === "fail") {
-  //         setWarningId("사용 중인 아이디입니다.");
-  //         confirmID = 0;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setWarningId("다시 시도하세요");
-  //     });
-  // }, [userInfo.user_id]);
+    if (authcode.trim() === userInfo.emailAuthNum.trim()) {
+      setWarningEmail("인증번호가 일치합니다.");
+    } else {
+      setWarningEmail("인증번호가 일치하지 않습니다.");
+    }
+    let id = { user_id: userInfo.user_id };
+    axios
+      .post("http://localhost/clink/user/check-duplicate-id.do", id)
+      .then((response) => {
+        if (response.data === "success") {
+          setWarningId("사용할 수 있는 아이디입니다.");
+          confirmID = 1;
+        } else if (response.data === "fail") {
+          setWarningId("사용 중인 아이디입니다.");
+          confirmID = 0;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setWarningId("다시 시도하세요");
+      });
+  }, [
+    userInfo.password,
+    userInfo.confirmPwd,
+    userInfo.emailAuthNum,
+    authcode,
+    userInfo.user_id,
+  ]);
 
   // 이메일 인증
   function handleEmailAuth() {
@@ -71,17 +78,9 @@ const Join = () => {
         console.log(response.data);
         if (response.data) {
           setAuthcode(response.data.trim());
-          if (authcode.trim() === userInfo.emailAuthNum.trim()) {
-            setWarningEmail("인증번호가 일치합니다.");
-          } else {
-            setWarningEmail("인증번호가 일치하지 않습니다.");
-          }
         } else {
           setWarningEmail("이메일 인증이 완료되지않았습니다.");
-          setUserInfo((prev) => ({
-            ...prev,
-            email: "",
-          }));
+          // setUserInfo((prev) => ({ ...prev, email: "", }));
         }
       })
       .catch((error) => {
@@ -101,13 +100,10 @@ const Join = () => {
       alert("이름을 입력해주세요.");
     } else if (userInfo.confirmPwd.trim() === "") {
       alert("비밀번호 확인을 입력해주세요.");
+    } else if (confirmID == 0) {
+      alert("사용중인 아이디입니다.");
     } else {
-      // let id = { user_id: userInfo.user_id };
-      // axios
-      //   .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
-      //   .then((response) => {
-      //     console.log(response.data);
-      // if (confirmID == 1) {
+      // if () {
       setWarningId("사용할 수 있는 아이디입니다.");
       var param = {
         user_name: userInfo.user_name,
@@ -225,7 +221,7 @@ const Join = () => {
             type="text"
             name="emailAuthNum"
             placeholder="인증번호*"
-            maxLength="9"
+            maxLength="8"
             value={userInfo.emailAuthNum}
             onChange={handleInputChange}
           />

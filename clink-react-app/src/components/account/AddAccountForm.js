@@ -40,8 +40,23 @@ const AddAccountForm = () => {
         bank_code: bank_code,
         account_code: 1,
       };
+      const accessToken = localStorage.getItem("accessToken");
+      const refreshToken = localStorage.getItem("refreshToken");
+      const authHeader = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      };
       axios
-        .post("http://localhost:80/clink/user/registAccount.do", param)
+        .post(
+          "http://localhost:80/clink/user/registAccount.do",
+          {
+            account_no: account_no,
+            user_no: sessionStorage.getItem("user_no"),
+            bank_code: bank_code,
+            account_code: 1,
+          },
+          { headers: authHeader }
+        )
         .then((response) => {
           console.log(response.data);
           if (response.data === 1) {
