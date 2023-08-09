@@ -40,7 +40,7 @@ const ShowAccountForm = () => {
         account_code: 2,
       };
       axios
-        .post("http://localhost:80/clink/user/registAccount.do", param)
+        .post("http://localhost:80/user/registAccount.do", param)
         .then((response) => {
           console.log(response.data);
           if (response.data == 1) {

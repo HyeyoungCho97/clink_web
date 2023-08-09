@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import bankCategory from "../../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/AddAccountForm.scss";
+import getAuthHeader from "../common/AuthHeader";
 
 // 저축계좌
 const AddAccountForm = () => {
@@ -40,22 +41,17 @@ const AddAccountForm = () => {
         bank_code: bank_code,
         account_code: 1,
       };
-      const accessToken = localStorage.getItem("accessToken");
-      const refreshToken = localStorage.getItem("refreshToken");
-      const authHeader = {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      };
+
       axios
         .post(
-          "http://localhost:80/clink/user/registAccount.do",
+          "http://localhost:80/user/registAccount.do",
           {
             account_no: account_no,
             user_no: sessionStorage.getItem("user_no"),
             bank_code: bank_code,
             account_code: 1,
           },
-          { headers: authHeader }
+          { headers: getAuthHeader() }
         )
         .then((response) => {
           console.log(response.data);

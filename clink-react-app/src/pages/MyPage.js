@@ -29,19 +29,21 @@ const MyPage = () => {
 
   useEffect(() => {
     // 계좌 정보불러오기
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw "Cannot Find Access Token";
+    }
+    console.log(accessToken);
     const fetchData = async () => {
       try {
-        const param = {
-          user_no: sessionStorage.getItem("user_no"),
-        };
-
         const accountResponse = await axios.post(
           "http://localhost:80/user/checkAccount.do",
-          { param },
+          { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
           }
         );
+        console.log(accountResponse);
         for (let i = 0; i < accountResponse.data.length; i++) {
           if (accountResponse.data[i].account_code === "1") {
             setAddAccountNo(accountResponse.data[i].account_no);
@@ -59,7 +61,7 @@ const MyPage = () => {
         }
         const userResponse = await axios.post(
           "http://localhost:80/user/get-userInfo.do",
-          param,
+          { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
           }
@@ -70,14 +72,35 @@ const MyPage = () => {
           nickname: userResponse.data.nick_name,
           password: userResponse.data.password,
         });
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        if (err.response.data.msg === "Expired Token") {
+          console.log("Refresh Your Token");
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh();
+            console.log("new tokens....saved..");
+            return accessToken();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        } //end if
       }
     };
     // 로그인 확인용
     // setUserInfo(sessionStorage.getItem("user_id"));
     fetchData();
   }, []);
+
+  // refresh token 발급
+  const callRefresh = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    const tokens = { accessToken, refreshToken };
+    const res = await axios.post("http://localhost:8080/refreshToken", tokens);
+    localStorage.setItem("accessToken", res.data.accessToken);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
+  };
 
   // 로그아웃(세션제거)
   function logoutHandler() {
