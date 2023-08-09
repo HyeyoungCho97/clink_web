@@ -9,7 +9,8 @@ const ChallengeGoal = ({ value, max }) => {
       <div className="ChallengeGoalContent">
         <ProgressBar now={completed} label={`${completed}%`} className="pro" />
         <div id="ChallengeTodaysGoal">
-          목표금액 {max}원 중 {value}원 사용
+          목표금액 {max?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원 중{" "}
+          {value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원 사용
         </div>
       </div>
     </div>
