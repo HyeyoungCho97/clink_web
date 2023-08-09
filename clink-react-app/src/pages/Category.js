@@ -8,6 +8,7 @@ import "../styles/community/CommunityContainer.scss";
 // import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Loading from "../assets/Spinner-1s-200px.gif";
 
 export default function Community() {
   const [posts, setPosts] = useState(null);
@@ -16,7 +17,11 @@ export default function Community() {
   const [filter, setFilter] = useState(1);
   const [hashtag, setHashtag] = useState("");
   const [categoryNo, setCategoryNo] = useState();
+  const [isFetching, setFetching] = useState(false);
+  const [ScrollY, setScrollY] = useState(0);
+
   const location = useLocation();
+
   useEffect(() => {
     const lo = Number(new URLSearchParams(location.search).get("category_no"));
     setCategoryNo(lo);
@@ -36,7 +41,7 @@ export default function Community() {
             hashtag
         );
         console.log(hashtag);
-        setPosts(response.data); // 데이터는 response.data 안에 들어있습니다.
+        setPosts([...response.data]); // 데이터는 response.data 안에 들어있습니다.
         console.log(response.data);
       } catch (e) {
         setError(e);
@@ -74,20 +79,23 @@ export default function Community() {
         setFilter={setFilter}
         categoryNo={categoryNo}
       ></CommunityCategory>
+
       <CommunityFilter
         setFilter={setFilter}
         filter={filter}
         setHashtag={setHashtag}
         categoryNo={categoryNo}
       ></CommunityFilter>
+
       {posts.map((post, id) => (
         <CommunityPost post={post} key={id}></CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
-      {/* <br />
       <br />
       <br />
-      <br /> */}
+      {isFetching && <Loading />}
+      <br />
+      <br />
     </div>
   );
 }

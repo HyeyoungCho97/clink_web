@@ -43,7 +43,8 @@ export default function EditPost() {
         setLoading(true);
 
         const responsePost = await axios.get(
-          "http://localhost/community/post" + location.search
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
+            location.search
         );
         setInputPost(responsePost.data);
 
@@ -70,9 +71,12 @@ export default function EditPost() {
       register_id: inputPost.register_id,
       board_no: inputPost.board_no,
     };
-    axios.post("http://localhost/community/post/update", params);
+    axios.post(
+      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/update",
+      params
+    );
     window.location.href =
-      "http://localhost:3000/community/posts?category_no=1&&filter=1";
+      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/posts?category_no=1&&filter=1";
   };
 
   if (loading) return <div>로딩중..</div>;
