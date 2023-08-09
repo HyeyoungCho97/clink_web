@@ -8,6 +8,7 @@ RUN npm install -g npm@9.8.1
 #RUN npm remove @babel/plugin-proposal-private-property-in-object
 #RUN npm add --dev @babel/plugin-proposal-private-property-in-object
 #RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
+RUN npm cache verify
 RUN npm install 
 RUN npm run build
 
