@@ -12,7 +12,7 @@ copy clink-react-app/ /app
 #RUN npm install 
 #RUN npm run build
 RUN npm install yarn
-RUN yarn add
+RUN yarn #same as npm install
 RUN yarn build
 
 FROM nginx
