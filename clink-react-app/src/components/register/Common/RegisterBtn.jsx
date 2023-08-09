@@ -20,6 +20,7 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
       challenge_no: challenge_no,
     };
     await axios.post('http://localhost:80/challenge/register', param);
+    navigate('/Main');
   };
   return (
     <>

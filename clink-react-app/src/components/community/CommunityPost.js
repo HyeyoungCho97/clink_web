@@ -39,6 +39,7 @@ export default function CommunityPost({ post, commentCount }) {
   const likedownurl = '/delete';
 
   useEffect(() => {
+    console.log(board_no);
     if (
       register_id === sessionStorage.user_id &&
       location.pathname === '/community/post'

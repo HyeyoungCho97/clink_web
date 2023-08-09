@@ -45,8 +45,6 @@ export default function EditPost() {
           'http://localhost/community/post' + location.search
         );
         setInputPost(responsePost.data);
-
-        console.log(inputPost);
       } catch (e) {
         setError(e);
       }

@@ -16,7 +16,7 @@ export default function Community() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState(1);
   const [hashtag, setHashtag] = useState('');
-  const [categoryNo, setCategoryNo] = useState();
+  const [categoryNo, setCategoryNo] = useState(1);
   const [isFetching, setFetching] = useState(false);
   const [ScrollY, setScrollY] = useState(0);
 
@@ -40,7 +40,6 @@ export default function Community() {
             '&hashtag=' +
             hashtag
         );
-        console.log(hashtag);
         setPosts([...response.data]); // 데이터는 response.data 안에 들어있습니다.
         console.log(response.data);
       } catch (e) {
@@ -53,7 +52,7 @@ export default function Community() {
 
   if (loading) return <div>로딩중..</div>;
   if (error) return <div>에러가 발생했습니다</div>;
-  if (!posts)
+  if (!posts) {
     return (
       //게시물이 없어서 일단 예외처리 해놓음
       <>
@@ -65,39 +64,40 @@ export default function Community() {
         <CommunityFilter
           setFilter={setFilter}
           filter={filter}
+          categoryNo={categoryNo}
         ></CommunityFilter>
         <h1>게시물이 존재하지 않습니다.</h1>
         <CommunityPostButton></CommunityPostButton>
       </>
     );
-  return (
-    <div className="CommunityContainer">
-      <CommunityHeader></CommunityHeader>
-      <CommunityCategory
-        setHashtag={setHashtag}
-        filter={filter}
-        setFilter={setFilter}
-        categoryNo={categoryNo}
-      ></CommunityCategory>
+  } else {
+    return (
+      <div className="CommunityContainer">
+        <CommunityHeader></CommunityHeader>
+        <CommunityCategory
+          setHashtag={setHashtag}
+          filter={filter}
+          setFilter={setFilter}
+          categoryNo={categoryNo}
+        ></CommunityCategory>
 
-      <CommunityFilter
-        setFilter={setFilter}
-        filter={filter}
-        setHashtag={setHashtag}
-        categoryNo={categoryNo}
-      ></CommunityFilter>
+        <CommunityFilter
+          setFilter={setFilter}
+          filter={filter}
+          setHashtag={setHashtag}
+          categoryNo={categoryNo}
+        ></CommunityFilter>
 
-      {posts.map((post, id) => (
-        <CommunityPost post={post} key={id}>
-          {console.log(id)}
-        </CommunityPost>
-      ))}
-      <CommunityPostButton></CommunityPostButton>
-      <br />
-      <br />
-      {isFetching && <Loading />}
-      <br />
-      <br />
-    </div>
-  );
+        {posts.map((post, id) => (
+          <CommunityPost post={post} key={id}></CommunityPost>
+        ))}
+        <CommunityPostButton></CommunityPostButton>
+        <br />
+        <br />
+        {isFetching && <Loading />}
+        <br />
+        <br />
+      </div>
+    );
+  }
 }

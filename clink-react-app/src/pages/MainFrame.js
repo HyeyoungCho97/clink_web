@@ -9,10 +9,7 @@ import MainSavingTotal from '../components/main/MainSavingTotal.js';
 import MainReport from '../components/main/MainReport.js';
 import axios from 'axios';
 
-sessionStorage.setItem('userNo', '00000');
-sessionStorage.setItem('userNickName', 'gpt영');
-sessionStorage.setItem('userName', '김지영');
-let userId = sessionStorage.getItem('userId');
+let userId = sessionStorage.getItem('user_id');
 if (userId == null) userId = 'chatgpt';
 
 const MainFrame = (props) => {
@@ -51,11 +48,11 @@ const MainFrame = (props) => {
     const getUserData = async () => {
       await axios
         .get(
-          'http://localhost:80/main/info?userNo=' +
-            sessionStorage.getItem('userNo')
+          'http://localhost:80/main-info?userNo=' +
+            sessionStorage.getItem('user_no')
         )
         .then((Response) => {
-          //console.log(Response.data);
+          console.log(Response.data);
           setBadge(Response.data.badge);
           setQuote(Response.data.quote);
           setStreakData(Response.data.streakData);
@@ -63,7 +60,7 @@ const MainFrame = (props) => {
           getContinuesDate(Response.data.streakData.streakData);
         })
         .catch((error) => {
-          console.log(error);
+          console.log('메인에러');
         });
     };
     getUserData();
