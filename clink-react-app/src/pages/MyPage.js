@@ -20,7 +20,7 @@ const MyPage = () => {
     password: "",
   });
   const [file, setFile] = useState(null);
-  const [newfile, setNewfile] = useState("");
+  const [newfile, setNewfile] = useState('');
 
   const [addAccountNo, setAddAccountNo] = useState("");
   const [addAccountBankCode, setAddAccountBankCode] = useState("");
@@ -56,7 +56,7 @@ const MyPage = () => {
               bankCategory.bank[accountResponse.data[i].bank_code]
             );
           } else {
-            console.log("등록된 계좌 없음");
+            console.log('등록된 계좌 없음');
           }
         }
         const userResponse = await axios.post(
@@ -94,7 +94,7 @@ const MyPage = () => {
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate("/");
+    navigate('/');
   }
 
   // 개인정보 수정
@@ -164,7 +164,7 @@ const MyPage = () => {
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate("/");
+    navigate('/');
   }
 
   return (
@@ -177,7 +177,7 @@ const MyPage = () => {
           {newfile ? (
             <img src={`http://localhost/img/${newfile}`} alt="logo" />
           ) : (
-            <img src={require("../assets/pig.png")} alt="logo" />
+            <img src={require('../assets/pig.png')} alt="logo" />
           )}
           <div className="MyPageProfileBtnBox">
             <label htmlFor="file">
@@ -258,7 +258,7 @@ const MyPage = () => {
           </Button>
           <br />
           <br />
-          <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
+          <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
             <b>Logout</b>
           </div>
           <br />

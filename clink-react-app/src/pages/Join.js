@@ -26,7 +26,6 @@ const Join = () => {
   const [warningEmail, setWarningEmail] = useState("");
 
   const [checkId, setCheckId] = useState("");
-  let confirmID; // 아이디 중복체크용
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -100,13 +99,11 @@ const Join = () => {
       alert("비밀번호를 입력해주세요.");
     } else if (userInfo.user_name.trim() === "") {
       alert("이름을 입력해주세요.");
-    }
-    // else if (userInfo.confirmPwd.trim() === "") {alert("비밀번호 확인을 입력해주세요.");}
-    // else if (confirmID == 0) {
-    //   alert("사용중인 아이디입니다.");
-    // }
-    // else if (userInfo.email.trim() === "") {alert("이메일 주소를 입력해주세요");}
-    else {
+    } else if (userInfo.confirmPwd.trim() === "") {
+      alert("비밀번호 확인을 입력해주세요.");
+    } else if (userInfo.email.trim() === "") {
+      alert("이메일 주소를 입력해주세요");
+    } else {
       if (checkId == 1) {
         var param = {
           user_name: userInfo.user_name,
@@ -140,11 +137,6 @@ const Join = () => {
           user_id: "",
         }));
       }
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      //   alert("다시 시도하세요");
-      // });
     }
   }
   return (

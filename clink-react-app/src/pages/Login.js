@@ -45,6 +45,7 @@ const Login = () => {
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
         alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
+
         // jwt 발급용
         const response = await axios.post(
           "http://localhost:80/generateToken",
@@ -66,15 +67,6 @@ const Login = () => {
       }
     }
   };
-  // const callRefresh = async () => {
-  //   const accessToken = localStorage.getItem("accessToken");
-  //   const refreshToken = localStorage.getItem("refreshToken");
-
-  //   const tokens = { accessToken, refreshToken };
-  //   const res = await axios.post("http://localhost:8080/refreshToken", tokens);
-  //   localStorage.setItem("accessToken", res.data.accessToken);
-  //   localStorage.setItem("refreshToken", res.data.refreshToken);
-  // };
 
   return (
     <div className="LoginContainer">
