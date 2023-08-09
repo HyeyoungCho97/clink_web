@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import account from "../../assets/account.png";
@@ -8,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import bankCategory from "../../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/AddAccountForm.scss";
+import { getAuthHeader } from "../common/JwtAuth"
 
 // 저축계좌
 const AddAccountForm = () => {
@@ -34,14 +34,18 @@ const AddAccountForm = () => {
     } else if (bank_code == null || bank_code == "") {
       alert("은행을 선택해주세요");
     } else {
-      let param = {
-        account_no: account_no,
-        user_no: sessionStorage.getItem("user_no"),
-        bank_code: bank_code,
-        account_code: 1,
-      };
+
       axios
-        .post("http://localhost:80/clink/user/registAccount.do", param)
+        .post(
+          "http://localhost:80/user/registAccount.do",
+          {
+            account_no: account_no,
+            user_no: sessionStorage.getItem("user_no"),
+            bank_code: bank_code,
+            account_code: 1,
+          },
+          { headers: getAuthHeader() }
+        )
         .then((response) => {
           console.log(response.data);
           if (response.data === 1) {
