@@ -24,6 +24,8 @@ const Join = () => {
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
+
+  const [checkId, setCheckId] = useState("");
   let confirmID; // 아이디 중복체크용
 
   function handleInputChange(e) {
@@ -49,10 +51,10 @@ const Join = () => {
       .then((response) => {
         if (response.data === "success") {
           setWarningId("사용할 수 있는 아이디입니다.");
-          confirmID = 1;
+          setCheckId(1);
         } else if (response.data === "fail") {
           setWarningId("사용 중인 아이디입니다.");
-          confirmID = 0;
+          setCheckId(0);
         }
       })
       .catch((error) => {
@@ -105,7 +107,7 @@ const Join = () => {
     // }
     // else if (userInfo.email.trim() === "") {alert("이메일 주소를 입력해주세요");}
     else {
-      if (confirmID === 1) {
+      if (checkId == 1) {
         var param = {
           user_name: userInfo.user_name,
           user_id: userInfo.user_id,
@@ -117,11 +119,7 @@ const Join = () => {
 
         console.log(param);
         axios
-          .post(
-            "http://localhost:80/user/join.do",
-            param
-            // ,{ headers: authHeader,}
-          )
+          .post("http://localhost:80/user/join.do", param)
           .then((response) => {
             // console.log(response.data);
             if (response.data) {

@@ -9,7 +9,7 @@ import ShowAccount from "../components/account/ShowAccount";
 import bankCategory from "../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/MyPage.scss";
-import getAuthHeader from "../components/common/AuthHeader";
+import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const MyPage = () => {
           console.log("Refresh Your Token");
           // 토큰 유효기간이 만료되면 refreshToken 호출
           try {
-            await callRefresh();
+            await callRefresh(); // refresh 토큰 발급
             console.log("new tokens....saved..");
             return accessToken();
           } catch (refreshErr) {
@@ -90,17 +90,6 @@ const MyPage = () => {
     // setUserInfo(sessionStorage.getItem("user_id"));
     fetchData();
   }, []);
-
-  // refresh token 발급
-  const callRefresh = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-
-    const tokens = { accessToken, refreshToken };
-    const res = await axios.post("http://localhost:8080/refreshToken", tokens);
-    localStorage.setItem("accessToken", res.data.accessToken);
-    localStorage.setItem("refreshToken", res.data.refreshToken);
-  };
 
   // 로그아웃(세션제거)
   function logoutHandler() {
