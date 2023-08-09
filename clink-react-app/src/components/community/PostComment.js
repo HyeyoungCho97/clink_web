@@ -4,7 +4,11 @@ import "../../styles/community/PostComment.scss";
 import { ThreeDotsVertical } from "react-bootstrap-icons";
 import AdditionalButtonforComment from "./AdditionalButtonforComment";
 
-export default function PostComment({ comment, parentCommentId, setParentCommentId }) {
+export default function PostComment({
+  comment,
+  parentCommentId,
+  setParentCommentId,
+}) {
   const {
     comment_id,
     board_no,
@@ -16,23 +20,30 @@ export default function PostComment({ comment, parentCommentId, setParentComment
   const [view, setView] = useState(false);
   const [isReply, setIsReply] = useState(false);
   const [isMine, setIsMine] = useState(false);
-  
 
-  useEffect (() => {
-    if(comment_id !== parent_id) {
+  useEffect(() => {
+    if (comment_id !== parent_id) {
       setIsReply(true);
-    if (register_id === sessionStorage.user_id) {
+      if (register_id === sessionStorage.user_id) {
         setIsMine(true);
       }
     }
-  }, [])
-  
-
+  }, []);
 
   return (
     <>
-      <div className="CommunityPost" style={{ backgroundColor: parentCommentId === comment_id ? "#cfe2ff" : isReply ? "#f8f9fa" : "#FFFFFF"}}>
-      <br />
+      <div
+        className="CommunityPost"
+        style={{
+          backgroundColor:
+            parentCommentId === comment_id
+              ? "#cfe2ff"
+              : isReply
+              ? "#f8f9fa"
+              : "#FFFFFF",
+        }}
+      >
+        <br />
         <div className="CommunityPostProfile">
           <div className="CommunityPostProfileImg">
             <img src={Logo} alt="Profile" />
@@ -42,15 +53,15 @@ export default function PostComment({ comment, parentCommentId, setParentComment
             <p className="CommunityPostProfileTime">{register_datetime}</p>
           </div>
           <div className="menu">
-            {!(!isMine && isReply) &&
-            <ThreeDotsVertical
-              onClick={(event) => {
-                event.stopPropagation();
-                setView(!view);
-                console.log("click");
-              }}
-            />
-            }
+            {!(!isMine && isReply) && (
+              <ThreeDotsVertical
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setView(!view);
+                  console.log("click");
+                }}
+              />
+            )}
 
             {view && (
               <AdditionalButtonforComment
@@ -58,7 +69,7 @@ export default function PostComment({ comment, parentCommentId, setParentComment
                 register_id={register_id}
                 parentCommentId={parentCommentId}
                 setParentCommentId={setParentCommentId}
-                isReply = {isReply}
+                isReply={isReply}
                 isMine={isMine}
               ></AdditionalButtonforComment>
             )}

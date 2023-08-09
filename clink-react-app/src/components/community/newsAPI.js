@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react';
-import '../../styles/community/newsAPI.css';
+import "../../styles/community/newsAPI.css";
 function News({ idx, newsdata }) {
   return (
     <div>

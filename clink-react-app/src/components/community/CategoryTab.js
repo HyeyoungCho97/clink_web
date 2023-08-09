@@ -1,6 +1,6 @@
-import '../../styles/community/CommunityCategoryTab.scss';
-import { NavLink } from 'react-router-dom';
-import React from 'react';
+import "../../styles/community/CommunityCategoryTab.scss";
+import { NavLink } from "react-router-dom";
+import React from "react";
 
 export default function CommunityCategory({
   setFilter,
@@ -12,7 +12,7 @@ export default function CommunityCategory({
   const onclick = () => {
     console.log(typeof categoryNo);
     setFilter(1);
-    setHashtag('');
+    setHashtag("");
   };
   return (
     <div className="CommunityCategoryContainer">
