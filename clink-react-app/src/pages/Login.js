@@ -35,7 +35,7 @@ const Login = () => {
       };
       console.log(user_id, password);
 
-      const res = await axios.post('http://localhost:80/clink/user/login.do', {
+      const res = await axios.post('http://localhost:80/user/login.do', {
         user_id: user_id,
         password: password,
       });
@@ -44,6 +44,8 @@ const Login = () => {
         sessionStorage.setItem('user_no', res.data.user_no);
         sessionStorage.setItem('user_id', res.data.user_id);
         sessionStorage.setItem('nick_name', res.data.nick_name);
+        alert(sessionStorage.getItem('user_id') + ' 로그인되었습니다.');
+
         // jwt 발급용
         const response = await axios.post(
           'http://localhost:80/generateToken',

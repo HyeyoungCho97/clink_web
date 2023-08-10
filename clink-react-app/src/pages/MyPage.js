@@ -1,69 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import pig from '../assets/pig.png';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import axios from 'axios';
-import AddAccount from '../components/account/AddAccount';
-import ShowAccount from '../components/account/ShowAccount';
-import bankCategory from '../dataCode/bankCategory.json';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/MyPage.scss';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import pig from "../assets/pig.png";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
+import AddAccount from "../components/account/AddAccount";
+import ShowAccount from "../components/account/ShowAccount";
+import bankCategory from "../dataCode/bankCategory.json";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/MyPage.scss";
+import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 
 const MyPage = () => {
-  // const [confirmPwd, setConfirmPwd] = useState("");
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    nickname: '',
-    password: '',
+    id: "",
+    name: "",
+    nickname: "",
+    password: "",
   });
-  const [new_name, setNew_name] = useState('');
-  const [new_nickname, setNew_nickname] = useState('');
-  const [new_password, setNew_Password] = useState('');
   const [file, setFile] = useState(null);
   const [newfile, setNewfile] = useState('');
 
-  const [addAccountNo, setAddAccountNo] = useState('');
-  const [addAccountBankCode, setAddAccountBankCode] = useState('');
-  const [showAccountNo, setShowAccountNo] = useState('');
-  const [showAccountBankCode, setShowAccountBankCode] = useState('');
-  const navigate = useNavigate();
+  const [addAccountNo, setAddAccountNo] = useState("");
+  const [addAccountBankCode, setAddAccountBankCode] = useState("");
+  const [showAccountNo, setShowAccountNo] = useState("");
+  const [showAccountBankCode, setShowAccountBankCode] = useState("");
 
   useEffect(() => {
     // 계좌 정보불러오기
-    let param = {
-      user_no: sessionStorage.getItem('user_no'),
-    };
-    axios
-      .post('http://localhost:80/clink/user/checkAccount.do', param)
-      .then((response) => {
-        console.log(response.data);
-        // 은행 json 파일에서 가져오기
-        for (let i = 0; i < response.data.length; i++) {
-          // 저축계좌 등록
-          if (response.data[i].account_code === '1') {
-            setAddAccountNo(response.data[i].account_no);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw "Cannot Find Access Token";
+    }
+    console.log(accessToken);
+    const fetchData = async () => {
+      try {
+        const accountResponse = await axios.post(
+          "http://localhost:80/user/checkAccount.do",
+          { user_no: sessionStorage.getItem("user_no") },
+          {
+            headers: getAuthHeader(),
+          }
+        );
+        console.log(accountResponse);
+        for (let i = 0; i < accountResponse.data.length; i++) {
+          if (accountResponse.data[i].account_code === "1") {
+            setAddAccountNo(accountResponse.data[i].account_no);
             setAddAccountBankCode(
-              bankCategory.bank[response.data[i].bank_code]
+              bankCategory.bank[accountResponse.data[i].bank_code]
             );
-            // 소비계좌 등록
-          } else if (response.data[i].account_code === '2') {
-            setShowAccountNo(response.data[i].account_no);
+          } else if (accountResponse.data[i].account_code === "2") {
+            setShowAccountNo(accountResponse.data[i].account_no);
             setShowAccountBankCode(
-              bankCategory.bank[response.data[i].bank_code]
+              bankCategory.bank[accountResponse.data[i].bank_code]
             );
-            // 등록된 계좌 없음
           } else {
             console.log('등록된 계좌 없음');
           }
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+        const userResponse = await axios.post(
+          "http://localhost:80/user/get-userInfo.do",
+          { user_no: sessionStorage.getItem("user_no") },
+          {
+            headers: getAuthHeader(),
+          }
+        );
+        setUserInfo({
+          ...userInfo,
+          id: userResponse.data.user_id,
+          nickname: userResponse.data.nick_name,
+          password: userResponse.data.password,
+        });
+      } catch (err) {
+        if (err.response.data.msg === "Expired Token") {
+          console.log("Refresh Your Token");
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh(); // refresh 토큰 발급
+            console.log("new tokens....saved..");
+            return accessToken();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        } //end if
+      }
+    };
     // 로그인 확인용
     // setUserInfo(sessionStorage.getItem("user_id"));
+    fetchData();
   }, []);
 
   // 로그아웃(세션제거)
@@ -73,57 +98,67 @@ const MyPage = () => {
   }
 
   // 개인정보 수정
-  function updateInfoHandler() {
-    let param = {
-      user_name: new_name,
-      nick_name: new_nickname,
-      password: new_password,
-      user_no: sessionStorage.getItem('user_no'),
-    };
-    axios
-      .post('http://localhost:80/clink/user/update.do', param)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data === 'success') {
-          alert('개인정보가 수정되었습니다.');
-          setUserInfo({
-            ...userInfo,
-            name: new_name,
-            nickname: new_nickname,
-            password: new_password,
-          });
-          sessionStorage.setItem('user_name', userInfo.name);
-          sessionStorage.setItem('nick_name', userInfo.nickname);
-        } else if (response.data === 'fail') {
-          alert('정상적으로 처리되지 않았습니다.');
+  async function updateInfoHandler() {
+    try {
+      const param = {
+        nick_name: userInfo.nickname,
+        password: userInfo.password,
+        user_no: sessionStorage.getItem("user_no"),
+      };
+
+      const response = await axios.post(
+        "http://localhost:80/user/update.do",
+        param,
+        {
+          headers: getAuthHeader(),
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('다시 시도하세요');
-      });
+      );
+
+      console.log(response.data);
+      if (response.data === "success") {
+        alert("개인정보가 수정되었습니다.");
+        setUserInfo({
+          ...userInfo,
+          nickname: userInfo.nickname,
+          password: userInfo.password,
+        });
+        sessionStorage.setItem("nick_name", userInfo.nickname);
+        sessionStorage.setItem("password", userInfo.password);
+      } else if (response.data === "fail") {
+        alert("정상적으로 처리되지 않았습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("다시 시도하세요");
+    }
   }
 
   // 프로필 사진
-  function profileHandler() {
-    let formData = new FormData(); // new FromData()로 새로운 객체 생성
-    formData.append('user_no', sessionStorage.getItem('user_no'));
-    formData.append('file', file);
-    axios
-      .post('http://localhost:80/clink/user/photo-url.do', formData)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data) {
-          alert('프로필 사진이 수정되었습니다.');
-          setNewfile(response.data);
-        } else {
-          alert('정상적으로 처리되지 않았습니다.');
+  async function profileHandler() {
+    try {
+      const formData = new FormData(); // new FromData()로 새로운 객체 생성
+      formData.append("user_no", sessionStorage.getItem("user_no"));
+      formData.append("file", file);
+
+      const response = await axios.post(
+        "http://localhost:80/user/photo-url.do",
+        formData,
+        {
+          headers: getAuthHeader(),
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('다시 시도하세요');
-      });
+      );
+
+      console.log(response.data);
+      if (response.data) {
+        alert("프로필 사진이 수정되었습니다.");
+        setNewfile(response.data);
+      } else {
+        alert("정상적으로 처리되지 않았습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("다시 시도하세요");
+    }
   }
 
   // 로그아웃(세션제거)
@@ -133,33 +168,36 @@ const MyPage = () => {
   }
 
   return (
-    <div className="MyPageContainer" style={{ paddingBottom: '20%' }}>
-      <div className="MyPageTitle">
-        {sessionStorage.getItem('user_id')} 마이페이지
-      </div>
+    <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
+      <div className="MyPageTitle">{userInfo.id} 마이페이지</div>
       {/* {userInfo ? ( */}
       <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
         <div className="MyPageProfileBox">
           {newfile ? (
-            <img src={`http://localhost/${newfile}`} alt="logo" />
+            <img src={`http://localhost/img/${newfile}`} alt="logo" />
           ) : (
             <img src={require('../assets/pig.png')} alt="logo" />
           )}
-          <div className="MyPageProfileBox">
+          <div className="MyPageProfileBtnBox">
             <label htmlFor="file">
               <div className="MyPageProfileSelectBtn">파일 선택</div>
             </label>
             &nbsp; &nbsp;&nbsp;
             <input
               id="file"
-              // className="MyPageProfileBtn"
               className="MyPageChoiceBtn"
               type="file"
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
             />
-            <Button type="submit" onClick={() => profileHandler()}>
+            <Button
+              // style={{ backgroundColor: "white",
+              //   color: "#0364f7",
+              //   border: "1px solid black" }}
+              type="submit"
+              onClick={() => profileHandler()}
+            >
               확인
             </Button>
           </div>
@@ -183,27 +221,12 @@ const MyPage = () => {
               <div>닉네임</div>
               <Form.Control
                 type="text"
-                // name="new_nickname"
-                // placeholder={`${userInfo.name}`}
-                placeholder={`${sessionStorage.getItem('user_name')}`}
+                placeholder={`${userInfo.nickname}`}
                 className="joinInput"
                 onChange={(e) => {
-                  setNew_nickname(e.target.value);
+                  setUserInfo({ ...userInfo, nickname: e.target.value });
                 }}
-                value={new_nickname}
-              />
-            </div>
-            <div className="MyPageLineBox">
-              <div>이름</div>
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder={`${sessionStorage.getItem('nick_name')}`}
-                className="joinInput"
-                onChange={(e) => {
-                  setNew_name(e.target.value);
-                }}
-                value={new_name}
+                value={userInfo.nickname}
               />
             </div>
             <div className="MyPageLineBox">
@@ -213,9 +236,9 @@ const MyPage = () => {
                 name="password"
                 className="joinInput"
                 onChange={(e) => {
-                  setNew_Password(e.target.value);
+                  setUserInfo({ ...userInfo, password: e.target.value });
                 }}
-                value={new_password}
+                value={userInfo.password}
               />
             </div>
             <div className="MyPageLineBox">
