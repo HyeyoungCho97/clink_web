@@ -35,10 +35,6 @@ const ShowAccountForm = () => {
     } else {
       axios
         .post(
-<<<<<<< HEAD
-          "http://localhost/clink/user/registAccount.do",
-          param
-=======
           "http://localhost:80/user/registAccount.do",
           {
             account_no: account_no,
@@ -47,7 +43,6 @@ const ShowAccountForm = () => {
             account_code: 2,
           },
           { headers: getAuthHeader() }
->>>>>>> fda10adee115e12156d1840fc5ba0c32153a3db0
         )
         .then((response) => {
           console.log(response.data);
