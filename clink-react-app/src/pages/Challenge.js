@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "../styles/challenge/Challenge.scss";
-import ChallengeTitle from "../components/Challenge/ChallengeTitle";
-import ChallengeGoal from "../components/Challenge/ChallengeGoal";
-import Header from "../components/common/Header";
-import ChallengeGraph from "../components/Challenge/ChallengeGraph";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import '../styles/challenge/Challenge.scss';
+import ChallengeTitle from '../components/Challenge/ChallengeTitle';
+import ChallengeGoal from '../components/Challenge/ChallengeGoal';
+import Header from '../components/common/Header';
+import ChallengeGraph from '../components/Challenge/ChallengeGraph';
 
 const Challenge = () => {
   const [ChallengeTitleText, setChallengeTitleText] = useState();
@@ -15,8 +15,7 @@ const Challenge = () => {
   const [weekData, setWeekData] = useState([]);
 
   useEffect(() => {
-    const address =
-      "http://localhost/challenge/main-info?userNo=00000";
+    const address = 'http://localhost:80/challenge/main-info?userNo=00000';
     //+sessionStorage.getItem("userNo");
     axios
       .get(address)
@@ -36,7 +35,7 @@ const Challenge = () => {
   }, []);
 
   return (
-    <div className="Challenge" style={{ paddingBottom: "20%" }}>
+    <div className="Challenge" style={{ paddingBottom: '20%' }}>
       <div id="backgroundCircle"></div>
       <div className="challengContent">
         <Header />

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import axios from "axios";
-import moment from "moment";
-import ModalBasic from "./ModalBasic";
+import React, { useState } from 'react';
+import axios from 'axios';
+import moment from 'moment';
+import ModalBasic from './ModalBasic';
 
 const ChallengeTableCard = ({
   datetime,
@@ -17,48 +17,48 @@ const ChallengeTableCard = ({
 
   //Update 호출
   function updateCard() {
-    console.log("수정");
+    console.log('수정');
     setModalOpen(true);
     setCardContent(false);
   }
 
   //D -> DD
   function convertDigitLength(digit) {
-    return digit < 10 ? "0" + digit : digit;
+    return digit < 10 ? '0' + digit : digit;
   }
 
   // 날짜 'MM.DD'
   let date = new Date(datetime);
-  let strDate = moment(date).format("MM.DD");
+  let strDate = moment(date).format('MM.DD');
 
   // 시간 'HH:MM:DD'
   let time =
     convertDigitLength(date.getHours()) +
-    ":" +
+    ':' +
     convertDigitLength(date.getMinutes()) +
-    ":" +
+    ':' +
     convertDigitLength(date.getSeconds());
 
   //Delete 호출
   function deleteCard() {
-    console.log("삭제");
+    console.log('삭제');
     //삭제 전 확인
-    if (window.confirm("정말 삭제하시겠습니까?")) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
       const address =
-        "http://localhost/challenge/pay-delete?userNo=00000" +
-        "&datetime=" +
-        moment(date).format("YYYY-MM-DD ") +
+        'http://localhost:80/challenge/pay-delete?userNo=00000' +
+        '&datetime=' +
+        moment(date).format('YYYY-MM-DD ') +
         time +
-        "&content=" +
+        '&content=' +
         description;
       axios
         .get(address)
         .then((response) => {
           console.log(response);
           if (response.data) {
-            alert("정상적으로 삭제되었습니다.");
+            alert('정상적으로 삭제되었습니다.');
             window.location.reload();
-          } else alert("잠시 후 다시 시도해주세요");
+          } else alert('잠시 후 다시 시도해주세요');
         })
         .catch((error) => {
           console.log(error);
@@ -67,7 +67,7 @@ const ChallengeTableCard = ({
   }
 
   let strAmount =
-    amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+    amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
 
   return (
     <div className="ChallengeTableCard">

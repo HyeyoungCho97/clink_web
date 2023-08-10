@@ -14,8 +14,7 @@ import AdditionalButton from './AdditionalButton';
 import axios from 'axios';
 import timestampParse from '../common/timestampParse'
 
-export default function CommunityPost({ post, key, commentCount }) {
-  
+export default function CommunityPost({ post, commentCount }) {
   const {
     board_title,
     board_no,
