@@ -31,7 +31,6 @@ export default function Post() {
           'http://localhost:80/community/post/comment' + location.search
         );
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
-        console.log(responsePost.data);
         setComments(responseComment.data);
       } catch (e) {
       }
