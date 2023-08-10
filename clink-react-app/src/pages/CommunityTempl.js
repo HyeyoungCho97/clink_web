@@ -4,7 +4,7 @@ import FinInfo from "../components/community/finInfo";
 import ListPrint from "../components/community/listPrint";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 function Community({ list }) {
   const [data, setData] = useState(null);
   const [newsdata, setNewsdata] = useState(null);
@@ -12,13 +12,16 @@ function Community({ list }) {
   const [HotFreePost, setHotFreePost] = useState([]);
   const [HotInfoPost, setHotInfoPost] = useState([]);
   const [HotAnnPost, setHotAnnPost] = useState([]);
+  
   useEffect(() => {
     //인기 게시물 호출
     const listSet = async () => {
       try {
         const response = await axios.get(
           "http://localhost:80/community/hot-posts"
-        );
+        ,{
+          headers: getAuthHeader(),
+        });
         setHotPost(response.data[0].hotPost);
         setHotFreePost(response.data[0].hotFreePost);
         setHotInfoPost(response.data[0].hotInfoPost);
