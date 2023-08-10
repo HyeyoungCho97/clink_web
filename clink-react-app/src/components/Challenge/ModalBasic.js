@@ -46,7 +46,7 @@ function ModalBasic({
       };
       console.log(param);
       const address =
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-update";
+        "http://localhost/challenge/pay-update";
 
       axios
         .post(address, param)

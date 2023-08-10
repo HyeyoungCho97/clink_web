@@ -11,12 +11,11 @@ import Logo from '../../assets/maru.jpg';
 import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
+import axios from 'axios';
+import timestampParse from '../common/timestampParse'
 
-export default function CommunityPost({ post, key }) {
-  const [likes, setLikes] = useState(0);
-  const [isLike, setIsLike] = useState(false);
-  const [isMine, setIsMine] = useState(false);
-  const location = useLocation();
+export default function CommunityPost({ post, key, commentCount }) {
+  
   const {
     board_title,
     board_no,
@@ -28,45 +27,84 @@ export default function CommunityPost({ post, key }) {
     board_views,
   } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [like, setLike] = useState(board_like_count);
+  const [isLike, setIsLike] = useState(false);
+  const [isMine, setIsMine] = useState(false);
+  const [view, setView] = useState(false);
+
+
+  
+
+
+  const baseurl = "http://localhost/community/post/like";
+  const parameterurl = "?user_id="+ sessionStorage.user_id + "&board_no=" + post.board_no;
+  const likeupurl = "/insert"
+  const likedownurl = "/delete"
+
   useEffect(() => {
-    if (post && post.likes) {
-      setLikes(post.likes);
-    }
+
     if (
       register_id === sessionStorage.user_id &&
       location.pathname === '/community/post'
     ) {
       setIsMine(true);
     }
+
+    //좋아요 체크
+    axios.get(baseurl+parameterurl)
+    .then(function(response) {
+      setIsLike(response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    })
+
     // console.log('isMine change :' + isMine);
     // console.log(location.pathname);
-  }, [post, isMine]);
+  }, [isMine, isLike, like]);
 
-  const clickLike = () => {
-    if (isLike === false) {
-      setLikes(likes + 1);
+  const clickLike = (event) => {
+    event.stopPropagation();
+
+    if (isLike === 0) {
+      axios
+        .post(baseurl+likeupurl+parameterurl)
+        .then((response) => {
+          setIsLike(true);
+          setLike(like+1);
+        })
     } else {
-      setLikes(likes - 1);
+      axios
+        .post(baseurl+likedownurl+parameterurl)
+        .then((response) => {
+          setIsLike(false);
+          setLike(like-1);
+        })
     }
     setIsLike(!isLike);
   };
 
-  const navigate = useNavigate();
-  const [view, setView] = useState(false);
+
+
+  
   const postHash = () => {
-    const hashlist = hashtag_content.split(',');
     const list = [];
-    for (let i = 0; i < hashlist.length; i++) {
-      list.push(
-        <Button
-          variant="primary"
-          size="sm"
-          key={i}
-          style={{ marginRight: '5px' }}
-        >
-          {'#' + hashlist[i]}
-        </Button>
-      );
+    if (hashtag_content !== undefined) {
+      const hashlist = hashtag_content.split(',');
+      for (let i = 0; i < hashlist.length; i++) {
+        list.push(
+          <Button
+            variant="primary"
+            size="sm"
+            key={i}
+            style={{ marginRight: '5px' }}
+          >
+            {'#' + hashlist[i]}
+          </Button>
+        );
+      }
     }
     return list;
   };
@@ -88,7 +126,7 @@ export default function CommunityPost({ post, key }) {
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
-                <p className="CommunityPostProfileTime">{register_datetime}</p>
+                <p className="CommunityPostProfileTime">{timestampParse(register_datetime)}</p>
               </div>
             </div>
 
@@ -114,11 +152,11 @@ export default function CommunityPost({ post, key }) {
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
             {isLike ? <HeartFill /> : <Heart />}
-            &nbsp;좋아요 {board_like_count}
+            &nbsp;좋아요 {like}
           </button>
           <button>
             <ChatDots />
-            &nbsp;댓글쓰기
+            &nbsp;댓글 {commentCount}
           </button>
           <button>
             <Eye />

@@ -4,8 +4,8 @@ import PostCommentInput from "../components/community/PostCommentInput";
 import PostComment from "../components/community/PostComment";
 import CommunityHeader from "../components/community/CommunityHeader";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-export default function Post() {
+import { useLocation } from 'react-router-dom';
+export default function Post( ) {
   const location = useLocation();
 
   const [posts, setPosts] = useState(null);
@@ -13,7 +13,9 @@ export default function Post() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [parentCommentId, setParentCommentId] = useState(0);
-
+  
+  
+  
   useEffect(() => {
     const fetchPostsComments = async () => {
       try {
@@ -23,16 +25,16 @@ export default function Post() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const responsePost = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
+          'http://localhost/community/post'+ location.search
         );
         const responseComment = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment" +
-            location.search
+          'http://localhost/community/post/comment'+ location.search
         );
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
+        console.log(responsePost.data);
         setComments(responseComment.data);
-      } catch (e) {}
+      } catch (e) {
+      }
       setLoading(false);
     };
 
@@ -46,25 +48,24 @@ export default function Post() {
   return (
     <div className="PostContainer">
       <CommunityHeader></CommunityHeader>
-      <CommunityPost
-        post={posts.communityPostVO}
-        commentCount={posts.commentCount}
-      ></CommunityPost>
+      <CommunityPost post={posts.communityPostVO} commentCount={posts.commentCount}></CommunityPost>
       {comments.map((comment, id) => (
         <PostComment
           comment={comment}
           key={id}
           parentCommentId={parentCommentId}
           setParentCommentId={setParentCommentId}
+          
         ></PostComment>
       ))}
-      <PostCommentInput></PostCommentInput>
+      <PostCommentInput parentCommentId={parentCommentId}></PostCommentInput>
       <br />
       <br />
       <br />
       <br />
       <br />
       <br />
+
     </div>
   );
 }

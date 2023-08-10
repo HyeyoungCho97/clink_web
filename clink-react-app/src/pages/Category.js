@@ -33,7 +33,7 @@ export default function Community() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/posts?category_no=" +
+          "http://localhost/community/posts?category_no=" +
             lo +
             "&filter=" +
             filter +

@@ -41,7 +41,7 @@ const ShowAccountUpdate = () => {
       };
       axios
         .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/registAccount.do",
+          "http://localhost/clink/user/registAccount.do",
           param
         )
         .then((response) => {

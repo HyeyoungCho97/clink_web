@@ -18,7 +18,7 @@ export default function AdditionalButton() {
     if (deleteOk) {
       await axios
         .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/delete",
+          "http://localhost/community/post/delete",
           null,
           {
             params: {
@@ -47,7 +47,6 @@ export default function AdditionalButton() {
           href="#"
           onClick={(event) => {
             event.stopPropagation();
-            console.log(location.search);
             navigate("/community/post/update" + location.search);
           }}
         >

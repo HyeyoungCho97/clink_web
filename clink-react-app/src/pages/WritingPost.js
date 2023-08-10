@@ -26,9 +26,11 @@ export default function WritingPost() {
       board_content: inputPost.content,
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
+      user_no: sessionStorage.user_no,
+      register_id: sessionStorage.user_id
     };
     //trim 오류나서 우선 지우고 테스트중
-    if (inputPost.boardTitle === "" || inputPost.boardContent === "") {
+    if (inputPost.title.trim() === "" || inputPost.content.trim() === "") {
       alert("제목 또는 내용을 입력해주세요!");
     } else {
       axios.post("http://localhost:80/community/post/insert", params);

@@ -15,7 +15,7 @@ export default function AdditionalButton({
     if (deleteOk) {
       await axios
         .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment/delete",
+          "http://localhost/community/post/comment/delete",
           null,
           {
             params: {
@@ -35,6 +35,9 @@ export default function AdditionalButton({
   const replySet = (e) => {
     setParentCommentId(target_comment_id);
   };
+
+  console.log(isMine);
+
 
   return (
     <>
