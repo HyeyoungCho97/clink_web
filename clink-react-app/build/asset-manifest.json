@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.87195913.css",
-    "main.js": "/static/js/main.462a5ff9.js",
+    "main.js": "/static/js/main.ae71cef9.js",
     "static/js/787.9e6518ba.chunk.js": "/static/js/787.9e6518ba.chunk.js",
     "static/media/mainCoin.svg": "/static/media/mainCoin.cb27ffff49790f06264f6bfbac0ec42a.svg",
     "static/media/serviceExplain.png": "/static/media/serviceExplain.82ea00565a5de20ba91d.png",
@@ -13,11 +13,11 @@
     "static/media/main_background.svg": "/static/media/main_background.47c529405ed804579800f3c01f782847.svg",
     "static/media/mainCard.svg": "/static/media/mainCard.0175c2a7107c9f1b42baab3e3061a489.svg",
     "main.87195913.css.map": "/static/css/main.87195913.css.map",
-    "main.462a5ff9.js.map": "/static/js/main.462a5ff9.js.map",
+    "main.ae71cef9.js.map": "/static/js/main.ae71cef9.js.map",
     "787.9e6518ba.chunk.js.map": "/static/js/787.9e6518ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.87195913.css",
-    "static/js/main.462a5ff9.js"
+    "static/js/main.ae71cef9.js"
   ]
 }
