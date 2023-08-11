@@ -19,13 +19,13 @@ export default function EditPost() {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-  setInputPost({
-    ...inputPost,
-    communityPostVO: {
-      ...inputPost.communityPostVO,
-      [name]: value,
-    },
-  });
+    setInputPost({
+      ...inputPost,
+      communityPostVO: {
+        ...inputPost.communityPostVO,
+        [name]: value,
+      },
+    });
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function EditPost() {
         setLoading(true);
 
         await axios
-          .get("http://localhost/community/post" + location.search)
+          .get('http://localhost/community/post' + location.search)
           .then((response) => setInputPost(response.data));
       } catch (e) {
         setError(e);
@@ -64,7 +64,7 @@ export default function EditPost() {
       console.log(e);
     });
     window.location.href =
-      "http://localhost:3000/community/post" + location.search;
+      'http://localhost:3000/community/post' + location.search;
   };
 
   if (loading) return <div>로딩중..</div>;
