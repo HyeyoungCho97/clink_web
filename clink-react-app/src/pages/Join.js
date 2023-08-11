@@ -20,11 +20,9 @@ const Join = () => {
     emailAuthNum: "",
   });
   const [authcode, setAuthcode] = useState("");
-
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
-
   const [checkId, setCheckId] = useState("");
 
   function handleInputChange(e) {
@@ -113,13 +111,11 @@ const Join = () => {
           confirmPwd: userInfo.confirmPwd,
           email: userInfo.email,
         };
-
-        console.log(param);
         axios
           .post("http://localhost:80/user/join.do", param)
           .then((response) => {
-            // console.log(response.data);
             if (response.data) {
+              sessionStorage.setItem("user_no", response.data.user_no);
               alert("회원가입 되었습니다. 로그인해주세요.");
               navigate("/");
             } else {
