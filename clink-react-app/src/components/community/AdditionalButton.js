@@ -47,7 +47,6 @@ export default function AdditionalButton() {
           href="#"
           onClick={(event) => {
             event.stopPropagation();
-            console.log(location.search);
             navigate("/community/post/update" + location.search);
           }}
         >

@@ -8,20 +8,7 @@ import Form from "react-bootstrap/Form";
 import queryString from "query-string";
 
 export default function EditPost() {
-  const [inputPost, setInputPost] = useState({
-    board_content: "",
-    board_like_count: null,
-    board_no: null,
-    board_title: "",
-    board_views: null,
-    category_no: null,
-    hashtag_content: "",
-    register_datetime: "",
-    register_id: null,
-    update_datetime: null,
-    update_id: null,
-    user_no: null,
-  });
+  const [inputPost, setInputPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -32,7 +19,14 @@ export default function EditPost() {
   const post_board_no = Number(query.board_no);
 
   const onChange = (e) => {
-    setInputPost({ ...inputPost, [e.target.classList[0]]: e.target.value });
+    const { name, value } = e.target;
+    setInputPost({
+      ...inputPost,
+      communityPostVO: {
+        ...inputPost.communityPostVO,
+        [name]: value,
+      },
+    });
   };
 
   useEffect(() => {
@@ -42,13 +36,12 @@ export default function EditPost() {
         setInputPost(null);
         setLoading(true);
 
-        const responsePost = await axios.get(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
-        );
-        setInputPost(responsePost.data);
-
-        console.log(inputPost);
+        await axios
+          .get(
+            "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
+              location.search
+          )
+          .then((response) => setInputPost(response.data));
       } catch (e) {
         setError(e);
       }
@@ -64,19 +57,18 @@ export default function EditPost() {
       arr.push(inputPost.tagList[i].tagname);
     }
     let params = {
-      board_title: inputPost.board_title,
-      board_content: inputPost.board_content,
-      category_no: inputPost.category_no,
+      board_title: inputPost.communityPostVO.board_title,
+      board_content: inputPost.communityPostVO.board_content,
+      category_no: inputPost.communityPostVO.category_no,
       hashtag_content: arr.join(),
-      register_id: inputPost.register_id,
-      board_no: inputPost.board_no,
+      update_id: inputPost.communityPostVO.update_id,
+      board_no: post_board_no,
     };
-    axios.post(
-      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/update",
-      params
-    );
+    axios.post(updatePostAPILink, params).catch(function (e) {
+      console.log(e);
+    });
     window.location.href =
-      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/posts?category_no=1&&filter=1";
+      "http://localhost:3000/community/post" + location.search;
   };
 
   if (loading) return <div>로딩중..</div>;
@@ -91,8 +83,9 @@ export default function EditPost() {
             type="text"
             placeholder="제목을 입력하세요"
             className="board_title"
-            defaultValue={inputPost.board_title}
+            defaultValue={inputPost.communityPostVO.board_title}
             onChange={onChange}
+            name="board_title"
           />
           <br />
           <Form.Control
@@ -100,8 +93,9 @@ export default function EditPost() {
             as="textarea"
             rows={13}
             placeholder="내용을 입력하세요"
-            defaultValue={inputPost.board_content}
+            defaultValue={inputPost.communityPostVO.board_content}
             onChange={onChange}
+            name="board_content"
           />
           <Form.Control type="hidden" name="board_no" value={post_board_no} />
         </Form.Group>

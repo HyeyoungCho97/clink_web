@@ -12,115 +12,69 @@ const Login = () => {
   const navigate = useNavigate();
   const [user_id, setUser_id] = useState("");
   const [password, setPassword] = useState("");
-  const [user_no, setUser_no] = useState("");
+  const [challengeCheck, setChallengeCheck] = useState(0);
 
   // 엔터키 이벤트
   const handleEnterKey = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       handleLoginSubmit();
     }
   };
 
+  // 로그인
   const handleLoginSubmit = async () => {
     if (user_id.trim() === "" || password.trim() === "") {
       setUser_id("");
       setPassword("");
-      console.log(user_id);
       alert("아이디 또는 패스워드를 입력해주세요");
     } else {
+      //토큰을 생성할 파라미터
       var param = {
         mid: "t3",
         mpw: "t3",
       };
-      console.log(user_id, password);
 
-      // 토큰 검증
-      const accessToken = localStorage.getItem("accessToken");
-      const refreshToken = localStorage.getItem("refreshToken");
-      if (!accessToken) {
-        console.log("Cannot Find Access Token");
-
-        // 토큰 발급용
-        axios
-          .post(
-            "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/generateToken",
-            param
-          )
-          .then((response) => {
-            if (response.data) {
-              console.log(response.data);
-              localStorage.setItem("accessToken", response.data.accessToken);
-              localStorage.setItem("refreshToken", response.data.refreshToken);
-              console.log("accessToken:" + localStorage.getItem("accessToken"));
-              console.log(
-                "refreshToken:" + localStorage.getItem("refreshToken")
-              );
-            } else {
-              console.log("토큰 생성 실패");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("generateToken 에러 다시 시도하세요");
-          });
-      }
-      console.log("액세스토큰:" + localStorage.getItem("accessToken"));
-      console.log("리프레시토큰:" + localStorage.getItem("refreshToken"));
-
-      // 헤더에 담아서 API호출
-      console.log("accessToken:" + accessToken);
-      const authHeader = {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      };
-      try {
-        const res = await axios.post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/login.do",
-          { user_id: user_id, password: password },
-          {
-            headers: authHeader,
-          }
-        );
-        console.log(res.data);
-        if (res.data) {
-          console.log(res.data.user_no);
-          sessionStorage.setItem("user_no", res.data.user_no);
-          setUser_no(res.data.user_no);
-          alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
-          navigate("/mypage");
-        } else {
-          alert("login.do else 에러 다시 시도하세요");
-          setUser_id("");
-          setPassword("");
+      const res = await axios.post(
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/user/login.do",
+        {
+          user_no: sessionStorage.getItem("user_no"),
+          user_id: user_id,
+          password: password,
         }
-        return console.log(res.data);
-      } catch (err) {
-        console.log(err);
-        if (err.response.data.msg === "Expired Token") {
-          console.log("Refresh Your Token");
-          // 토큰 유효기간이 만료되면 refreshToken 호출
-          try {
-            await callRefresh();
-            console.log("new tokens....saved..");
-            return handleLoginSubmit(); // 재호출
-          } catch (refreshErr) {
-            throw refreshErr.response.data.msg;
-          }
-        } //end if
-      }
-      // RefreshToken 발급용
-      const callRefresh = async () => {
-        const accessToken = localStorage.getItem("accessToken");
-        const refreshToken = localStorage.getItem("refreshToken");
+      );
+      if (res.data) {
+        sessionStorage.setItem("user_no", res.data.user_no);
+        sessionStorage.setItem("user_id", res.data.user_id);
+        sessionStorage.setItem("nick_name", res.data.nick_name);
+        if (
+          res.data.challengeDetails === null ||
+          res.data.challengeDetails === ""
+        ) {
+          console.log("등록된 챌린지 없음");
+          setChallengeCheck(0);
+        } else {
+          console.log("등록된 챌린지 있음");
+          setChallengeCheck(1);
+        }
+        alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
 
-        const tokens = { accessToken, refreshToken };
-        const res = await axios.post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/refreshToken",
-          tokens
+        // jwt 발급용
+        const response = await axios.post(
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/generateToken",
+          param
         );
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-      };
+        if (!response.data) {
+        } else {
+          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+          navigate("/mypage");
+        }
+      } else {
+        alert("회원가입이 필요합니다.");
+        navigate("/join");
+        // setUser_id("");
+        // setPassword("");
+      }
     }
   };
 
@@ -165,7 +119,6 @@ const Login = () => {
       </div>
       <div className="LoginButtonBox">
         <Button
-          variant="primary"
           className="LoginSubmitBtn"
           type="submit"
           onClick={() => handleLoginSubmit()}

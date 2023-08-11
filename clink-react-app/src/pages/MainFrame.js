@@ -8,19 +8,14 @@ import MainQuote from "../components/main/MainQuote.js";
 import MainSavingTotal from "../components/main/MainSavingTotal.js";
 import MainReport from "../components/main/MainReport.js";
 import axios from "axios";
-
-sessionStorage.setItem("userNo", "00000");
-sessionStorage.setItem("userNickName", "gpt영");
-sessionStorage.setItem("userName", "김지영");
-let userId = sessionStorage.getItem("userId");
-if (userId == null) userId = "chatgpt";
+import NoChallenge from "../components/register/NoChallenge/NoChallengeForm";
 
 const MainFrame = (props) => {
   const [badge, setBadge] = useState([]);
   const [quote, setQuote] = useState([]);
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
-
+  const [checkChallenge, setCheckChallenge] = useState(false);
   const [continuesDate, setContinuesDate] = useState(1);
 
   //연속일수 구하는 함수
@@ -44,7 +39,6 @@ const MainFrame = (props) => {
       }
     }
     setContinuesDate(cDate);
-    //console.log(continuesDate);
   }
 
   useEffect(() => {
@@ -52,18 +46,25 @@ const MainFrame = (props) => {
       await axios
         .get(
           "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/main/info?userNo=" +
-            sessionStorage.getItem("userNo")
+            sessionStorage.getItem("user_no")
         )
         .then((Response) => {
-          //console.log(Response.data);
-          setBadge(Response.data.badge);
-          setQuote(Response.data.quote);
-          setStreakData(Response.data.streakData);
-          setReportData(Response.data.report);
-          getContinuesDate(Response.data.streakData.streakData);
+          console.log(Response);
+          if (Response.data !== "") {
+            console.log(Response);
+            setBadge(Response.data.badge);
+            setQuote(Response.data.quote);
+            setStreakData(Response.data.streakData);
+            setReportData(Response.data.report);
+            getContinuesDate(Response.data.streakData.streakData);
+            setCheckChallenge(true);
+          } else {
+            setCheckChallenge(false);
+            console.log("없졍");
+          }
         })
         .catch((error) => {
-          console.log(error);
+          console.log("메인에러");
         });
     };
     getUserData();
@@ -71,30 +72,32 @@ const MainFrame = (props) => {
 
   return (
     <>
-      <div
-        className="main-div"
-        style={{
-          backgroundImage: "url(" + MainBackgroundImage + ")",
-          paddingBottom: "20%",
-        }}
-      >
-        <Header />
-        <MainHello badge={badge} />
-        <MainQuote quote={quote} />
-
-        {reportData && (
-          <MainSavingTotal
-            saving={reportData.yesterday_saving}
-            totalSave={reportData.total_saving}
-          />
-        )}
-
-        {streakData && (
-          <CalendarGraph data={streakData} continuesDate={continuesDate} />
-        )}
-
-        {reportData && <MainReport data={reportData} />}
-      </div>
+      <div className="backgroundCircle"></div>
+      {checkChallenge === true ? (
+        <div
+          className="main-div"
+          style={{
+            backgroundImage: "url(" + MainBackgroundImage + ")",
+            paddingBottom: "20%",
+          }}
+        >
+          <Header />
+          <MainHello badge={badge} />
+          <MainQuote quote={quote} />
+          {reportData && (
+            <MainSavingTotal
+              saving={reportData.yesterday_saving}
+              totalSave={reportData.total_saving}
+            />
+          )}
+          {streakData && (
+            <CalendarGraph data={streakData} continuesDate={continuesDate} />
+          )}
+          {reportData && <MainReport data={reportData} />}
+        </div>
+      ) : (
+        <>{!checkChallenge && <NoChallenge />}</>
+      )}
     </>
   );
 };

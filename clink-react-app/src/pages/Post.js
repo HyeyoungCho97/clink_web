@@ -30,13 +30,12 @@ export default function Post() {
           "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment" +
             location.search
         );
+        console.log(responsePost.data.communityPostVO.board_views);
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
-        console.log(responsePost.data);
         setComments(responseComment.data);
       } catch (e) {}
       setLoading(false);
     };
-
     fetchPostsComments();
   }, [location]);
 

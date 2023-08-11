@@ -26,7 +26,6 @@ export default function WritingCategory({ inputPost, setInputPost }) {
             value={radio.value}
             checked={radioValue === radio.value}
             onChange={(e) => {
-              console.log(e.currentTarget.value);
               setRadioValue(e.currentTarget.value);
               setInputPost({
                 ...inputPost,

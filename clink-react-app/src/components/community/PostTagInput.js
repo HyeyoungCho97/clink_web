@@ -11,7 +11,6 @@ export default function PostTagInput({ inputPost, setInputPost }) {
     tagname: '',
   });
   useEffect(() => {
-    console.log(inputPost);
     if (inputPost.hashtag_content !== undefined) {
       const tagL = inputPost.hashtag_content.split(',');
       const li = [];
@@ -25,7 +24,6 @@ export default function PostTagInput({ inputPost, setInputPost }) {
       }
       setTags(li);
       setInputPost({ ...inputPost, tagList: li });
-      console.log(inputPost);
     }
   }, []);
   const { tagname } = inputs;

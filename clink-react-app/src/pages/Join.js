@@ -23,90 +23,68 @@ const Join = () => {
   const [warningPwd, setWarningPwd] = useState("");
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
-  let confirmID;
+  const [checkId, setCheckId] = useState("");
+  const [checkEmail, setCheckEmail] = useState("");
 
   function handleInputChange(e) {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
-    console.log(userInfo.email, userInfo.emailAuthNum, authcode);
   }
 
   useEffect(() => {
     if (userInfo.password !== userInfo.confirmPwd) {
       setWarningPwd("비밀번호가 일치하지 않습니다.");
     } else {
-      setWarningPwd("");
+      setWarningPwd("비밀번호가 일치합니다.");
     }
-  }, [userInfo.password, userInfo.confirmPwd]);
-
-  // useEffect(() => {
-  //   let id = { user_id: userInfo.user_id };
-  //   axios
-  //     .post("http://localhost/clink/user/check-duplicate-id.do", id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       if (response.data === "success") {
-  //         setWarningId("사용할 수 있는 아이디입니다.");
-  //         confirmID = 1;
-  //       } else if (response.data === "fail") {
-  //         setWarningId("사용 중인 아이디입니다.");
-  //         confirmID = 0;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setWarningId("다시 시도하세요");
-  //     });
-  // }, [userInfo.user_id]);
-
-  // 아이디 중복체크
-  function checkDuplicateId() {
+    if (authcode.trim() !== userInfo.emailAuthNum.trim()) {
+      setWarningEmail("인증번호가 일치하지 않습니다.");
+    } else {
+      setWarningEmail("");
+    }
     let id = { user_id: userInfo.user_id };
     axios
       .post(
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/check-duplicate-id.do",
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/user/check-duplicate-id.do",
         id
       )
       .then((response) => {
-        console.log(response.data);
         if (response.data === "success") {
           setWarningId("사용할 수 있는 아이디입니다.");
+          setCheckId(1);
         } else if (response.data === "fail") {
           setWarningId("사용 중인 아이디입니다.");
+          setCheckId(0);
         }
       })
       .catch((error) => {
         console.log(error);
         setWarningId("다시 시도하세요");
       });
-  }
+  }, [
+    userInfo.password,
+    userInfo.confirmPwd,
+    userInfo.emailAuthNum,
+    authcode,
+    userInfo.user_id,
+  ]);
 
   // 이메일 인증
   function handleEmailAuth() {
-    console.log("이메일 주소:" + userInfo.email);
     alert(`${userInfo.email}로 인증번호가 전송되었습니다.`);
     let email = { params: { email: userInfo.email } };
     axios
       .post(
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/emailAuth.do",
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/user/emailAuth.do",
         {},
         email
       )
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           setAuthcode(response.data.trim());
-          if (authcode.trim() === userInfo.emailAuthNum.trim()) {
-            setWarningEmail("인증번호가 일치합니다.");
-          } else {
-            setWarningEmail("인증번호가 일치하지 않습니다.");
-          }
         } else {
           setWarningEmail("이메일 인증이 완료되지않았습니다.");
-          setUserInfo((prev) => ({
-            ...prev,
-            email: "",
-          }));
+          // setUserInfo((prev) => ({ ...prev, email: "", }));
         }
       })
       .catch((error) => {
@@ -126,64 +104,46 @@ const Join = () => {
       alert("이름을 입력해주세요.");
     } else if (userInfo.confirmPwd.trim() === "") {
       alert("비밀번호 확인을 입력해주세요.");
+    } else if (userInfo.email.trim() === "") {
+      alert("이메일 주소를 입력해주세요");
+    } else if (authcode.trim() !== userInfo.emailAuthNum.trim()) {
+      alert("이메일 인증번호를 확인해주세요.");
     } else {
-      // let id = { user_id: userInfo.user_id };
-      // axios
-      //   .post("http://localhost:80/clink/user/check-duplicate-id.do", id)
-      //   .then((response) => {
-      //     console.log(response.data);
-      // if (confirmID == 1) {
-      setWarningId("사용할 수 있는 아이디입니다.");
-      var param = {
-        user_name: userInfo.user_name,
-        user_id: userInfo.user_id,
-        nick_name: userInfo.nick_name,
-        password: userInfo.password,
-        confirmPwd: userInfo.confirmPwd,
-        email: userInfo.email,
-      };
+      if (checkId == 1) {
+        var param = {
+          user_name: userInfo.user_name,
+          user_id: userInfo.user_id,
+          nick_name: userInfo.nick_name,
+          password: userInfo.password,
+          confirmPwd: userInfo.confirmPwd,
+          email: userInfo.email,
+        };
 
-      // const accessToken = localStorage.getItem("accessToken");
-      // console.log("accessToken:" + accessToken);
-      // if (!accessToken) {
-      // alert("로그인이 필요합니다.");
-      // 로그인 페이지로 리다이렉트 또는 다른 처리를 수행
-      // return;
-      // }
-      // 헤더에 답아서 API호출
-      // const authHeader = { Authorization: `Bearer ${accessToken}` };
-      console.log(param);
-      axios
-        .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/join.do",
-          param
-          // ,{ headers: authHeader,}
-        )
-        .then((response) => {
-          // console.log(response.data);
-          if (response.data) {
-            alert("회원가입 되었습니다. 로그인해주세요.");
-            navigate("/");
-          } else {
-            alert("다시 시도하세요");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("회원가입에 실패했습니다.");
-        });
-      // } else {
-      // setWarningId("사용 중인 아이디입니다.");
-      // setUserInfo((prev) => ({
-      //   ...prev,
-      //   user_id: "",
-      // }));
-      // }
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      //   alert("다시 시도하세요");
-      // });
+        axios
+          .post(
+            "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/user/join.do",
+            param
+          )
+          .then((response) => {
+            if (response.data) {
+              sessionStorage.setItem("user_no", response.data.user_no);
+              alert("회원가입 되었습니다. 로그인해주세요.");
+              navigate("/");
+            } else {
+              alert("다시 시도하세요");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("회원가입에 실패했습니다.");
+          });
+      } else {
+        alert("사용 중인 아이디입니다.");
+        setUserInfo((prev) => ({
+          ...prev,
+          user_id: "",
+        }));
+      }
     }
   }
   return (
@@ -259,7 +219,7 @@ const Join = () => {
             type="text"
             name="emailAuthNum"
             placeholder="인증번호*"
-            maxLength="9"
+            maxLength="8"
             value={userInfo.emailAuthNum}
             onChange={handleInputChange}
           />

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 
-export default function PostCommentInput({ comment }) {
+export default function PostCommentInput({ comment, parentCommentId }) {
   const location = useLocation();
   const apiLink =
     "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment/insert";
@@ -27,11 +27,11 @@ export default function PostCommentInput({ comment }) {
         board_no: comment_boardNo,
         register_id: comment_commentWriter,
         comment_content: comment_commentContent,
+        parent_id: parentCommentId,
       })
       .then((response) => {
         window.location.replace(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
+          "http://43.200.204.75:3000/community/post" + location.search
         );
       })
       .catch((error) => {
@@ -43,16 +43,25 @@ export default function PostCommentInput({ comment }) {
     <div className="CommentContainer">
       <Form action={apiLink} method="post" onSubmit={handleSubmit}>
         <Form.Group controlId="formComment">
-          <Form.Control
-            type="text"
-            name="commentContent"
-            placeholder="댓글을 입력하세요..."
-            onChange={handleChange_commentContent}
-          />
+          {parentCommentId === 0 ? (
+            <Form.Control
+              type="text"
+              name="commentContent"
+              placeholder="댓글을 입력하세요..."
+              onChange={handleChange_commentContent}
+            />
+          ) : (
+            <Form.Control
+              type="text"
+              name="commentContent"
+              placeholder="대댓글을 입력하세요..."
+              onChange={handleChange_commentContent}
+            />
+          )}
           <Form.Control
             type="hidden"
             name="commentWriter"
-            value={comment_commentWriter}
+            value={comment_commentWriter || ""}
           />
           <Form.Control type="hidden" name="boardNo" value={comment_boardNo} />
         </Form.Group>
