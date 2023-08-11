@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import "../styles/community/WritingPost.scss";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import CommunityHeader from "../components/community/CommunityHeader";
-import WritingCategory from "../components/community/WritingCategory";
-import PostTagInput from "../components/community/PostTagInput";
-import axios from "axios";
+import React, { useState } from 'react';
+import '../styles/community/WritingPost.scss';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import CommunityHeader from '../components/community/CommunityHeader';
+import WritingCategory from '../components/community/WritingCategory';
+import PostTagInput from '../components/community/PostTagInput';
+import axios from 'axios';
 
 export default function WritingPost() {
   const [inputPost, setInputPost] = useState({
     categoryNo: 1,
-    title: "",
-    content: "",
+    title: '',
+    content: '',
     tagList: [],
   });
-
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
       arr.push(inputPost.tagList[i].tagname);
     }
-    console.log(inputPost.tagList.join());
     let params = {
       board_title: inputPost.title,
       board_content: inputPost.content,
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
+      user_no: sessionStorage.user_no,
+      register_id: sessionStorage.user_id,
     };
     //trim 오류나서 우선 지우고 테스트중
-    if (inputPost.boardTitle === "" || inputPost.boardContent === "") {
-      alert("제목 또는 내용을 입력해주세요!");
+    if (inputPost.title.trim() === '' || inputPost.content.trim() === '') {
+      alert('제목 또는 내용을 입력해주세요!');
     } else {
-      axios.post("http://localhost:80/community/post/insert", params);
+      axios.post('http://localhost:80/community/post/insert', params);
       window.location.href =
-        "http://localhost:3000/community/posts?category_no=" +
+        'http://localhost:3000/community/posts?category_no=' +
         inputPost.categoryNo +
-        "&&filter=1";
+        '&&filter=1';
     }
     //console.log(inputPost.tagList);
   };
@@ -77,7 +77,7 @@ export default function WritingPost() {
           onClick={() => {
             insertPost();
           }}
-          style={{ width: "80%" }}
+          style={{ width: '80%' }}
         >
           글 작성
         </Button>

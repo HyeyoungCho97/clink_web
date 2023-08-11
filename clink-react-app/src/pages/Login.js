@@ -1,125 +1,81 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import pig from "../assets/pig.png";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/Login.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import pig from '../assets/pig.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/Login.scss';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [user_id, setUser_id] = useState("");
-  const [password, setPassword] = useState("");
-  const [user_no, setUser_no] = useState("");
+  const [user_id, setUser_id] = useState('');
+  const [password, setPassword] = useState('');
 
   // 엔터키 이벤트
   const handleEnterKey = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === 'Enter') {
       handleLoginSubmit();
     }
   };
 
+  // 로그인
   const handleLoginSubmit = async () => {
-    if (user_id.trim() === "" || password.trim() === "") {
-      setUser_id("");
-      setPassword("");
+    if (user_id.trim() === '' || password.trim() === '') {
+      setUser_id('');
+      setPassword('');
       console.log(user_id);
-      alert("아이디 또는 패스워드를 입력해주세요");
+      alert('아이디 또는 패스워드를 입력해주세요');
     } else {
+      //토큰을 생성할 파라미터
       var param = {
-        mid: "t3",
-        mpw: "t3",
+        mid: 't3',
+        mpw: 't3',
       };
       console.log(user_id, password);
 
-      // 토큰 검증
-      const accessToken = localStorage.getItem("accessToken");
-      const refreshToken = localStorage.getItem("refreshToken");
-      if (!accessToken) {
-        console.log("Cannot Find Access Token");
+      const res = await axios.post('http://localhost:80/user/login.do', {
+        user_id: user_id,
+        password: password,
+      });
+      console.log(res.data);
+      if (res.data) {
+        sessionStorage.setItem('user_no', res.data.user_no);
+        sessionStorage.setItem('user_id', res.data.user_id);
+        sessionStorage.setItem('nick_name', res.data.nick_name);
+        alert(sessionStorage.getItem('user_id') + ' 로그인되었습니다.');
 
-        // 토큰 발급용
-        axios
-          .post("http://localhost:80/generateToken", param)
-          .then((response) => {
-            if (response.data) {
-              console.log(response.data);
-              localStorage.setItem("accessToken", response.data.accessToken);
-              localStorage.setItem("refreshToken", response.data.refreshToken);
-              console.log("accessToken:" + localStorage.getItem("accessToken"));
-              console.log(
-                "refreshToken:" + localStorage.getItem("refreshToken")
-              );
-            } else {
-              console.log("토큰 생성 실패");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("generateToken 에러 다시 시도하세요");
-          });
-      }
-      console.log("액세스토큰:" + localStorage.getItem("accessToken"));
-      console.log("리프레시토큰:" + localStorage.getItem("refreshToken"));
-
-      // 헤더에 담아서 API호출
-      console.log("accessToken:" + accessToken);
-      const authHeader = {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      };
-      try {
-        const res = await axios.post(
-          "http://localhost:80/clink/user/login.do",
-          { user_id: user_id, password: password },
-          {
-            headers: authHeader,
-          }
+        // jwt 발급용
+        const response = await axios.post(
+          'http://localhost:80/generateToken',
+          param
         );
-        console.log(res.data);
-        if (res.data) {
-          console.log(res.data.user_no);
-          sessionStorage.setItem("user_no", res.data.user_no);
-          setUser_no(res.data.user_no);
-          alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
-          navigate("/mypage");
+        if (!response.data) {
+          console.log('데이터 없음');
         } else {
-          alert("login.do else 에러 다시 시도하세요");
-          setUser_id("");
-          setPassword("");
+          console.log(response.data);
+          localStorage.setItem('accessToken', response.data.accessToken);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          navigate('/mypage');
         }
-        return console.log(res.data);
-      } catch (err) {
-        console.log(err);
-        if (err.response.data.msg === "Expired Token") {
-          console.log("Refresh Your Token");
-          // 토큰 유효기간이 만료되면 refreshToken 호출
-          try {
-            await callRefresh();
-            console.log("new tokens....saved..");
-            return handleLoginSubmit(); // 재호출
-          } catch (refreshErr) {
-            throw refreshErr.response.data.msg;
-          }
-        } //end if
+      } else {
+        alert('login.do else 에러 다시 시도하세요');
+        // 회원가입페이지로 넘어가게~~ navigate("/mypage");
+        setUser_id('');
+        setPassword('');
       }
-      // RefreshToken 발급용
-      const callRefresh = async () => {
-        const accessToken = localStorage.getItem("accessToken");
-        const refreshToken = localStorage.getItem("refreshToken");
-
-        const tokens = { accessToken, refreshToken };
-        const res = await axios.post(
-          "http://localhost:80/refreshToken",
-          tokens
-        );
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-      };
     }
   };
+  // const callRefresh = async () => {
+  //   const accessToken = localStorage.getItem("accessToken");
+  //   const refreshToken = localStorage.getItem("refreshToken");
+
+  //   const tokens = { accessToken, refreshToken };
+  //   const res = await axios.post("http://localhost:8080/refreshToken", tokens);
+  //   localStorage.setItem("accessToken", res.data.accessToken);
+  //   localStorage.setItem("refreshToken", res.data.refreshToken);
+  // };
 
   return (
     <div className="LoginContainer">
@@ -138,6 +94,7 @@ const Login = () => {
             placeholder="아이디"
             onChange={(e) => {
               setUser_id(e.target.value);
+              console.log(user_id);
             }}
           />
           <Form.Control
@@ -147,6 +104,7 @@ const Login = () => {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
+              console.log(e.target.value);
             }}
             onKeyDown={(e) => handleEnterKey(e)}
           />
@@ -162,7 +120,6 @@ const Login = () => {
       </div>
       <div className="LoginButtonBox">
         <Button
-          variant="primary"
           className="LoginSubmitBtn"
           type="submit"
           onClick={() => handleLoginSubmit()}

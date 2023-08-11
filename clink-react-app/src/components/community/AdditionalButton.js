@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import "../../styles/community/AdditionalButton.scss";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import queryString from "query-string";
+import React, { useEffect, useState } from 'react';
+import '../../styles/community/AdditionalButton.scss';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import queryString from 'query-string';
 
 export default function AdditionalButton() {
   const navigate = useNavigate();
@@ -14,18 +14,14 @@ export default function AdditionalButton() {
   const handleDelete = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line no-restricted-globals
-    var deleteOk = confirm("정말로 게시글을 삭제하겠습니까?");
+    var deleteOk = confirm('정말로 게시글을 삭제하겠습니까?');
     if (deleteOk) {
       await axios
-        .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/delete",
-          null,
-          {
-            params: {
-              board_no: target_board_no,
-            },
-          }
-        )
+        .post('http://localhost:80/community/post/delete', null, {
+          params: {
+            board_no: target_board_no,
+          },
+        })
         .then((response) => {
           navigate(-1);
         })
@@ -47,8 +43,7 @@ export default function AdditionalButton() {
           href="#"
           onClick={(event) => {
             event.stopPropagation();
-            console.log(location.search);
-            navigate("/community/post/update" + location.search);
+            navigate('/community/post/update' + location.search);
           }}
         >
           &nbsp;글 수정

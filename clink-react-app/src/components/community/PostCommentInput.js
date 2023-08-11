@@ -8,8 +8,7 @@ import queryString from "query-string";
 
 export default function PostCommentInput({ comment, parentCommentId }) {
   const location = useLocation();
-  const apiLink =
-    "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment/insert";
+  const apiLink = "http://localhost:80/community/post/comment/insert";
   const [comment_commentContent, comment_setCommentContent] = useState("");
   const handleChange_commentContent = (e) => {
     e.preventDefault();
@@ -31,8 +30,7 @@ export default function PostCommentInput({ comment, parentCommentId }) {
       })
       .then((response) => {
         window.location.replace(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
+          "http://localhost:3000/community/post" + location.search
         );
       })
       .catch((error) => {
@@ -62,7 +60,7 @@ export default function PostCommentInput({ comment, parentCommentId }) {
           <Form.Control
             type="hidden"
             name="commentWriter"
-            value={comment_commentWriter}
+            value={comment_commentWriter || ""}
           />
           <Form.Control type="hidden" name="boardNo" value={comment_boardNo} />
         </Form.Group>
