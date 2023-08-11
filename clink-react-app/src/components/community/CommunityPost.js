@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
 import axios from 'axios';
+import timestampParse from '../common/timestampParse';
 
 export default function CommunityPost({ post, commentCount }) {
   const {
@@ -39,6 +40,7 @@ export default function CommunityPost({ post, commentCount }) {
   const likedownurl = '/delete';
 
   useEffect(() => {
+    console.log(register_id + '' + sessionStorage.user_id);
     if (
       register_id === sessionStorage.user_id &&
       location.pathname === '/community/post'
@@ -96,7 +98,6 @@ export default function CommunityPost({ post, commentCount }) {
     }
     return list;
   };
-
   return (
     <>
       <div
@@ -115,7 +116,9 @@ export default function CommunityPost({ post, commentCount }) {
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
-                <p className="CommunityPostProfileTime">{register_datetime}</p>
+                <p className="CommunityPostProfileTime">
+                  {timestampParse(register_datetime)}
+                </p>
               </div>
             </div>
 

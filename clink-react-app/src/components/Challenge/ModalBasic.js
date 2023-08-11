@@ -44,9 +44,8 @@ function ModalBasic({
         transaction_amount: newAmount,
         transaction_code: newCategory,
       };
-      console.log(param);
-      const address = 'http://localhost:80/challenge/pay-update';
 
+      const address = 'http://localhost:80/challenge/pay-update';
       axios
         .post(address, param)
         .then((response) => {

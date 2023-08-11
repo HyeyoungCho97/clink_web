@@ -85,8 +85,6 @@ const MyPage = () => {
           }
         } //end if
       }
-
-      console.log("newfile:" + newfile);
     };
     fetchData();
   }, []);

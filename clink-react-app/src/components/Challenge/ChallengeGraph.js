@@ -19,8 +19,10 @@ const ChallengeGraph = ({ today, week, openModal }) => {
   //데이터 가져오기
   const getData = async () => {
     //console.log("click");
+    const user_no = sessionStorage.getItem('user_no');
     const address =
-      'http://localhost:80/challenge/pay-info?userNo=00000' +
+      'http://localhost:80/challenge/pay-info?userNo=' +
+      user_no +
       '&startDate=' +
       moment(value[0]).format('YYYY-MM-DD') +
       '&endDate=' +

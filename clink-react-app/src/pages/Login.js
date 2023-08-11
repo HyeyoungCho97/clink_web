@@ -41,7 +41,7 @@ const Login = () => {
         user_id: user_id,
         password: password,
       });
-      console.log("res.data:" + res.data);
+      console.log(res.data);
       if (res.data) {
         sessionStorage.setItem("user_no", res.data.user_no);
         sessionStorage.setItem("user_id", res.data.user_id);

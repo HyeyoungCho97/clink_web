@@ -13,7 +13,9 @@ export default function Post() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [parentCommentId, setParentCommentId] = useState(0);
-
+  
+  
+  
   useEffect(() => {
     const fetchPostsComments = async () => {
       try {
@@ -29,9 +31,9 @@ export default function Post() {
           'http://localhost:80/community/post/comment' + location.search
         );
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
-        console.log(responsePost.data);
         setComments(responseComment.data);
-      } catch (e) {}
+      } catch (e) {
+      }
       setLoading(false);
     };
 
@@ -45,16 +47,14 @@ export default function Post() {
   return (
     <div className="PostContainer">
       <CommunityHeader></CommunityHeader>
-      <CommunityPost
-        post={posts.communityPostVO}
-        commentCount={posts.commentCount}
-      ></CommunityPost>
+      <CommunityPost post={posts.communityPostVO} commentCount={posts.commentCount}></CommunityPost>
       {comments.map((comment, id) => (
         <PostComment
           comment={comment}
           key={id}
           parentCommentId={parentCommentId}
           setParentCommentId={setParentCommentId}
+          
         ></PostComment>
       ))}
       <PostCommentInput parentCommentId={parentCommentId}></PostCommentInput>
@@ -64,6 +64,7 @@ export default function Post() {
       <br />
       <br />
       <br />
+
     </div>
   );
 }
