@@ -35,7 +35,7 @@ const AddAccountUpdate = () => {
     } else {
       axios
         .post(
-          "http://localhost:80/user/updateAccount.do",
+          "http://localhost:80/user/update-account.do",
           {
             account_no: account_no,
             user_no: sessionStorage.getItem("user_no"),

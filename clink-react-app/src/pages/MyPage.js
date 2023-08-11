@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import pig from "../assets/pig.png";
+import pig from "../assets/pig.png";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
@@ -20,7 +20,7 @@ const MyPage = () => {
     password: "",
   });
   const [file, setFile] = useState(null);
-  const [newfile, setNewfile] = useState('');
+  const [newfile, setNewfile] = useState("");
 
   const [addAccountNo, setAddAccountNo] = useState("");
   const [addAccountBankCode, setAddAccountBankCode] = useState("");
@@ -37,7 +37,7 @@ const MyPage = () => {
     const fetchData = async () => {
       try {
         const accountResponse = await axios.post(
-          "http://localhost:80/user/checkAccount.do",
+          "http://localhost:80/user/check-account.do",
           { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
@@ -56,11 +56,11 @@ const MyPage = () => {
               bankCategory.bank[accountResponse.data[i].bank_code]
             );
           } else {
-            console.log('등록된 계좌 없음');
+            console.log("등록된 계좌 없음");
           }
         }
         const userResponse = await axios.post(
-          "http://localhost:80/user/get-userInfo.do",
+          "http://localhost:80/user/mypage.do",
           { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
@@ -86,15 +86,13 @@ const MyPage = () => {
         } //end if
       }
     };
-    // 로그인 확인용
-    // setUserInfo(sessionStorage.getItem("user_id"));
     fetchData();
   }, []);
 
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate('/');
+    navigate("/");
   }
 
   // 개인정보 수정
@@ -144,7 +142,10 @@ const MyPage = () => {
         "http://localhost:80/user/photo-url.do",
         formData,
         {
-          headers: getAuthHeader(),
+          headers: {
+            ...getAuthHeader(), // 기존 헤더를 포함시킴
+            "Content-Type": "multipart/form-data", // Content-Type 추가
+          },
         }
       );
 
@@ -164,20 +165,19 @@ const MyPage = () => {
   // 로그아웃(세션제거)
   function logoutHandler() {
     sessionStorage.clear();
-    navigate('/');
+    navigate("/");
   }
 
   return (
     <div className="MyPageContainer" style={{ paddingBottom: "20%" }}>
       <div className="MyPageTitle">{userInfo.id} 마이페이지</div>
-      {/* {userInfo ? ( */}
-      <div className="MyPageProfileTitle">프로필 사진 등록</div>
       <>
+        <div className="MyPageProfileTitle">프로필 사진 등록</div>
         <div className="MyPageProfileBox">
           {newfile ? (
             <img src={`http://localhost/img/${newfile}`} alt="logo" />
           ) : (
-            <img src={require('../assets/pig.png')} alt="logo" />
+            <img src={require("../assets/pig.png")} alt="logo" />
           )}
           <div className="MyPageProfileBtnBox">
             <label htmlFor="file">
@@ -258,15 +258,12 @@ const MyPage = () => {
           </Button>
           <br />
           <br />
-          <div onClick={() => logoutHandler()} style={{ cursor: 'pointer' }}>
+          <div onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
             <b>Logout</b>
           </div>
           <br />
         </div>
       </>
-      {/* ) : ( */}
-      {/* <p>세션 정보가 없습니다</p> */}
-      {/* )} */}
     </div>
   );
 };
