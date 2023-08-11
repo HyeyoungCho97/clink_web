@@ -88,7 +88,7 @@ export default function Community() {
       ></CommunityFilter>
 
       {posts.map((post, id) => (
-        <CommunityPost post={post} key={id}>
+        <CommunityPost post={post} key={id} commentCount={post.comment_count}>
         </CommunityPost>
       ))}
       <CommunityPostButton></CommunityPostButton>
