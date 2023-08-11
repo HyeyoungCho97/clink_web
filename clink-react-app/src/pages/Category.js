@@ -40,9 +40,7 @@ export default function Community() {
             '&hashtag=' +
             hashtag,
         );
-        console.log(hashtag);
         setPosts([...response.data]); // 데이터는 response.data 안에 들어있습니다.
-        console.log(response.data);
       } catch (e) {
         setError(e);
       }

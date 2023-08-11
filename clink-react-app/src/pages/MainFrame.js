@@ -44,7 +44,6 @@ const MainFrame = (props) => {
       }
     }
     setContinuesDate(cDate);
-    //console.log(continuesDate);
   }
 
   useEffect(() => {
@@ -55,7 +54,6 @@ const MainFrame = (props) => {
             sessionStorage.getItem('userNo')
         )
         .then((Response) => {
-          //console.log(Response.data);
           setBadge(Response.data.badge);
           setQuote(Response.data.quote);
           setStreakData(Response.data.streakData);

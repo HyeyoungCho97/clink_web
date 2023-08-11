@@ -45,7 +45,6 @@ const AddAccountUpdate = () => {
           { headers: getAuthHeader() }
         )
         .then((response) => {
-          console.log(response.data);
           if (response.data === 1) {
             alert("계좌가 수정되었습니다.");
             navigate("/mypage");

@@ -47,7 +47,7 @@ export default function Post() {
   return (
     <div className="PostContainer">
       <CommunityHeader></CommunityHeader>
-      <CommunityPost post={posts.communityPostVO} commentCount={posts.commentCount}>{console.log(posts.commentCount)}</CommunityPost>
+      <CommunityPost post={posts.communityPostVO} commentCount={posts.commentCount}></CommunityPost>
       {comments.map((comment, id) => (
         <PostComment
           comment={comment}

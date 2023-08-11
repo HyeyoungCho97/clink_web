@@ -4,7 +4,6 @@ import Title from '../Common/Title';
 const ChalltengeTitleForm = ({ title, set }) => {
   const onChange = (e) => {
     set(e.target.value);
-    console.log(e.target.value);
   };
   return (
     <>

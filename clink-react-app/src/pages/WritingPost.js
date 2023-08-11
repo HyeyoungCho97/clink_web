@@ -20,7 +20,6 @@ export default function WritingPost() {
     for (let i = 0; i < inputPost.tagList.length; i++) {
       arr.push(inputPost.tagList[i].tagname);
     }
-    console.log(inputPost.tagList.join());
     let params = {
       board_title: inputPost.title,
       board_content: inputPost.content,

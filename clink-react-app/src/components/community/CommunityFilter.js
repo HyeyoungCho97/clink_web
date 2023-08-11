@@ -13,16 +13,12 @@ export default function CommunityFilter({
 }) {
   const [hashList, setHashList] = useState([]);
   useEffect(() => {
-    console.log("카테고링" + categoryNo);
-    console.log("셋해쉬" + setHashtag);
     const listSet = async () => {
       try {
         const response = await axios.get(
           "http://localhost:80/community/hot-hashtag?category_no=" + 1
         );
-        // console.log(response);
         setHashList(response.data);
-        // console.log(response.data);
       } catch (e) {
         console.log(e);
       }

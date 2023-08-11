@@ -47,7 +47,6 @@ export default function PostComment({ comment, parentCommentId, setParentComment
               onClick={(event) => {
                 event.stopPropagation();
                 setView(!view);
-                console.log("click");
               }}
             />
             }

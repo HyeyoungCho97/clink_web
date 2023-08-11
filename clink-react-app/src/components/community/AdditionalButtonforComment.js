@@ -32,7 +32,6 @@ export default function AdditionalButton({
     setParentCommentId(target_comment_id);
   };
 
-  console.log(isMine);
 
 
   return (
