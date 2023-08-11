@@ -2,7 +2,6 @@ import '../../styles/community/listPrint.css';
 import LikeButton from './likeButton';
 function ListPrint({ title, list }) {
   const clickPost = (list) => {
-    console.log(list.category_no);
   };
   const lists = () => {
     const bestList = [];

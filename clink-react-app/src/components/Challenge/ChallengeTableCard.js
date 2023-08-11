@@ -17,7 +17,6 @@ const ChallengeTableCard = ({
 
   //Update 호출
   function updateCard() {
-    console.log('수정');
     setModalOpen(true);
     setCardContent(false);
   }
@@ -41,7 +40,6 @@ const ChallengeTableCard = ({
 
   //Delete 호출
   function deleteCard() {
-    console.log('삭제');
     //삭제 전 확인
     if (window.confirm('정말 삭제하시겠습니까?')) {
       const address =
@@ -54,7 +52,6 @@ const ChallengeTableCard = ({
       axios
         .get(address)
         .then((response) => {
-          console.log(response);
           if (response.data) {
             alert('정상적으로 삭제되었습니다.');
             window.location.reload();

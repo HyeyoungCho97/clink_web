@@ -111,6 +111,7 @@ const Join = () => {
           confirmPwd: userInfo.confirmPwd,
           email: userInfo.email,
         };
+
         axios
           .post("http://localhost:80/user/join.do", param)
           .then((response) => {

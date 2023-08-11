@@ -61,7 +61,6 @@ const Login = () => {
           param
         );
         if (!response.data) {
-          console.log("데이터 없음");
         } else {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);

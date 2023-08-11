@@ -54,7 +54,6 @@ const MyPage = () => {
               bankCategory.bank[accountResponse.data[i].bank_code]
             );
           } else {
-            console.log("등록된 계좌 없음");
           }
         }
         const userResponse = await axios.post(
