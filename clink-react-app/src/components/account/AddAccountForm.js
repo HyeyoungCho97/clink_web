@@ -31,7 +31,7 @@ const AddAccountForm = () => {
       alert("계좌번호를 다시 확인해주세요");
     } else if (isNaN(account_no)) {
       alert("계좌번호에 문자가 포함되어 있습니다.");
-    } else if (bank_code == null || bank_code == "") {
+    } else if (bank_code === null || bank_code === "") {
       alert("은행을 선택해주세요");
     } else {
       axios
@@ -46,7 +46,6 @@ const AddAccountForm = () => {
           { headers: getAuthHeader() }
         )
         .then((response) => {
-          console.log(response.data);
           if (response.data === 1) {
             alert("계좌가 등록되었습니다.");
           } else {

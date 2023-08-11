@@ -7,7 +7,7 @@ import {
   HeartFill,
   ThreeDotsVertical,
 } from 'react-bootstrap-icons';
-import Logo from '../../assets/maru.jpg';
+import Logo from '../../assets/pig.png';
 import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
@@ -32,6 +32,7 @@ export default function CommunityPost({ post, commentCount }) {
   const [isLike, setIsLike] = useState(false);
   const [isMine, setIsMine] = useState(false);
   const [view, setView] = useState(false);
+  const [imgURL, setImgURL] = useState(null);
 
   const baseurl = 'http://localhost/community/post/like';
   const parameterurl =
@@ -40,7 +41,6 @@ export default function CommunityPost({ post, commentCount }) {
   const likedownurl = '/delete';
 
   useEffect(() => {
-    console.log(register_id + '' + sessionStorage.user_id);
     if (
       register_id === sessionStorage.user_id &&
       location.pathname === '/community/post'
@@ -57,9 +57,6 @@ export default function CommunityPost({ post, commentCount }) {
       .catch(function (error) {
         console.log(error);
       });
-
-    // console.log('isMine change :' + isMine);
-    // console.log(location.pathname);
   }, [isMine, isLike, like]);
 
   const clickLike = (event) => {
@@ -112,7 +109,7 @@ export default function CommunityPost({ post, commentCount }) {
           <div className="PostProfileDiv">
             <div className="CommunityPostProfile">
               <div className="CommunityPostProfileImg">
-                <img src={Logo} alt="Profile" />
+                {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
@@ -143,7 +140,7 @@ export default function CommunityPost({ post, commentCount }) {
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
-            {isLike ? <HeartFill /> : <Heart />}
+            {isLike ? <HeartFill style={{ color: 'red' }} /> : <Heart />}
             &nbsp;좋아요 {like}
           </button>
           <button>

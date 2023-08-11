@@ -28,12 +28,12 @@ export default function Post() {
         const responseComment = await axios.get(
           "http://localhost:80/community/post/comment" + location.search
         );
+        console.log(responsePost.data.communityPostVO.board_views);
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.
         setComments(responseComment.data);
       } catch (e) {}
       setLoading(false);
     };
-
     fetchPostsComments();
   }, [location]);
 
