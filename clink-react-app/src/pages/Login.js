@@ -43,10 +43,9 @@ const Login = () => {
         sessionStorage.setItem("user_no", res.data.user_no);
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
-        console.log("challengeDetails:" + res.data.challengeDetails);
         if (
-          res.data.challengeDetails == null ||
-          res.data.challengeDetails == ""
+          res.data.challengeDetails === null ||
+          res.data.challengeDetails === ""
         ) {
           console.log("등록된 챌린지 없음");
           setChallengeCheck(0);
@@ -102,7 +101,6 @@ const Login = () => {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              console.log(e.target.value);
             }}
             onKeyDown={(e) => handleEnterKey(e)}
           />

@@ -98,6 +98,5 @@ export default function Community() {
       <br />
       <br />
     </div>
-  );
-
-}
+  );}
+      }

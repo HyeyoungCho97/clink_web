@@ -24,6 +24,7 @@ const Join = () => {
   const [warningId, setWarningId] = useState("");
   const [warningEmail, setWarningEmail] = useState("");
   const [checkId, setCheckId] = useState("");
+  const [checkEmail, setCheckEmail] = useState("");
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -98,6 +99,8 @@ const Join = () => {
       alert("비밀번호 확인을 입력해주세요.");
     } else if (userInfo.email.trim() === "") {
       alert("이메일 주소를 입력해주세요");
+    } else if (authcode.trim() !== userInfo.emailAuthNum.trim()) {
+      alert("이메일 인증번호를 확인해주세요.");
     } else {
       if (checkId == 1) {
         var param = {

@@ -33,7 +33,6 @@ const MyPage = () => {
     if (!accessToken) {
       throw "Cannot Find Access Token";
     }
-    console.log(accessToken);
     const fetchData = async () => {
       try {
         const accountResponse = await axios.post(
@@ -43,7 +42,6 @@ const MyPage = () => {
             headers: getAuthHeader(),
           }
         );
-        console.log(accountResponse);
         for (let i = 0; i < accountResponse.data.length; i++) {
           if (accountResponse.data[i].account_code === "1") {
             setAddAccountNo(accountResponse.data[i].account_no);
@@ -111,7 +109,6 @@ const MyPage = () => {
         }
       );
 
-      console.log(response.data);
       if (response.data === "success") {
         alert("개인정보가 수정되었습니다.");
         setUserInfo({
@@ -147,8 +144,6 @@ const MyPage = () => {
           },
         }
       );
-
-      console.log(response.data);
       if (response.data) {
         alert("프로필 사진이 수정되었습니다.");
         setNewfile(response.data);
@@ -161,9 +156,10 @@ const MyPage = () => {
     }
   }
 
-  // 로그아웃(세션제거)
+  // 로그아웃
   function logoutHandler() {
     sessionStorage.clear();
+    window.localStorage.clear();
     navigate("/");
   }
 
@@ -190,13 +186,7 @@ const MyPage = () => {
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
             />
-            <Button
-              // style={{ backgroundColor: "white",
-              //   color: "#0364f7",
-              //   border: "1px solid black" }}
-              type="submit"
-              onClick={() => profileHandler()}
-            >
+            <Button type="submit" onClick={() => profileHandler()}>
               확인
             </Button>
           </div>
