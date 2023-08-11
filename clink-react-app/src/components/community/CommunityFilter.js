@@ -1,9 +1,9 @@
-import "../../styles/community/CommunityFilter.scss";
-import Button from "react-bootstrap/Button";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import '../../styles/community/CommunityFilter.scss';
+import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function CommunityFilter({
   filter,
@@ -16,7 +16,7 @@ export default function CommunityFilter({
     const listSet = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:80/community/hot-hashtag?category_no=" + 1
+          'http://localhost:80/community/hot-hashtag?category_no=' + categoryNo
         );
         setHashList(response.data);
       } catch (e) {
@@ -37,10 +37,10 @@ export default function CommunityFilter({
           variant="primary"
           size="sm"
           key={i}
-          style={{ marginRight: "5px" }}
-          onClick={(e) => setHashtag(e.target.textContent.replace("#", ""))}
+          style={{ marginRight: '5px' }}
+          onClick={(e) => setHashtag(e.target.textContent.replace('#', ''))}
         >
-          {hashList[i]}
+          {'#' + hashList[i]}
         </Button>
       );
     }
@@ -51,7 +51,7 @@ export default function CommunityFilter({
       <DropdownButton
         variant="outline-primary"
         size="sm"
-        title={filter === 1 ? "최신순" : "인기순"}
+        title={filter === 1 ? '최신순' : '인기순'}
         id="bg-nested-dropdown"
         className="community-filter-dropdown"
       >

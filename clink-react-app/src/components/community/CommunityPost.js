@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
 import axios from 'axios';
-import timestampParse from '../common/timestampParse'
+import timestampParse from '../common/timestampParse';
 
 export default function CommunityPost({ post, commentCount }) {
   const {
@@ -34,14 +34,11 @@ export default function CommunityPost({ post, commentCount }) {
   const [view, setView] = useState(false);
   const [imgURL, setImgURL] = useState(null);
 
-
-  
-
-
-  const baseurl = "http://localhost/community/post/like";
-  const parameterurl = "?user_id="+ sessionStorage.user_id + "&board_no=" + post.board_no;
-  const likeupurl = "/insert"
-  const likedownurl = "/delete"
+  const baseurl = 'http://localhost/community/post/like';
+  const parameterurl =
+    '?user_id=' + sessionStorage.user_id + '&board_no=' + post.board_no;
+  const likeupurl = '/insert';
+  const likedownurl = '/delete';
 
   useEffect(() => {
     if (
@@ -52,12 +49,15 @@ export default function CommunityPost({ post, commentCount }) {
     }
 
     //좋아요 체크
-    axios.get(baseurl+parameterurl)
-    .then(function(response) {
-      setIsLike(response.data);
-    })
-    .catch(function(error) {
-    })
+    axios
+      .get(baseurl + parameterurl)
+      .then(function (response) {
+        setIsLike(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
 
   }, [isMine, isLike, like]);
 
@@ -65,26 +65,19 @@ export default function CommunityPost({ post, commentCount }) {
     event.stopPropagation();
 
     if (isLike === 0) {
-      axios
-        .post(baseurl+likeupurl+parameterurl)
-        .then((response) => {
-          setIsLike(true);
-          setLike(like+1);
-        })
+      axios.post(baseurl + likeupurl + parameterurl).then((response) => {
+        setIsLike(true);
+        setLike(like + 1);
+      });
     } else {
-      axios
-        .post(baseurl+likedownurl+parameterurl)
-        .then((response) => {
-          setIsLike(false);
-          setLike(like-1);
-        })
+      axios.post(baseurl + likedownurl + parameterurl).then((response) => {
+        setIsLike(false);
+        setLike(like - 1);
+      });
     }
     setIsLike(!isLike);
   };
 
-
-
-  
   const postHash = () => {
     const list = [];
     if (hashtag_content !== undefined) {
@@ -122,7 +115,9 @@ export default function CommunityPost({ post, commentCount }) {
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
-                <p className="CommunityPostProfileTime">{timestampParse(register_datetime)}</p>
+                <p className="CommunityPostProfileTime">
+                  {timestampParse(register_datetime)}
+                </p>
               </div>
             </div>
 

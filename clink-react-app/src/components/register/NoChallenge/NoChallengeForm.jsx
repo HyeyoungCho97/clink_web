@@ -1,4 +1,4 @@
-import serviceExplain from '../../../assets/serviceExplain.png';
+import serviceExplain from '../../../assets/serviceE.png';
 import CommonTitle from '../Common/CommonTitle';
 import GoRegisterChallenge from './GoRegisterChallenge';
 const NoChallenge = () => {

@@ -12,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user_id, setUser_id] = useState("");
   const [password, setPassword] = useState("");
+  const [challengeCheck, setChallengeCheck] = useState(0);
 
   // 엔터키 이벤트
   const handleEnterKey = (e) => {
@@ -34,6 +35,7 @@ const Login = () => {
       };
 
       const res = await axios.post("http://localhost:80/user/login.do", {
+        user_no: sessionStorage.getItem("user_no"),
         user_id: user_id,
         password: password,
       });
@@ -41,6 +43,17 @@ const Login = () => {
         sessionStorage.setItem("user_no", res.data.user_no);
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
+        console.log("challengeDetails:" + res.data.challengeDetails);
+        if (
+          res.data.challengeDetails == null ||
+          res.data.challengeDetails == ""
+        ) {
+          console.log("등록된 챌린지 없음");
+          setChallengeCheck(0);
+        } else {
+          console.log("등록된 챌린지 있음");
+          setChallengeCheck(1);
+        }
         alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
 
         // jwt 발급용
@@ -55,10 +68,10 @@ const Login = () => {
           navigate("/mypage");
         }
       } else {
-        alert("login.do else 에러 다시 시도하세요");
-        // 회원가입페이지로 넘어가게~~ navigate("/mypage");
-        setUser_id("");
-        setPassword("");
+        alert("회원가입이 필요합니다.");
+        navigate("/join");
+        // setUser_id("");
+        // setPassword("");
       }
     }
   };

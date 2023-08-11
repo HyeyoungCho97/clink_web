@@ -11,8 +11,8 @@ import { getAuthHeader } from "../common/JwtAuth";
 
 const ShowAccountUpdate = () => {
   const navigate = useNavigate();
-  const [account_no, setAccount_no] = useState('');
-  const [bank_code, setBank_code] = useState('');
+  const [account_no, setAccount_no] = useState("");
+  const [bank_code, setBank_code] = useState("");
 
   // 은행 선택
   let bankSelect = [];
@@ -27,16 +27,16 @@ const ShowAccountUpdate = () => {
   // 계좌 등록
   function AddAccountHandler() {
     if (account_no.length < 12) {
-      alert('계좌번호를 다시 확인해주세요');
+      alert("계좌번호를 다시 확인해주세요");
     } else if (isNaN(account_no)) {
-      alert('계좌번호에 문자가 포함되어 있습니다.');
-    } else if (bank_code == null || bank_code == '') {
-      alert('은행을 선택해주세요');
+      alert("계좌번호에 문자가 포함되어 있습니다.");
+    } else if (bank_code == null || bank_code == "") {
+      alert("은행을 선택해주세요");
     } else {
       let param = {};
       axios
         .post(
-          "http://localhost:80/user/registAccount.do",
+          "http://localhost:80/user/update-account.do",
           {
             account_no: account_no,
             user_no: sessionStorage.getItem("user_no"),
@@ -47,16 +47,16 @@ const ShowAccountUpdate = () => {
         )
         .then((response) => {
           if (response.data === 1) {
-            alert('계좌가 등록되었습니다.');
+            alert("계좌가 등록되었습니다.");
           } else {
-            alert('계좌가 정상적으로 등록되지 않았습니다. ');
-            setAccount_no('');
+            alert("계좌가 정상적으로 등록되지 않았습니다. ");
+            setAccount_no("");
           }
-          navigate('/mypage');
+          navigate("/mypage");
         })
         .catch((error) => {
           console.log(error);
-          alert('계좌가 정상적으로 등록되지 않았습니다.');
+          alert("계좌가 정상적으로 등록되지 않았습니다.");
         });
     }
   }
