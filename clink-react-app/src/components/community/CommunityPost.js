@@ -7,7 +7,7 @@ import {
   HeartFill,
   ThreeDotsVertical,
 } from 'react-bootstrap-icons';
-import Logo from '../../assets/maru.jpg';
+import Logo from '../../assets/pig.png';
 import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AdditionalButton from './AdditionalButton';
@@ -32,6 +32,7 @@ export default function CommunityPost({ post, commentCount }) {
   const [isLike, setIsLike] = useState(false);
   const [isMine, setIsMine] = useState(false);
   const [view, setView] = useState(false);
+  const [imgURL, setImgURL] = useState(null);
 
 
   
@@ -121,7 +122,7 @@ export default function CommunityPost({ post, commentCount }) {
           <div className="PostProfileDiv">
             <div className="CommunityPostProfile">
               <div className="CommunityPostProfileImg">
-                <img src={Logo} alt="Profile" />
+                {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
