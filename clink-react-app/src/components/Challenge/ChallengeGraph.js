@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import '../../styles/MainCalendar.scss';
-import ChallengeTable from './ChallengeTable';
-import ChallengeBarChart from './ChallengeBarChart';
-import ChallengePieChart from './ChallengePieChart';
-import Calendar from 'react-calendar';
-import axios from 'axios';
-import moment from 'moment';
+import React, { useEffect, useState } from "react";
+import "../../styles/MainCalendar.scss";
+import ChallengeTable from "./ChallengeTable";
+import ChallengeBarChart from "./ChallengeBarChart";
+import ChallengePieChart from "./ChallengePieChart";
+import Calendar from "react-calendar";
+import axios from "axios";
+import moment from "moment";
 
 const ChallengeGraph = ({ today, week, openModal }) => {
   const [value, onChange] = useState(new Date());
@@ -19,14 +19,14 @@ const ChallengeGraph = ({ today, week, openModal }) => {
   //데이터 가져오기
   const getData = async () => {
     //console.log("click");
-    const user_no = sessionStorage.getItem('user_no');
+    const user_no = sessionStorage.getItem("user_no");
     const address =
-      'http://localhost:80/challenge/pay-info?userNo=' +
+      "http://localhost:80/challenge/pay-info?userNo=" +
       user_no +
-      '&startDate=' +
-      moment(value[0]).format('YYYY-MM-DD') +
-      '&endDate=' +
-      moment(value[1]).format('YYYY-MM-DD');
+      "&startDate=" +
+      moment(value[0]).format("YYYY-MM-DD") +
+      "&endDate=" +
+      moment(value[1]).format("YYYY-MM-DD");
     const response = await axios.get(address);
     //console.log(response);
     setData(response.data.today);
@@ -38,12 +38,12 @@ const ChallengeGraph = ({ today, week, openModal }) => {
       <Calendar
         onChange={onChange}
         value={value}
-        formatDay={(locale, date) => moment(date).format('DD')}
+        formatDay={(locale, date) => moment(date).format("DD")}
         minDetail="month"
         maxDetail="month"
         showNeighboringMonth={false} //전 달 || 다음 달 일자 보이기
         selectRange={true}
-        className={'calendar'}
+        className={"calendar"}
       />
       <ChallengeTable date={value} detail={data} openModal={openModal} />
       <ChallengeBarChart data={week} />

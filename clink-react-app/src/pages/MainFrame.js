@@ -10,9 +10,6 @@ import MainReport from "../components/main/MainReport.js";
 import axios from "axios";
 import NoChallenge from "../components/register/NoChallenge/NoChallengeForm";
 
-let userId = sessionStorage.getItem("user_id");
-if (userId == null) userId = "chatgpt";
-
 const MainFrame = (props) => {
   const [badge, setBadge] = useState([]);
   const [quote, setQuote] = useState([]);
@@ -53,6 +50,7 @@ const MainFrame = (props) => {
             sessionStorage.getItem("user_no")
         )
         .then((Response) => {
+          console.log(Response);
           if (Response.data !== "") {
             console.log(Response);
             setBadge(Response.data.badge);
