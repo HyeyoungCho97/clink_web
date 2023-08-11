@@ -41,6 +41,7 @@ export default function CommunityPost({ post, commentCount }) {
 
   useEffect(() => {
     console.log(register_id + '' + sessionStorage.user_id);
+
     if (
       register_id === sessionStorage.user_id &&
       location.pathname === '/community/post'
@@ -143,7 +144,7 @@ export default function CommunityPost({ post, commentCount }) {
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
-            {isLike ? <HeartFill /> : <Heart />}
+            {isLike ? <HeartFill style={{ color: 'red' }} /> : <Heart />}
             &nbsp;좋아요 {like}
           </button>
           <button>
