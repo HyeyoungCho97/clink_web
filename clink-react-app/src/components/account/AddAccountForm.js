@@ -46,7 +46,6 @@ const AddAccountForm = () => {
           { headers: getAuthHeader() }
         )
         .then((response) => {
-          console.log(response.data);
           if (response.data === 1) {
             alert("계좌가 등록되었습니다.");
           } else {

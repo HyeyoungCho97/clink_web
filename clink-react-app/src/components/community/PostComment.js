@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../../assets/maru.jpg";
+import Logo from "../../assets/pig.png";
 import "../../styles/community/PostComment.scss";
 import { ThreeDotsVertical } from "react-bootstrap-icons";
 import AdditionalButtonforComment from "./AdditionalButtonforComment";
@@ -16,6 +16,7 @@ export default function PostComment({ comment, parentCommentId, setParentComment
   const [view, setView] = useState(false);
   const [isReply, setIsReply] = useState(false);
   const [isMine, setIsMine] = useState(false);
+  const [imgURL, setImgURL] = useState(null);
   
 
   useEffect (() => {
@@ -34,7 +35,7 @@ export default function PostComment({ comment, parentCommentId, setParentComment
       <br />
         <div className="CommunityPostProfile">
           <div className="CommunityPostProfileImg">
-            <img src={Logo} alt="Profile" />
+          {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
           </div>
           <div className="CommunityPostProfileText">
             <p className="CommunityPostProfileNickname">{register_id}</p>
@@ -46,7 +47,6 @@ export default function PostComment({ comment, parentCommentId, setParentComment
               onClick={(event) => {
                 event.stopPropagation();
                 setView(!view);
-                console.log("click");
               }}
             />
             }

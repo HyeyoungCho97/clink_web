@@ -28,7 +28,6 @@ const Join = () => {
   function handleInputChange(e) {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
-    console.log(userInfo.email, userInfo.emailAuthNum, authcode);
   }
 
   useEffect(() => {
@@ -68,13 +67,11 @@ const Join = () => {
 
   // 이메일 인증
   function handleEmailAuth() {
-    console.log("이메일 주소:" + userInfo.email);
     alert(`${userInfo.email}로 인증번호가 전송되었습니다.`);
     let email = { params: { email: userInfo.email } };
     axios
       .post("http://localhost/user/emailAuth.do", {}, email)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           setAuthcode(response.data.trim());
         } else {
@@ -111,6 +108,7 @@ const Join = () => {
           confirmPwd: userInfo.confirmPwd,
           email: userInfo.email,
         };
+
         axios
           .post("http://localhost:80/user/join.do", param)
           .then((response) => {

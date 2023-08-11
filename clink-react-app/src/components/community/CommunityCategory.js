@@ -41,7 +41,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[0].src);
-            navigate('/community/posts?category_no=3&filter=1'); //카테고리 번호와 필터를 함께 보냄
+            navigate('/community/posts?category_no=0&filter=1'); //카테고리 번호와 필터를 함께 보냄
           }}
           className="contentIcon"
           src={best}
@@ -68,7 +68,7 @@ function Category() {
         <img
           onClick={() => {
             onClick(contents[3].src);
-            navigate('/community/posts?category_no=0&filter=1');
+            navigate('/community/posts?category_no=3&filter=1');
           }}
           className="contentIcon"
           src={announcement}
