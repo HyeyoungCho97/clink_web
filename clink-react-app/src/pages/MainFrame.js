@@ -42,7 +42,6 @@ const MainFrame = (props) => {
       }
     }
     setContinuesDate(cDate);
-    //console.log(continuesDate);
   }
 
   useEffect(() => {

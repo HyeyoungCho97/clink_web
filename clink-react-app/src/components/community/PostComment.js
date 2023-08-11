@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../../assets/maru.jpg';
 import '../../styles/community/PostComment.scss';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
 import AdditionalButtonforComment from './AdditionalButtonforComment';
 import { IoArrowUndoSharp } from 'react-icons/io5';
 import timestampParse from '../common/timestampParse';
+import Logo from '../../assets/pig.png';
+
 export default function PostComment({
   comment,
   parentCommentId,
@@ -21,6 +22,7 @@ export default function PostComment({
   const [view, setView] = useState(false);
   const [isReply, setIsReply] = useState(false);
   const [isMine, setIsMine] = useState(false);
+  const [imgURL, setImgURL] = useState(null);
 
   useEffect(() => {
     if (comment_id !== parent_id) {
@@ -52,7 +54,7 @@ export default function PostComment({
             <></>
           )}
           <div className="CommunityPostProfileImg">
-            <img src={Logo} alt="Profile" />
+            {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
           </div>
           <div className="CommunityPostProfileText">
             <p className="CommunityPostProfileNickname">{register_id}</p>
@@ -66,7 +68,6 @@ export default function PostComment({
                 onClick={(event) => {
                   event.stopPropagation();
                   setView(!view);
-                  console.log('click');
                   if (parentCommentId !== 0) {
                     setParentCommentId(0);
                   }
