@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import ModalBasic from './ModalBasic';
+import { getAuthHeader, callRefresh } from '../common/JwtAuth';
 
 const ChallengeTableCard = ({
   datetime,
@@ -50,7 +51,9 @@ const ChallengeTableCard = ({
         '&content=' +
         description;
       axios
-        .get(address)
+        .get(address, {
+          headers: getAuthHeader(),
+        })
         .then((response) => {
           if (response.data) {
             alert('정상적으로 삭제되었습니다.');

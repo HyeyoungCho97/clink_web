@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import queryString from 'query-string';
+import { getAuthHeader, callRefresh } from '../common/JwtAuth';
 
 export default function AdditionalButton() {
   const navigate = useNavigate();
@@ -17,11 +18,17 @@ export default function AdditionalButton() {
     var deleteOk = confirm('정말로 게시글을 삭제하겠습니까?');
     if (deleteOk) {
       await axios
-        .post('http://localhost:80/community/post/delete', null, {
-          params: {
-            board_no: target_board_no,
+        .post(
+          'http://localhost:80/community/post/delete',
+          {
+            params: {
+              board_no: target_board_no,
+            },
           },
-        })
+          {
+            headers: getAuthHeader(),
+          }
+        )
         .then((response) => {
           navigate(-1);
         })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/community/AdditionalButton.scss';
 import axios from 'axios';
+import { getAuthHeader, callRefresh } from '../common/JwtAuth';
 
 export default function AdditionalButton({
   target_comment_id,
@@ -14,11 +15,17 @@ export default function AdditionalButton({
     var deleteOk = confirm('정말로 댓글을 삭제하겠습니까?');
     if (deleteOk) {
       await axios
-        .post('http://localhost:80/community/post/comment/delete', null, {
-          params: {
-            comment_id: target_comment_id,
+        .post(
+          'http://localhost:80/community/post/comment/delete',
+          {
+            params: {
+              comment_id: target_comment_id,
+            },
           },
-        })
+          {
+            headers: getAuthHeader(),
+          }
+        )
         .then((response) => {
           window.location.reload(false);
         })
@@ -31,8 +38,6 @@ export default function AdditionalButton({
   const replySet = (e) => {
     setParentCommentId(target_comment_id);
   };
-
-
 
   return (
     <>
