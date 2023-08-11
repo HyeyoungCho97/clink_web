@@ -21,13 +21,12 @@ export default function PostComment({ comment, parentCommentId, setParentComment
   useEffect (() => {
     if(comment_id !== parent_id) {
       setIsReply(true);
+    }
     if (register_id === sessionStorage.user_id) {
         setIsMine(true);
       }
-    }
   }, [])
   
-
 
   return (
     <>

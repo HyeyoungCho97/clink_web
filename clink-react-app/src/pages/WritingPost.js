@@ -14,7 +14,6 @@ export default function WritingPost() {
     content: '',
     tagList: [],
   });
-
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
@@ -25,6 +24,8 @@ export default function WritingPost() {
       board_content: inputPost.content,
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
+      user_no: sessionStorage.user_no,
+      register_id: sessionStorage.user_id,
     };
     //trim 오류나서 우선 지우고 테스트중
     if (inputPost.title.trim() === '' || inputPost.content.trim() === '') {

@@ -9,7 +9,7 @@ import '../styles/community/CommunityContainer.scss';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Loading from '../assets/Spinner-1s-200px.gif';
-
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 export default function Community() {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -94,7 +94,7 @@ export default function Community() {
         <CommunityPostButton></CommunityPostButton>
         <br />
         <br />
-        {isFetching && <Loading />}
+        <br />
         <br />
         <br />
       </div>

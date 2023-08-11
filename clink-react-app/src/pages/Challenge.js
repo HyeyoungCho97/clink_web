@@ -41,7 +41,6 @@ const Challenge = () => {
   }, []);
   return (
     <div className="Challenge" style={{ paddingBottom: '20%' }}>
-      <div id="backgroundCircle"></div>
       <div className="challengContent">
         {checkChallenge === true ? (
           <>
