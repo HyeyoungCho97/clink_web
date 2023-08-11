@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import bankCategory from "../../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/AddAccountForm.scss";
-import { getAuthHeader } from "../common/JwtAuth"
+import { getAuthHeader } from "../common/JwtAuth";
 
 // 저축계좌
 const AddAccountForm = () => {
@@ -34,10 +34,9 @@ const AddAccountForm = () => {
     } else if (bank_code == null || bank_code == "") {
       alert("은행을 선택해주세요");
     } else {
-
       axios
         .post(
-          "http://localhost:80/user/registAccount.do",
+          "http://localhost:80/user/regist-account.do",
           {
             account_no: account_no,
             user_no: sessionStorage.getItem("user_no"),

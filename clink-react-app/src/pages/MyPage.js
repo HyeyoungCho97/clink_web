@@ -37,7 +37,7 @@ const MyPage = () => {
     const fetchData = async () => {
       try {
         const accountResponse = await axios.post(
-          "http://localhost:80/user/checkAccount.do",
+          "http://localhost:80/user/check-account.do",
           { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
@@ -60,7 +60,7 @@ const MyPage = () => {
           }
         }
         const userResponse = await axios.post(
-          "http://localhost:80/user/get-userInfo.do",
+          "http://localhost:80/user/mypage.do",
           { user_no: sessionStorage.getItem("user_no") },
           {
             headers: getAuthHeader(),
@@ -85,6 +85,8 @@ const MyPage = () => {
           }
         } //end if
       }
+
+      console.log("newfile:" + newfile);
     };
     fetchData();
   }, []);

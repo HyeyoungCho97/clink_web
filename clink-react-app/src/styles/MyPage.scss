@@ -19,9 +19,9 @@
     align-items: center;
     justify-content: center;
     img {
-      width: 80px;
-      height: 80px;
-      border: 2px solid #0364f7;
+      width: 90px;
+      height: 90px;
+      border: 2px solid #015adf;
       border-radius: 50%;
       margin: 10px 50px 10px 10px;
     }
@@ -42,7 +42,7 @@
       align-items: center;
       justify-content: center;
       &:hover {
-        background: hsl(216, 99%, 44%);
+        background: #015adf;
         color: #fff;
       }
     }
