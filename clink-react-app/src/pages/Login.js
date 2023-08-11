@@ -26,7 +26,6 @@ const Login = () => {
     if (user_id.trim() === "" || password.trim() === "") {
       setUser_id("");
       setPassword("");
-      console.log(user_id);
       alert("아이디 또는 패스워드를 입력해주세요");
     } else {
       //토큰을 생성할 파라미터
@@ -34,22 +33,19 @@ const Login = () => {
         mid: "t3",
         mpw: "t3",
       };
-      console.log(user_id, password);
 
       const res = await axios.post("http://localhost:80/user/login.do", {
         user_no: sessionStorage.getItem("user_no"),
         user_id: user_id,
         password: password,
       });
-      console.log(res.data);
       if (res.data) {
         sessionStorage.setItem("user_no", res.data.user_no);
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
-        console.log("challengeDetails:" + res.data.challengeDetails);
         if (
-          res.data.challengeDetails == null ||
-          res.data.challengeDetails == ""
+          res.data.challengeDetails === null ||
+          res.data.challengeDetails === ""
         ) {
           console.log("등록된 챌린지 없음");
           setChallengeCheck(0);
@@ -67,7 +63,6 @@ const Login = () => {
         if (!response.data) {
           console.log("데이터 없음");
         } else {
-          console.log(response.data);
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           navigate("/mypage");
@@ -98,7 +93,6 @@ const Login = () => {
             placeholder="아이디"
             onChange={(e) => {
               setUser_id(e.target.value);
-              console.log(user_id);
             }}
           />
           <Form.Control
@@ -108,7 +102,6 @@ const Login = () => {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              console.log(e.target.value);
             }}
             onKeyDown={(e) => handleEnterKey(e)}
           />

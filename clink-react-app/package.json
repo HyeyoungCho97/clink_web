@@ -38,6 +38,7 @@
     "sass": "^1.63.6",
     "scss": "^0.2.4",
     "start": "^5.1.0",
+    "sweetalert2": "^11.7.22",
     "swiper": "^10.0.4",
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.19"
@@ -66,5 +67,4 @@
       "last 1 safari version"
     ]
   }
-  
 }
