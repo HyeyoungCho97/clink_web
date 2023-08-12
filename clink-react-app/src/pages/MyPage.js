@@ -171,7 +171,7 @@ const MyPage = () => {
         <div className="MyPageProfileBox">
           {newfile ? (
             <img
-              src={`http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/img/${newfile}`}
+              src={`http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/home/ubuntu/property/img/${newfile}`}
               alt="logo"
             />
           ) : (
