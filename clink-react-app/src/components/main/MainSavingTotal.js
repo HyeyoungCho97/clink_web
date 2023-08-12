@@ -50,7 +50,7 @@ const MainSavingTotal = ({ saving, totalSave }) => {
           color: "white",
         }}
       >
-        {amount}원 {"\n"}
+        {amount.toLocaleString()}원 {"\n"}
       </p>
       <p
         style={{
