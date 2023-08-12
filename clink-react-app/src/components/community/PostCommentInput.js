@@ -31,7 +31,7 @@ export default function PostCommentInput({ comment, parentCommentId }) {
       })
       .then((response) => {
         window.location.replace(
-          "http://43.200.204.75:3000/community/post" + location.search
+          "http://43.200.204.75:80/community/post" + location.search
         );
       })
       .catch((error) => {

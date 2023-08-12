@@ -36,7 +36,7 @@ export default function WritingPost() {
         params
       );
       window.location.href =
-        "http://43.200.204.75:3000/community/posts?category_no=" +
+        "http://43.200.204.75:80/community/posts?category_no=" +
         inputPost.categoryNo +
         "&&filter=1";
     }

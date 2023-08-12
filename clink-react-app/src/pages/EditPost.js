@@ -68,7 +68,7 @@ export default function EditPost() {
       console.log(e);
     });
     window.location.href =
-      "http://localhost:3000/community/post" + location.search;
+      "http://43.200.204.75:80/community/post" + location.search;
   };
 
   if (loading) return <div>로딩중..</div>;
