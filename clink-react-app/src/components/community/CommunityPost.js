@@ -7,13 +7,14 @@ import {
   HeartFill,
   ThreeDotsVertical,
 } from "react-bootstrap-icons";
-import Logo from "../../assets/maru.jpg";
+import Logo from "../../assets/pig.png";
 import Button from "react-bootstrap/Button";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdditionalButton from "./AdditionalButton";
 import axios from "axios";
+import timestampParse from "../common/timestampParse";
 
-export default function CommunityPost({ post, key, commentCount }) {
+export default function CommunityPost({ post, commentCount }) {
   const {
     board_title,
     board_no,
@@ -31,6 +32,7 @@ export default function CommunityPost({ post, key, commentCount }) {
   const [isLike, setIsLike] = useState(false);
   const [isMine, setIsMine] = useState(false);
   const [view, setView] = useState(false);
+  const [imgURL, setImgURL] = useState(null);
 
   const baseurl =
     "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/like";
@@ -56,9 +58,6 @@ export default function CommunityPost({ post, key, commentCount }) {
       .catch(function (error) {
         console.log(error);
       });
-
-    // console.log('isMine change :' + isMine);
-    // console.log(location.pathname);
   }, [isMine, isLike, like]);
 
   const clickLike = (event) => {
@@ -97,7 +96,6 @@ export default function CommunityPost({ post, key, commentCount }) {
     }
     return list;
   };
-
   return (
     <>
       <div
@@ -112,11 +110,13 @@ export default function CommunityPost({ post, key, commentCount }) {
           <div className="PostProfileDiv">
             <div className="CommunityPostProfile">
               <div className="CommunityPostProfileImg">
-                <img src={Logo} alt="Profile" />
+                {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
-                <p className="CommunityPostProfileTime">{register_datetime}</p>
+                <p className="CommunityPostProfileTime">
+                  {timestampParse(register_datetime)}
+                </p>
               </div>
             </div>
 
@@ -141,7 +141,7 @@ export default function CommunityPost({ post, key, commentCount }) {
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
-            {isLike ? <HeartFill /> : <Heart />}
+            {isLike ? <HeartFill style={{ color: "red" }} /> : <Heart />}
             &nbsp;좋아요 {like}
           </button>
           <button>

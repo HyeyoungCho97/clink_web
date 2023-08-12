@@ -14,21 +14,21 @@ export default function WritingPost() {
     content: "",
     tagList: [],
   });
-
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
       arr.push(inputPost.tagList[i].tagname);
     }
-    console.log(inputPost.tagList.join());
     let params = {
       board_title: inputPost.title,
       board_content: inputPost.content,
       category_no: inputPost.categoryNo,
       hashtag_content: arr.join(),
+      user_no: sessionStorage.user_no,
+      register_id: sessionStorage.user_id,
     };
     //trim 오류나서 우선 지우고 테스트중
-    if (inputPost.boardTitle === "" || inputPost.boardContent === "") {
+    if (inputPost.title.trim() === "" || inputPost.content.trim() === "") {
       alert("제목 또는 내용을 입력해주세요!");
     } else {
       axios.post(
@@ -36,7 +36,7 @@ export default function WritingPost() {
         params
       );
       window.location.href =
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/posts?category_no=" +
+        "http://43.200.204.75:3000/community/posts?category_no=" +
         inputPost.categoryNo +
         "&&filter=1";
     }

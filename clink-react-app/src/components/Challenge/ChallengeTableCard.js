@@ -14,7 +14,7 @@ const ChallengeTableCard = ({
   const [modalOpen, setModalOpen] = useState(false);
   //카드내용 노출 여부 state
   const [cardContent, setCardContent] = useState(true);
-
+  const user_no = sessionStorage.getItem("user_no");
   //Update 호출
   function updateCard() {
     console.log("수정");
@@ -45,7 +45,8 @@ const ChallengeTableCard = ({
     //삭제 전 확인
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const address =
-        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-delete?userNo=00000" +
+        "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-delete?userNo=" +
+        user_no +
         "&datetime=" +
         moment(date).format("YYYY-MM-DD ") +
         time +

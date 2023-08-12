@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import account from "../../assets/account.png";
@@ -8,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import bankCategory from "../../dataCode/bankCategory.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/AddAccountForm.scss";
+import { getAuthHeader } from "../common/JwtAuth";
 
 // 저축계좌
 const AddAccountForm = () => {
@@ -31,22 +31,21 @@ const AddAccountForm = () => {
       alert("계좌번호를 다시 확인해주세요");
     } else if (isNaN(account_no)) {
       alert("계좌번호에 문자가 포함되어 있습니다.");
-    } else if (bank_code == null || bank_code == "") {
+    } else if (bank_code === null || bank_code === "") {
       alert("은행을 선택해주세요");
     } else {
-      let param = {
-        account_no: account_no,
-        user_no: sessionStorage.getItem("user_no"),
-        bank_code: bank_code,
-        account_code: 1,
-      };
       axios
         .post(
-          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/clink/user/registAccount.do",
-          param
+          "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/user/regist-account.do",
+          {
+            account_no: account_no,
+            user_no: sessionStorage.getItem("user_no"),
+            bank_code: bank_code,
+            account_code: 1,
+          },
+          { headers: getAuthHeader() }
         )
         .then((response) => {
-          console.log(response.data);
           if (response.data === 1) {
             alert("계좌가 등록되었습니다.");
           } else {

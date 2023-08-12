@@ -10,6 +10,7 @@ import moment from "moment";
 const ChallengeGraph = ({ today, week, openModal }) => {
   const [value, onChange] = useState(new Date());
   const [data, setData] = useState(today);
+  const user_no = sessionStorage.getItem("user_no");
 
   useEffect(() => {
     setData(today);
@@ -20,7 +21,8 @@ const ChallengeGraph = ({ today, week, openModal }) => {
   const getData = async () => {
     //console.log("click");
     const address =
-      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-info?userNo=00000" +
+      "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-info?userNo=" +
+      user_no +
       "&startDate=" +
       moment(value[0]).format("YYYY-MM-DD") +
       "&endDate=" +
