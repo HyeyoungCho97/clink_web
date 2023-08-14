@@ -19,7 +19,9 @@ const MainFrame = (props) => {
   const [quote, setQuote] = useState([]);
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
-  const [checkChallenge, setCheckChallenge] = useState(false);
+  const [checkChallenge, setCheckChallenge] = useState(
+    sessionStorage.getItem('challengeCheck')
+  );
   const [continuesDate, setContinuesDate] = useState(1);
 
   //연속일수 구하는 함수
@@ -110,7 +112,7 @@ const MainFrame = (props) => {
   return (
     <>
       <div className="backgroundCircle"></div>
-      {checkChallenge === true ? (
+      {checkChallenge >= 1 ? (
         <div
           className="main-div"
           style={{
@@ -133,7 +135,9 @@ const MainFrame = (props) => {
           {reportData && <MainReport data={reportData} />}
         </div>
       ) : (
-        <>{!checkChallenge && <NoChallenge />}</>
+        <>
+          <NoChallenge />
+        </>
       )}
     </>
   );

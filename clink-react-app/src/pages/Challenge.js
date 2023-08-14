@@ -14,7 +14,9 @@ const Challenge = () => {
   const [value, setValue] = useState();
   const [todayData, setTodayData] = useState([]);
   const [weekData, setWeekData] = useState([]);
-  const [checkChallenge, setCheckChallenge] = useState(false);
+  const [checkChallenge, setCheckChallenge] = useState(
+    sessionStorage.getItem('challengeCheck')
+  );
   useEffect(() => {
     const user_no = sessionStorage.getItem('user_no');
     const address = 'http://localhost:80/challenge/main-info?userNo=' + user_no;
@@ -45,7 +47,7 @@ const Challenge = () => {
   return (
     <div className="Challenge" style={{ paddingBottom: '20%' }}>
       <div className="challengContent">
-        {checkChallenge === true ? (
+        {checkChallenge >= 1 ? (
           <>
             <Header />
             <ChallengeTitle
@@ -56,7 +58,9 @@ const Challenge = () => {
             <ChallengeGraph today={todayData} week={weekData} />
           </>
         ) : (
-          <>{!checkChallenge && <NoChallenge />}</>
+          <>
+            <NoChallenge />
+          </>
         )}
       </div>
     </div>
