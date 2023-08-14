@@ -28,6 +28,7 @@ function Community({ list }) {
         setHotInfoPost(response.data[0].hotInfoPost);
         setHotAnnPost(response.data[0].hotAnnPost);
         setNewsdata(response.data[1]);
+        console.log(response.data);
       } catch (e) {
         console.log(e);
       }

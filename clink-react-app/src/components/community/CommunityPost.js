@@ -57,8 +57,6 @@ export default function CommunityPost({ post, commentCount }) {
       .catch(function (error) {
         console.log(error);
       });
-
-
   }, [isMine, isLike, like]);
 
   const clickLike = (event) => {
@@ -142,7 +140,7 @@ export default function CommunityPost({ post, commentCount }) {
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
-            {isLike ? <HeartFill /> : <Heart />}
+            {isLike ? <HeartFill style={{ color: 'red' }} /> : <Heart />}
             &nbsp;좋아요 {like}
           </button>
           <button>
