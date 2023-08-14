@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import '../../styles/community/CommunityPost.scss';
+import React, { useState, useEffect } from "react";
+import "../../styles/community/CommunityPost.scss";
 import {
   Heart,
   ChatDots,
   Eye,
   HeartFill,
   ThreeDotsVertical,
-} from 'react-bootstrap-icons';
-import Logo from '../../assets/pig.png';
-import Button from 'react-bootstrap/Button';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import AdditionalButton from './AdditionalButton';
-import axios from 'axios';
-import timestampParse from '../common/timestampParse';
+} from "react-bootstrap-icons";
+import Logo from "../../assets/pig.png";
+import Button from "react-bootstrap/Button";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import AdditionalButton from "./AdditionalButton";
+import axios from "axios";
+import timestampParse from "../common/timestampParse";
 
 export default function CommunityPost({ post, commentCount }) {
   const {
@@ -34,16 +34,16 @@ export default function CommunityPost({ post, commentCount }) {
   const [view, setView] = useState(false);
   const [imgURL, setImgURL] = useState(null);
 
-  const baseurl = 'http://localhost/community/post/like';
+  const baseurl = "http://localhost/community/post/like";
   const parameterurl =
-    '?user_id=' + sessionStorage.user_id + '&board_no=' + post.board_no;
-  const likeupurl = '/insert';
-  const likedownurl = '/delete';
+    "?user_id=" + sessionStorage.user_id + "&board_no=" + post.board_no;
+  const likeupurl = "/insert";
+  const likedownurl = "/delete";
 
   useEffect(() => {
     if (
       register_id === sessionStorage.user_id &&
-      location.pathname === '/community/post'
+      location.pathname === "/community/post"
     ) {
       setIsMine(true);
     }
@@ -79,18 +79,20 @@ export default function CommunityPost({ post, commentCount }) {
   const postHash = () => {
     const list = [];
     if (hashtag_content !== undefined) {
-      const hashlist = hashtag_content.split(',');
+      const hashlist = hashtag_content.split(",");
       for (let i = 0; i < hashlist.length; i++) {
-        list.push(
-          <Button
-            variant="primary"
-            size="sm"
-            key={i}
-            style={{ marginRight: '5px' }}
-          >
-            {'#' + hashlist[i]}
-          </Button>
-        );
+        if (hashlist[i] !== "") {
+          list.push(
+            <Button
+              variant="primary"
+              size="sm"
+              key={i}
+              style={{ marginRight: "5px" }}
+            >
+              {"#" + hashlist[i]}
+            </Button>
+          );
+        }
       }
     }
     return list;
@@ -101,7 +103,7 @@ export default function CommunityPost({ post, commentCount }) {
         className="CommunityPostContainer"
         onClick={(event) => {
           event.stopPropagation();
-          navigate('/community/post?board_no=' + board_no);
+          navigate("/community/post?board_no=" + board_no);
         }}
       >
         <div className="CommunityPostTags">{postHash()}</div>
@@ -140,7 +142,7 @@ export default function CommunityPost({ post, commentCount }) {
 
         <div className="CommunityPostInfo">
           <button onClick={clickLike}>
-            {isLike ? <HeartFill style={{ color: 'red' }} /> : <Heart />}
+            {isLike ? <HeartFill style={{ color: "red" }} /> : <Heart />}
             &nbsp;좋아요 {like}
           </button>
           <button>
