@@ -1,24 +1,26 @@
-import '../styles/main/MainFrame.scss';
-import CalendarGraph from '../components/main/CalendarGraph.js';
-import MainBackgroundImage from '../images/main_background.svg';
-import React, { useEffect, useState } from 'react';
-import Header from '../components/common/Header.js';
-import MainHello from '../components/main/MainHello.js';
-import MainQuote from '../components/main/MainQuote.js';
-import MainSavingTotal from '../components/main/MainSavingTotal.js';
-import MainReport from '../components/main/MainReport.js';
-import axios from 'axios';
-import NoChallenge from '../components/register/NoChallenge/NoChallengeForm';
+import "../styles/main/MainFrame.scss";
+import CalendarGraph from "../components/main/CalendarGraph.js";
+import MainBackgroundImage from "../images/main_background.svg";
+import React, { useEffect, useState } from "react";
+import Header from "../components/common/Header.js";
+import MainHello from "../components/main/MainHello.js";
+import MainQuote from "../components/main/MainQuote.js";
+import MainSavingTotal from "../components/main/MainSavingTotal.js";
+import MainReport from "../components/main/MainReport.js";
+import axios from "axios";
+import NoChallenge from "../components/register/NoChallenge/NoChallengeForm";
 
-let userId = sessionStorage.getItem('user_id');
-if (userId == null) userId = 'chatgpt';
+let userId = sessionStorage.getItem("user_id");
+if (userId == null) userId = "chatgpt";
 
 const MainFrame = (props) => {
   const [badge, setBadge] = useState([]);
   const [quote, setQuote] = useState([]);
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
-  const [checkChallenge, setCheckChallenge] = useState(false);
+  const [checkChallenge, setCheckChallenge] = useState(
+    sessionStorage.getItem("challengeCheck")
+  );
   const [continuesDate, setContinuesDate] = useState(1);
 
   //연속일수 구하는 함수
@@ -46,13 +48,14 @@ const MainFrame = (props) => {
 
   useEffect(() => {
     const getUserData = async () => {
+      console.log(sessionStorage.getItem("challengeCheck"));
       await axios
         .get(
-          'http://localhost:80/main/info?userNo=' +
-            sessionStorage.getItem('user_no')
+          "http://localhost:80/main/info?userNo=" +
+            sessionStorage.getItem("user_no")
         )
         .then((Response) => {
-          if (Response.data !== '') {
+          if (Response.data !== "") {
             console.log(Response);
             setBadge(Response.data.badge);
             setQuote(Response.data.quote);
@@ -62,11 +65,11 @@ const MainFrame = (props) => {
             setCheckChallenge(true);
           } else {
             setCheckChallenge(false);
-            console.log('없졍');
+            console.log("없졍");
           }
         })
         .catch((error) => {
-          console.log('메인에러');
+          console.log("메인에러");
         });
     };
     getUserData();
@@ -75,12 +78,12 @@ const MainFrame = (props) => {
   return (
     <>
       <div className="backgroundCircle"></div>
-      {checkChallenge === true ? (
+      {checkChallenge >= 1 ? (
         <div
           className="main-div"
           style={{
-            backgroundImage: 'url(' + MainBackgroundImage + ')',
-            paddingBottom: '20%',
+            backgroundImage: "url(" + MainBackgroundImage + ")",
+            paddingBottom: "20%",
           }}
         >
           <Header />
@@ -98,7 +101,9 @@ const MainFrame = (props) => {
           {reportData && <MainReport data={reportData} />}
         </div>
       ) : (
-        <>{!checkChallenge && <NoChallenge />}</>
+        <>
+          <NoChallenge />
+        </>
       )}
     </>
   );
