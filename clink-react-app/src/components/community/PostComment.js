@@ -59,6 +59,7 @@ export default function PostComment({ comment, parentCommentId, setParentComment
                 setParentCommentId={setParentCommentId}
                 isReply = {isReply}
                 isMine={isMine}
+                parent_id={parent_id}
               ></AdditionalButtonforComment>
             )}
           </div>
