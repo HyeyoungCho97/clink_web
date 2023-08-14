@@ -15,7 +15,7 @@ let userId = sessionStorage.getItem('user_id');
 if (userId == null) userId = 'chatgpt';
 
 const MainFrame = (props) => {
-  const [badge, setBadge] = useState([]);
+  const [badge, setBadge] = useState("001");
   const [quote, setQuote] = useState([]);
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
