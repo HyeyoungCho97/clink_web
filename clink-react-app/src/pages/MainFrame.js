@@ -1,17 +1,18 @@
-import "../styles/main/MainFrame.scss";
-import CalendarGraph from "../components/main/CalendarGraph.js";
-import MainBackgroundImage from "../images/main_background.svg";
-import React, { useEffect, useState } from "react";
-import Header from "../components/common/Header.js";
-import MainHello from "../components/main/MainHello.js";
-import MainQuote from "../components/main/MainQuote.js";
-import MainSavingTotal from "../components/main/MainSavingTotal.js";
-import MainReport from "../components/main/MainReport.js";
-import axios from "axios";
-import NoChallenge from "../components/register/NoChallenge/NoChallengeForm";
+import '../styles/main/MainFrame.scss';
+import CalendarGraph from '../components/main/CalendarGraph.js';
+import MainBackgroundImage from '../images/main_background.svg';
+import React, { useEffect, useState } from 'react';
+import Header from '../components/common/Header.js';
+import MainHello from '../components/main/MainHello.js';
+import MainQuote from '../components/main/MainQuote.js';
+import MainSavingTotal from '../components/main/MainSavingTotal.js';
+import MainReport from '../components/main/MainReport.js';
+import axios from 'axios';
+import NoChallenge from '../components/register/NoChallenge/NoChallengeForm';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 
-let userId = sessionStorage.getItem("user_id");
-if (userId == null) userId = "chatgpt";
+let userId = sessionStorage.getItem('user_id');
+if (userId == null) userId = 'chatgpt';
 
 const MainFrame = (props) => {
   const [badge, setBadge] = useState("001");
@@ -19,7 +20,7 @@ const MainFrame = (props) => {
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
   const [checkChallenge, setCheckChallenge] = useState(
-    sessionStorage.getItem("challengeCheck")
+    sessionStorage.getItem('challengeCheck')
   );
   const [continuesDate, setContinuesDate] = useState(1);
 
@@ -47,33 +48,66 @@ const MainFrame = (props) => {
   }
 
   useEffect(() => {
+    console.log(sessionStorage.getItem('challengeCheck'));
     const getUserData = async () => {
-      console.log(sessionStorage.getItem("challengeCheck"));
-      await axios
-        .get(
-          "http://localhost:80/main/info?userNo=" +
-            sessionStorage.getItem("user_no")
-        )
-        .then((Response) => {
-          if (Response.data !== "") {
-            console.log(Response);
-            setBadge(Response.data.badge);
-            setQuote(Response.data.quote);
-            setStreakData(Response.data.streakData);
-            setReportData(Response.data.report);
-            getContinuesDate(Response.data.streakData.streakData);
-            setCheckChallenge(true);
-          } else {
-            setCheckChallenge(false);
-            console.log("없졍");
+      try {
+        const headersWithAuth = getAuthHeader();
+
+        const response = await axios.get(
+          'http://localhost:80/main/info?userNo=' +
+            sessionStorage.getItem('user_no'),
+          {
+            headers: headersWithAuth,
           }
-        })
-        .catch((error) => {
-          console.log("메인에러");
-        });
+        );
+
+        if (response.data !== '') {
+          console.log(response);
+          setBadge(response.data.badge);
+          setQuote(response.data.quote);
+          setStreakData(response.data.streakData);
+          setReportData(response.data.report);
+          getContinuesDate(response.data.streakData.streakData);
+          setCheckChallenge(true);
+        } else {
+          setCheckChallenge(false);
+          console.log('없졍');
+        }
+      } catch (error) {
+        console.log('메인에러');
+      }
     };
     getUserData();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(sessionStorage.getItem('challengeCheck'));
+  //   const getUserData = async () => {
+  //     await axios
+  //       .get(
+  //         'http://localhost:80/main/info?userNo=' +
+  //           sessionStorage.getItem('user_no')
+  //       )
+  //       .then((Response) => {
+  //         if (Response.data !== '') {
+  //           console.log(Response);
+  //           setBadge(Response.data.badge);
+  //           setQuote(Response.data.quote);
+  //           setStreakData(Response.data.streakData);
+  //           setReportData(Response.data.report);
+  //           getContinuesDate(Response.data.streakData.streakData);
+  //           setCheckChallenge(true);
+  //         } else {
+  //           setCheckChallenge(false);
+  //           console.log('없졍');
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log('메인에러');
+  //       });
+  //   };
+  //   getUserData();
+  // }, []);
 
   return (
     <>
@@ -82,8 +116,8 @@ const MainFrame = (props) => {
         <div
           className="main-div"
           style={{
-            backgroundImage: "url(" + MainBackgroundImage + ")",
-            paddingBottom: "20%",
+            backgroundImage: 'url(' + MainBackgroundImage + ')',
+            paddingBottom: '20%',
           }}
         >
           <Header />

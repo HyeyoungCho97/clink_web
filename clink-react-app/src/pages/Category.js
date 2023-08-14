@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import CommunityHeader from "../components/community/CommunityHeader";
-import CommunityCategory from "../components/community/CategoryTab";
-import CommunityFilter from "../components/community/CommunityFilter";
-import CommunityPost from "../components/community/CommunityPost";
-import CommunityPostButton from "../components/community/CommunityPostButton";
-import "../styles/community/CommunityContainer.scss";
+import React, { useEffect, useState } from 'react';
+import CommunityHeader from '../components/community/CommunityHeader';
+import CommunityCategory from '../components/community/CategoryTab';
+import CommunityFilter from '../components/community/CommunityFilter';
+import CommunityPost from '../components/community/CommunityPost';
+import CommunityPostButton from '../components/community/CommunityPostButton';
+import '../styles/community/CommunityContainer.scss';
 // import { Link, Outlet, useNavigate } from 'react-router-dom';
-import axios from "axios";
-import { useLocation } from "react-router-dom";
-import Loading from "../assets/Spinner-1s-200px.gif";
-import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import Loading from '../assets/Spinner-1s-200px.gif';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 export default function Community() {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState(1);
-  const [hashtag, setHashtag] = useState("");
+  const [hashtag, setHashtag] = useState('');
   const [categoryNo, setCategoryNo] = useState(1);
   const [isFetching, setFetching] = useState(false);
   const [ScrollY, setScrollY] = useState(0);
@@ -23,7 +23,7 @@ export default function Community() {
   const location = useLocation();
 
   useEffect(() => {
-    const lo = Number(new URLSearchParams(location.search).get("category_no"));
+    const lo = Number(new URLSearchParams(location.search).get('category_no'));
     setCategoryNo(lo);
     const fetchPosts = async () => {
       try {
@@ -33,16 +33,30 @@ export default function Community() {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:80/community/posts?category_no=" +
+          'http://localhost:80/community/posts?category_no=' +
             lo +
-            "&filter=" +
+            '&filter=' +
             filter +
-            "&hashtag=" +
-            hashtag
+            '&hashtag=' +
+            hashtag,
+          {
+            headers: getAuthHeader(),
+          }
         );
         setPosts([...response.data]); // 데이터는 response.data 안에 들어있습니다.
-      } catch (e) {
-        setError(e);
+      } catch (err) {
+        setError(err);
+        if (err.response.data.msg === 'Expired Token') {
+          console.log('Refresh Your Token');
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh(); // refresh 토큰 발급
+            console.log('new tokens....saved..');
+            return lo();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        } //end if
       }
       setLoading(false);
     };

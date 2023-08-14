@@ -6,6 +6,7 @@ import PostTagInput from '../components/community/PostTagInput';
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 import queryString from 'query-string';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 
 export default function EditPost() {
   const [inputPost, setInputPost] = useState(null);
@@ -35,9 +36,16 @@ export default function EditPost() {
         setInputPost(null);
         setLoading(true);
 
-        await axios
-          .get('http://localhost/community/post' + location.search)
-          .then((response) => setInputPost(response.data));
+        const headersWithAuth = getAuthHeader(); // JWT를 포함한 헤더 가져오기
+
+        const response = await axios.get(
+          'http://localhost/community/post' + location.search,
+          {
+            headers: headersWithAuth, // JWT 포함한 헤더 추가
+          }
+        );
+
+        setInputPost(response.data);
       } catch (e) {
         setError(e);
       }

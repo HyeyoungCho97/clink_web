@@ -6,13 +6,14 @@ import {
   Eye,
   HeartFill,
   ThreeDotsVertical,
-} from "react-bootstrap-icons";
-import Logo from "../../assets/pig.png";
-import Button from "react-bootstrap/Button";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import AdditionalButton from "./AdditionalButton";
-import axios from "axios";
-import timestampParse from "../common/timestampParse";
+} from 'react-bootstrap-icons';
+import Logo from '../../assets/pig.png';
+import Button from 'react-bootstrap/Button';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import AdditionalButton from './AdditionalButton';
+import axios from 'axios';
+import timestampParse from '../common/timestampParse';
+import { getAuthHeader, callRefresh } from '../common/JwtAuth';
 
 export default function CommunityPost({ post, commentCount }) {
   const {
@@ -50,7 +51,9 @@ export default function CommunityPost({ post, commentCount }) {
 
     //좋아요 체크
     axios
-      .get(baseurl + parameterurl)
+      .get(baseurl + parameterurl, {
+        headers: getAuthHeader(), // JWT를 포함한 헤더 추가
+      })
       .then(function (response) {
         setIsLike(response.data);
       })
@@ -62,20 +65,29 @@ export default function CommunityPost({ post, commentCount }) {
   const clickLike = (event) => {
     event.stopPropagation();
 
+    const headersWithAuth = getAuthHeader();
+
     if (isLike === 0) {
-      axios.post(baseurl + likeupurl + parameterurl).then((response) => {
-        setIsLike(true);
-        setLike(like + 1);
-      });
+      axios
+        .post(baseurl + likeupurl + parameterurl, null, {
+          headers: headersWithAuth, // JWT 포함한 헤더 추가
+        })
+        .then((response) => {
+          setIsLike(true);
+          setLike(like + 1);
+        });
     } else {
-      axios.post(baseurl + likedownurl + parameterurl).then((response) => {
-        setIsLike(false);
-        setLike(like - 1);
-      });
+      axios
+        .post(baseurl + likedownurl + parameterurl, null, {
+          headers: headersWithAuth, // JWT 포함한 헤더 추가
+        })
+        .then((response) => {
+          setIsLike(false);
+          setLike(like - 1);
+        });
     }
     setIsLike(!isLike);
   };
-
   const postHash = () => {
     const list = [];
     if (hashtag_content !== undefined) {
