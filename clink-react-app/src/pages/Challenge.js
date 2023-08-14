@@ -6,6 +6,7 @@ import ChallengeGoal from '../components/Challenge/ChallengeGoal';
 import Header from '../components/common/Header';
 import ChallengeGraph from '../components/Challenge/ChallengeGraph';
 import NoChallenge from '../components/register/NoChallenge/NoChallengeForm';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 const Challenge = () => {
   const [ChallengeTitleText, setChallengeTitleText] = useState();
   const [ChallengeDescriptionText, setChallengeDescruotuibText] = useState();
@@ -19,7 +20,9 @@ const Challenge = () => {
     const address = 'http://localhost:80/challenge/main-info?userNo=' + user_no;
     //+sessionStorage.getItem("userNo");
     axios
-      .get(address)
+      .get(address, {
+        headers: getAuthHeader(),
+      })
       .then((response) => {
         console.log(response);
         if (response.data !== '') {

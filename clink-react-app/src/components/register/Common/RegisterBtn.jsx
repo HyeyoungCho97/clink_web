@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import '../../../styles/MyPage.scss';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getAuthHeader, callRefresh } from '../../common/JwtAuth';
 /* *params
 challenge_title : ,
 challenge_amount :   
@@ -19,7 +20,9 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
       user_no: user_no,
       challenge_no: challenge_no,
     };
-    await axios.post('http://localhost:80/challenge/register', param);
+    await axios.post('http://localhost:80/challenge/register', param, {
+      headers: getAuthHeader(),
+    });
     navigate('/Main');
   };
   return (

@@ -9,6 +9,7 @@ import MainSavingTotal from '../components/main/MainSavingTotal.js';
 import MainReport from '../components/main/MainReport.js';
 import axios from 'axios';
 import NoChallenge from '../components/register/NoChallenge/NoChallengeForm';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 
 let userId = sessionStorage.getItem('user_id');
 if (userId == null) userId = 'chatgpt';
@@ -45,32 +46,66 @@ const MainFrame = (props) => {
   }
 
   useEffect(() => {
+    console.log(sessionStorage.getItem('challengeCheck'));
     const getUserData = async () => {
-      await axios
-        .get(
+      try {
+        const headersWithAuth = getAuthHeader();
+
+        const response = await axios.get(
           'http://localhost:80/main/info?userNo=' +
-            sessionStorage.getItem('user_no')
-        )
-        .then((Response) => {
-          if (Response.data !== '') {
-            console.log(Response);
-            setBadge(Response.data.badge);
-            setQuote(Response.data.quote);
-            setStreakData(Response.data.streakData);
-            setReportData(Response.data.report);
-            getContinuesDate(Response.data.streakData.streakData);
-            setCheckChallenge(true);
-          } else {
-            setCheckChallenge(false);
-            console.log('없졍');
+            sessionStorage.getItem('user_no'),
+          {
+            headers: headersWithAuth,
           }
-        })
-        .catch((error) => {
-          console.log('메인에러');
-        });
+        );
+
+        if (response.data !== '') {
+          console.log(response);
+          setBadge(response.data.badge);
+          setQuote(response.data.quote);
+          setStreakData(response.data.streakData);
+          setReportData(response.data.report);
+          getContinuesDate(response.data.streakData.streakData);
+          setCheckChallenge(true);
+        } else {
+          setCheckChallenge(false);
+          console.log('없졍');
+        }
+      } catch (error) {
+        console.log('메인에러');
+      }
     };
     getUserData();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(sessionStorage.getItem('challengeCheck'));
+  //   const getUserData = async () => {
+  //     await axios
+  //       .get(
+  //         'http://localhost:80/main/info?userNo=' +
+  //           sessionStorage.getItem('user_no')
+  //       )
+  //       .then((Response) => {
+  //         if (Response.data !== '') {
+  //           console.log(Response);
+  //           setBadge(Response.data.badge);
+  //           setQuote(Response.data.quote);
+  //           setStreakData(Response.data.streakData);
+  //           setReportData(Response.data.report);
+  //           getContinuesDate(Response.data.streakData.streakData);
+  //           setCheckChallenge(true);
+  //         } else {
+  //           setCheckChallenge(false);
+  //           console.log('없졍');
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log('메인에러');
+  //       });
+  //   };
+  //   getUserData();
+  // }, []);
 
   return (
     <>
