@@ -1,7 +1,8 @@
-import Button from "react-bootstrap/Button";
-import "../../../styles/MyPage.scss";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import Button from 'react-bootstrap/Button';
+import '../../../styles/MyPage.scss';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getAuthHeader, callRefresh } from '../../common/JwtAuth';
 /* *params
 challenge_title : ,
 challenge_amount :   
@@ -10,8 +11,8 @@ challenge_amount :
 const RegisterBtn = ({ btnType, title, description, amount }) => {
   const navigate = useNavigate();
   const test = async (e) => {
-    const user_no = sessionStorage.getItem("user_no");
-    const challenge_no = "54321";
+    const user_no = sessionStorage.getItem('user_no');
+    const challenge_no = '54321';
     const param = {
       challenge_title: title,
       challenge_description: description,
@@ -19,13 +20,14 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
       user_no: user_no,
       challenge_no: challenge_no,
     };
-    await axios.post("http://localhost:80/challenge/register", param);
-    sessionStorage.setItem("challengeCheck", 1);
-    navigate("/Main");
+    await axios.post('http://localhost:80/challenge/register', param, {
+      headers: getAuthHeader(),
+    });
+    navigate('/Main');
   };
   return (
     <>
-      {btnType === "등록" ? (
+      {btnType === '등록' ? (
         <Button type="button" onClick={test}>
           {btnType}
         </Button>

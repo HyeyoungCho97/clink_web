@@ -1,79 +1,78 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import pig from "../assets/pig.png";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/Login.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import pig from '../assets/pig.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/Login.scss';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [user_id, setUser_id] = useState("");
-  const [password, setPassword] = useState("");
+  const [user_id, setUser_id] = useState('');
+  const [password, setPassword] = useState('');
   const [challengeCheck, setChallengeCheck] = useState(0);
 
   // 엔터키 이벤트
   const handleEnterKey = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleLoginSubmit();
     }
   };
 
   // 로그인
   const handleLoginSubmit = async () => {
-    if (user_id.trim() === "" || password.trim() === "") {
-      setUser_id("");
-      setPassword("");
-      alert("아이디 또는 패스워드를 입력해주세요");
+    if (user_id.trim() === '' || password.trim() === '') {
+      setUser_id('');
+      setPassword('');
+      alert('아이디 또는 패스워드를 입력해주세요');
     } else {
       //토큰을 생성할 파라미터
       var param = {
-        mid: "t3",
-        mpw: "t3",
+        mid: 't3',
+        mpw: 't3',
       };
 
-      const res = await axios.post("http://localhost:80/user/login.do", {
+      const res = await axios.post('http://localhost:80/user/login.do', {
         // user_no: "00004",
         user_id: user_id,
         password: password,
       });
       if (res.data) {
-        sessionStorage.setItem("user_no", res.data.user_no);
-        sessionStorage.setItem("user_id", res.data.user_id);
-        sessionStorage.setItem("nick_name", res.data.nick_name);
+        sessionStorage.setItem('user_no', res.data.user_no);
+        sessionStorage.setItem('user_id', res.data.user_id);
+        sessionStorage.setItem('nick_name', res.data.nick_name);
         if (res.data.challengeDetails.length === 0) {
           console.log(res.data.challengeDetails.length);
           console.log(res.data.challengeDetails);
           console.log(res.data);
-          console.log(sessionStorage.getItem("user_no"));
-          console.log("등록된 챌린지 없음");
-          sessionStorage.setItem("challengeCheck", 0);
+          console.log(sessionStorage.getItem('user_no'));
+          console.log('등록된 챌린지 없음');
+          sessionStorage.setItem('challengeCheck', 0);
           setChallengeCheck(0);
         } else {
           console.log(res.data.challengeDetails);
-          console.log(sessionStorage.getItem("user_no"));
-          console.log("등록된 챌린지 있음");
-          sessionStorage.setItem("challengeCheck", 1);
+          console.log(sessionStorage.getItem('user_no'));
+          console.log('등록된 챌린지 있음');
+          sessionStorage.setItem('challengeCheck', 1);
           setChallengeCheck(1);
         }
-        alert(sessionStorage.getItem("user_id") + " 로그인되었습니다.");
-
+        alert(sessionStorage.getItem('user_id') + ' 로그인되었습니다.');
         // jwt 발급용
         const response = await axios.post(
-          "http://localhost:80/generateToken",
+          'http://localhost:80/generateToken',
           param
         );
         if (!response.data) {
         } else {
-          localStorage.setItem("accessToken", response.data.accessToken);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
-          navigate("/mypage");
+          localStorage.setItem('accessToken', response.data.accessToken);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          navigate('/mypage');
         }
       } else {
-        alert("회원가입이 필요합니다.");
-        navigate("/join");
+        alert('회원가입이 필요합니다.');
+        navigate('/join');
         // setUser_id("");
         // setPassword("");
       }
