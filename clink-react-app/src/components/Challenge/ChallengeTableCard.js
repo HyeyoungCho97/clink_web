@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import ModalBasic from "./ModalBasic";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 const ChallengeTableCard = ({
   datetime,
@@ -53,7 +54,9 @@ const ChallengeTableCard = ({
         "&content=" +
         description;
       axios
-        .get(address)
+        .get(address, {
+          headers: getAuthHeader(),
+        })
         .then((response) => {
           console.log(response);
           if (response.data) {

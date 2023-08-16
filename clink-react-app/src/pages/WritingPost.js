@@ -6,6 +6,7 @@ import CommunityHeader from "../components/community/CommunityHeader";
 import WritingCategory from "../components/community/WritingCategory";
 import PostTagInput from "../components/community/PostTagInput";
 import axios from "axios";
+import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 
 export default function WritingPost() {
   const [inputPost, setInputPost] = useState({
@@ -14,6 +15,7 @@ export default function WritingPost() {
     content: "",
     tagList: [],
   });
+
   const insertPost = () => {
     const arr = [];
     for (let i = 0; i < inputPost.tagList.length; i++) {
@@ -33,7 +35,10 @@ export default function WritingPost() {
     } else {
       axios.post(
         "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/insert",
-        params
+        params,
+        {
+          headers: getAuthHeader(),
+        }
       );
       window.location.href =
         "http://43.200.204.75:80/community/posts?category_no=" +

@@ -13,6 +13,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdditionalButton from "./AdditionalButton";
 import axios from "axios";
 import timestampParse from "../common/timestampParse";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 export default function CommunityPost({ post, commentCount }) {
   const {
@@ -51,7 +52,9 @@ export default function CommunityPost({ post, commentCount }) {
 
     //좋아요 체크
     axios
-      .get(baseurl + parameterurl)
+      .get(baseurl + parameterurl, {
+        headers: getAuthHeader(), // JWT를 포함한 헤더 추가
+      })
       .then(function (response) {
         setIsLike(response.data);
       })
@@ -63,35 +66,46 @@ export default function CommunityPost({ post, commentCount }) {
   const clickLike = (event) => {
     event.stopPropagation();
 
+    const headersWithAuth = getAuthHeader();
+
     if (isLike === 0) {
-      axios.post(baseurl + likeupurl + parameterurl).then((response) => {
-        setIsLike(true);
-        setLike(like + 1);
-      });
+      axios
+        .post(baseurl + likeupurl + parameterurl, null, {
+          headers: headersWithAuth, // JWT 포함한 헤더 추가
+        })
+        .then((response) => {
+          setIsLike(true);
+          setLike(like + 1);
+        });
     } else {
-      axios.post(baseurl + likedownurl + parameterurl).then((response) => {
-        setIsLike(false);
-        setLike(like - 1);
-      });
+      axios
+        .post(baseurl + likedownurl + parameterurl, null, {
+          headers: headersWithAuth, // JWT 포함한 헤더 추가
+        })
+        .then((response) => {
+          setIsLike(false);
+          setLike(like - 1);
+        });
     }
     setIsLike(!isLike);
   };
-
   const postHash = () => {
     const list = [];
     if (hashtag_content !== undefined) {
       const hashlist = hashtag_content.split(",");
       for (let i = 0; i < hashlist.length; i++) {
-        list.push(
-          <Button
-            variant="primary"
-            size="sm"
-            key={i}
-            style={{ marginRight: "5px" }}
-          >
-            {"#" + hashlist[i]}
-          </Button>
-        );
+        if (hashlist[i] !== "") {
+          list.push(
+            <Button
+              variant="primary"
+              size="sm"
+              key={i}
+              style={{ marginRight: "5px" }}
+            >
+              {"#" + hashlist[i]}
+            </Button>
+          );
+        }
       }
     }
     return list;

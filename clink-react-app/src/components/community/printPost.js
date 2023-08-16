@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import axios from "axios";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 const PrintPost = ({ list, i }) => {
   const [isLike, setIsLike] = useState(false);
 
@@ -14,7 +15,9 @@ const PrintPost = ({ list, i }) => {
     "&board_no=" +
     list.board_no;
   axios
-    .get(baseurl + parameterurl)
+    .get(baseurl + parameterurl, {
+      headers: getAuthHeader(),
+    })
     .then(function (response) {
       setIsLike(response.data);
     })

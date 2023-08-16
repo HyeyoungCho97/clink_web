@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import queryString from "query-string";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 export default function AdditionalButton() {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ export default function AdditionalButton() {
             params: {
               board_no: target_board_no,
             },
+          },
+          {
+            headers: getAuthHeader(),
           }
         )
         .then((response) => {

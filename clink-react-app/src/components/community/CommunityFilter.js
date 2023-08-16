@@ -4,6 +4,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 export default function CommunityFilter({
   filter,
@@ -20,8 +21,18 @@ export default function CommunityFilter({
             1
         );
         setHashList(response.data);
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        if (err.response.data.msg === "Expired Token") {
+          console.log("Refresh Your Token");
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh(); // refresh 토큰 발급
+            console.log("new tokens....saved..");
+            return listSet();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        } //end if
       }
     };
     listSet();

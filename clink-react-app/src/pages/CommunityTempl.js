@@ -31,6 +31,17 @@ function Community({ list }) {
         console.log(response.data);
       } catch (e) {
         console.log(e);
+        if (e.response.data.msg === 'Expired Token') {
+          console.log('Refresh Your Token');
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh(); // refresh 토큰 발급
+            console.log('new tokens....saved..');
+            return listSet();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        }
       }
     };
     listSet();

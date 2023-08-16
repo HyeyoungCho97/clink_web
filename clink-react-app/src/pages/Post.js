@@ -5,6 +5,7 @@ import PostComment from "../components/community/PostComment";
 import CommunityHeader from "../components/community/CommunityHeader";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 export default function Post() {
   const location = useLocation();
 
@@ -22,13 +23,21 @@ export default function Post() {
         setPosts(null);
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
+
+        const headersWithAuth = getAuthHeader();
         const responsePost = await axios.get(
           "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post" +
-            location.search
+            location.search,
+          {
+            headers: headersWithAuth,
+          }
         );
         const responseComment = await axios.get(
           "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/comment" +
-            location.search
+            location.search,
+          {
+            headers: headersWithAuth,
+          }
         );
         console.log(responsePost.data.communityPostVO.board_views);
         setPosts(responsePost.data); // 데이터는 response.data 안에 들어있습니다.

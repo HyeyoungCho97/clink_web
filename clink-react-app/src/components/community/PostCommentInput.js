@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 export default function PostCommentInput({ comment, parentCommentId }) {
   const location = useLocation();
@@ -23,12 +24,18 @@ export default function PostCommentInput({ comment, parentCommentId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post(apiLink, {
-        board_no: comment_boardNo,
-        register_id: comment_commentWriter,
-        comment_content: comment_commentContent,
-        parent_id: parentCommentId,
-      })
+      .post(
+        apiLink,
+        {
+          board_no: comment_boardNo,
+          register_id: comment_commentWriter,
+          comment_content: comment_commentContent,
+          parent_id: parentCommentId,
+        },
+        {
+          headers: getAuthHeader(),
+        }
+      )
       .then((response) => {
         window.location.replace(
           "http://43.200.204.75:80/community/post" + location.search

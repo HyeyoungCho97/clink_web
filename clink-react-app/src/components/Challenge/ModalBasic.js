@@ -1,6 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import categoryCode from "../../dataCode/expenseCategory.json";
+import { getAuthHeader, callRefresh } from "../common/JwtAuth";
 
 function ModalBasic({
   setModalOpen,
@@ -49,7 +50,9 @@ function ModalBasic({
         "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/pay-update";
 
       axios
-        .post(address, param)
+        .post(address, param, {
+          headers: getAuthHeader(),
+        })
         .then((response) => {
           //console.log(response);
           if (response.data) {
