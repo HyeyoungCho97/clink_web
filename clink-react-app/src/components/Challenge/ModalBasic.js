@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import categoryCode from '../../dataCode/expenseCategory.json';
+import { getAuthHeader, callRefresh } from '../common/JwtAuth';
 
 function ModalBasic({
   setModalOpen,
@@ -47,7 +48,9 @@ function ModalBasic({
 
       const address = 'http://localhost:80/challenge/pay-update';
       axios
-        .post(address, param)
+        .post(address, param, {
+          headers: getAuthHeader(),
+        })
         .then((response) => {
           if (response.data) {
             alert('정상적으로 수정되었습니다.');

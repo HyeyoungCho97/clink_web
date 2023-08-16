@@ -6,6 +6,7 @@ import ChallengePieChart from './ChallengePieChart';
 import Calendar from 'react-calendar';
 import axios from 'axios';
 import moment from 'moment';
+import { getAuthHeader } from '../common/JwtAuth';
 
 const ChallengeGraph = ({ today, week, openModal }) => {
   const [value, onChange] = useState(new Date());
@@ -27,7 +28,9 @@ const ChallengeGraph = ({ today, week, openModal }) => {
       moment(value[0]).format('YYYY-MM-DD') +
       '&endDate=' +
       moment(value[1]).format('YYYY-MM-DD');
-    const response = await axios.get(address);
+    const response = await axios.get(address, {
+      headers: getAuthHeader(),
+    });
     //console.log(response);
     setData(response.data.today);
   };

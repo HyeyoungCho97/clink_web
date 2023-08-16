@@ -38,11 +38,25 @@ export default function Community() {
             '&filter=' +
             filter +
             '&hashtag=' +
-            hashtag
+            hashtag,
+          {
+            headers: getAuthHeader(),
+          }
         );
         setPosts([...response.data]); // 데이터는 response.data 안에 들어있습니다.
-      } catch (e) {
-        setError(e);
+      } catch (err) {
+        setError(err);
+        if (err.response.data.msg === 'Expired Token') {
+          console.log('Refresh Your Token');
+          // 토큰 유효기간이 만료되면 refreshToken 호출
+          try {
+            await callRefresh(); // refresh 토큰 발급
+            console.log('new tokens....saved..');
+            return lo();
+          } catch (refreshErr) {
+            throw refreshErr.response.data.msg;
+          }
+        } //end if
       }
       setLoading(false);
     };
@@ -87,16 +101,20 @@ export default function Community() {
           categoryNo={categoryNo}
         ></CommunityFilter>
 
-      {posts.map((post, id) => (
-        <CommunityPost post={post} key={id} commentCount={post.comment_count}>
-        </CommunityPost>
-      ))}
-      <CommunityPostButton></CommunityPostButton>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </div>
-  );}
-      }
+        {posts.map((post, id) => (
+          <CommunityPost
+            post={post}
+            key={id}
+            commentCount={post.comment_count}
+          ></CommunityPost>
+        ))}
+        <CommunityPostButton></CommunityPostButton>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
+    );
+  }
+}

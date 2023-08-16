@@ -6,6 +6,7 @@ import ChallengeGoal from '../components/Challenge/ChallengeGoal';
 import Header from '../components/common/Header';
 import ChallengeGraph from '../components/Challenge/ChallengeGraph';
 import NoChallenge from '../components/register/NoChallenge/NoChallengeForm';
+import { getAuthHeader, callRefresh } from '../components/common/JwtAuth';
 const Challenge = () => {
   const [ChallengeTitleText, setChallengeTitleText] = useState();
   const [ChallengeDescriptionText, setChallengeDescruotuibText] = useState();
@@ -13,13 +14,17 @@ const Challenge = () => {
   const [value, setValue] = useState();
   const [todayData, setTodayData] = useState([]);
   const [weekData, setWeekData] = useState([]);
-  const [checkChallenge, setCheckChallenge] = useState(false);
+  const [checkChallenge, setCheckChallenge] = useState(
+    sessionStorage.getItem('challengeCheck')
+  );
   useEffect(() => {
     const user_no = sessionStorage.getItem('user_no');
     const address = 'http://localhost:80/challenge/main-info?userNo=' + user_no;
     //+sessionStorage.getItem("userNo");
     axios
-      .get(address)
+      .get(address, {
+        headers: getAuthHeader(),
+      })
       .then((response) => {
         console.log(response);
         if (response.data !== '') {
@@ -42,7 +47,7 @@ const Challenge = () => {
   return (
     <div className="Challenge" style={{ paddingBottom: '20%' }}>
       <div className="challengContent">
-        {checkChallenge === true ? (
+        {checkChallenge >= 1 ? (
           <>
             <Header />
             <ChallengeTitle
@@ -53,7 +58,9 @@ const Challenge = () => {
             <ChallengeGraph today={todayData} week={weekData} />
           </>
         ) : (
-          <>{!checkChallenge && <NoChallenge />}</>
+          <>
+            <NoChallenge />
+          </>
         )}
       </div>
     </div>
