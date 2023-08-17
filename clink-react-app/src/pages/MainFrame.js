@@ -11,14 +11,12 @@ import axios from "axios";
 import NoChallenge from "../components/register/NoChallenge/NoChallengeForm";
 import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
 
-let userId = sessionStorage.getItem("user_id");
-if (userId == null) userId = "chatgpt";
-
 const MainFrame = (props) => {
   const [badge, setBadge] = useState("001");
   const [quote, setQuote] = useState([]);
   const [streakData, setStreakData] = useState();
   const [reportData, setReportData] = useState();
+  const [isReport, setIsReport] = useState(false);
   const [checkChallenge, setCheckChallenge] = useState(
     sessionStorage.getItem("challengeCheck")
   );
@@ -29,6 +27,11 @@ const MainFrame = (props) => {
     let cDate = 1;
     let continueity = true;
     let idx = 0;
+
+    if (dayData.length === 0) {
+      continueity = false;
+      cDate = 0;
+    }
     while (continueity) {
       //하루차이나면 +1
       if (
@@ -48,7 +51,7 @@ const MainFrame = (props) => {
   }
 
   useEffect(() => {
-    console.log(sessionStorage.getItem("challengeCheck"));
+    //console.log(sessionStorage.getItem("challengeCheck"));
     const getUserData = async () => {
       try {
         const headersWithAuth = getAuthHeader();
@@ -60,54 +63,29 @@ const MainFrame = (props) => {
             headers: headersWithAuth,
           }
         );
-
+        //console.log(response);
         if (response.data !== "") {
-          console.log(response);
+          //console.log(response);
           setBadge(response.data.badge);
           setQuote(response.data.quote);
           setStreakData(response.data.streakData);
           setReportData(response.data.report);
+          if (response.data.streakData.streakData.length !== 0)
+            setIsReport(true);
           getContinuesDate(response.data.streakData.streakData);
           setCheckChallenge(true);
+          //console.log(response.data.report.total_saving);
+          //console.log(reportData);
         } else {
           setCheckChallenge(false);
           console.log("없졍");
         }
       } catch (error) {
-        console.log("메인에러");
+        console.log(error);
       }
     };
     getUserData();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(sessionStorage.getItem('challengeCheck'));
-  //   const getUserData = async () => {
-  //     await axios
-  //       .get(
-  //         'http://localhost:80/main/info?userNo=' +
-  //           sessionStorage.getItem('user_no')
-  //       )
-  //       .then((Response) => {
-  //         if (Response.data !== '') {
-  //           console.log(Response);
-  //           setBadge(Response.data.badge);
-  //           setQuote(Response.data.quote);
-  //           setStreakData(Response.data.streakData);
-  //           setReportData(Response.data.report);
-  //           getContinuesDate(Response.data.streakData.streakData);
-  //           setCheckChallenge(true);
-  //         } else {
-  //           setCheckChallenge(false);
-  //           console.log('없졍');
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log('메인에러');
-  //       });
-  //   };
-  //   getUserData();
-  // }, []);
 
   return (
     <>
@@ -123,7 +101,7 @@ const MainFrame = (props) => {
           <Header />
           <MainHello badge={badge} />
           <MainQuote quote={quote} />
-          {reportData && (
+          {isReport && (
             <MainSavingTotal
               saving={reportData.yesterday_saving}
               totalSave={reportData.total_saving}

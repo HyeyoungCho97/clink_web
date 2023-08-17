@@ -25,6 +25,7 @@ export default function CommunityPost({ post, commentCount }) {
     board_like_count,
     hashtag_content,
     board_views,
+    photo_url,
   } = post || {}; // 구조 분해할 때 기본값으로 빈 객체를 사용
 
   const navigate = useNavigate();
@@ -33,8 +34,11 @@ export default function CommunityPost({ post, commentCount }) {
   const [isLike, setIsLike] = useState(false);
   const [isMine, setIsMine] = useState(false);
   const [view, setView] = useState(false);
-  const [imgURL, setImgURL] = useState(null);
-
+  const [imgURL, setImgURL] = useState(
+    "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/images/" +
+      photo_url
+  );
+  const nick_name = sessionStorage.getItem("nick_name");
   const baseurl =
     "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/like";
   const parameterurl =
@@ -124,11 +128,16 @@ export default function CommunityPost({ post, commentCount }) {
           <div className="PostProfileDiv">
             <div className="CommunityPostProfile">
               <div className="CommunityPostProfileImg">
-                {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
+                {imgURL !== null ? (
+                  <img src={imgURL} alt="Profile" />
+                ) : (
+                  <img src={Logo} alt="Profile" />
+                )}
               </div>
               <div className="CommunityPostProfileText">
                 <p className="CommunityPostProfileNickname">{board_title}</p>
                 <p className="CommunityPostProfileTime">
+                  <b>{register_id} </b>&nbsp; |{" "}
                   {timestampParse(register_datetime)}
                 </p>
               </div>

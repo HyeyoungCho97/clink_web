@@ -12,7 +12,7 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
   const navigate = useNavigate();
   const test = async (e) => {
     const user_no = sessionStorage.getItem('user_no');
-    const challenge_no = '54321';
+    const challenge_no = user_no;
     const param = {
       challenge_title: title,
       challenge_description: description,
@@ -21,6 +21,7 @@ const RegisterBtn = ({ btnType, title, description, amount }) => {
       challenge_no: challenge_no,
     };
     await axios.post('http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/challenge/register', param);
+    navigate('/main')
   };
   return (
     <>

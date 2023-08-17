@@ -46,18 +46,19 @@ const Login = () => {
         sessionStorage.setItem("user_no", res.data.user_no);
         sessionStorage.setItem("user_id", res.data.user_id);
         sessionStorage.setItem("nick_name", res.data.nick_name);
+        sessionStorage.setItem("photo_url", res.data.photo_url);
         if (res.data.challengeDetails.length === 0) {
-          console.log(res.data.challengeDetails.length);
-          console.log(res.data.challengeDetails);
-          console.log(res.data);
-          console.log(sessionStorage.getItem("user_no"));
-          console.log("등록된 챌린지 없음");
+          //console.log(res.data.challengeDetails.length);
+          //console.log(res.data.challengeDetails);
+          //console.log(res.data);
+          //console.log(sessionStorage.getItem("user_no"));
+          //console.log("등록된 챌린지 없음");
           sessionStorage.setItem("challengeCheck", 0);
           setChallengeCheck(0);
         } else {
-          console.log(res.data.challengeDetails);
-          console.log(sessionStorage.getItem("user_no"));
-          console.log("등록된 챌린지 있음");
+          //console.log(res.data.challengeDetails);
+          //console.log(sessionStorage.getItem("user_no"));
+          //console.log("등록된 챌린지 있음");
           sessionStorage.setItem("challengeCheck", 1);
           setChallengeCheck(1);
         }

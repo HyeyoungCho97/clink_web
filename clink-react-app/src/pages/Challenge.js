@@ -28,7 +28,7 @@ const Challenge = () => {
         headers: getAuthHeader(),
       })
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         if (response.data !== "") {
           let chart = response.data.chart;
           setChallengeTitleText(response.data.title);

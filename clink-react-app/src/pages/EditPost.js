@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CommunityHeader from "../components/community/CommunityHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PostTagInput from "../components/community/PostTagInput";
 import Button from "react-bootstrap/esm/Button";
@@ -12,7 +12,7 @@ export default function EditPost() {
   const [inputPost, setInputPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   const location = useLocation();
   const updatePostAPILink =
     "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/community/post/update";
@@ -73,8 +73,7 @@ export default function EditPost() {
     axios.post(updatePostAPILink, params).catch(function (e) {
       console.log(e);
     });
-    window.location.href =
-      "http://43.200.204.75:80/community/post" + location.search;
+    navigate("/community/post" + location.search);
   };
 
   if (loading) return <div>로딩중..</div>;

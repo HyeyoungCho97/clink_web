@@ -7,8 +7,10 @@ import WritingCategory from "../components/community/WritingCategory";
 import PostTagInput from "../components/community/PostTagInput";
 import axios from "axios";
 import { getAuthHeader, callRefresh } from "../components/common/JwtAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function WritingPost() {
+  const navigate = useNavigate();
   const [inputPost, setInputPost] = useState({
     categoryNo: 1,
     title: "",
@@ -29,7 +31,7 @@ export default function WritingPost() {
       user_no: sessionStorage.user_no,
       register_id: sessionStorage.user_id,
     };
-    //trim 오류나서 우선 지우고 테스트중
+
     if (inputPost.title.trim() === "" || inputPost.content.trim() === "") {
       alert("제목 또는 내용을 입력해주세요!");
     } else {
@@ -40,10 +42,9 @@ export default function WritingPost() {
           headers: getAuthHeader(),
         }
       );
-      window.location.href =
-        "http://43.200.204.75:80/community/posts?category_no=" +
-        inputPost.categoryNo +
-        "&&filter=1";
+      navigate(
+        "/community/posts?category_no=" + inputPost.categoryNo + "&&filter=1"
+      );
     }
     //console.log(inputPost.tagList);
   };

@@ -28,6 +28,12 @@ const MyPage = () => {
   const [showAccountBankCode, setShowAccountBankCode] = useState("");
 
   useEffect(() => {
+    // 프로필 사진 확인
+    sessionStorage.getItem("photo_url") === "" ||
+    sessionStorage.getItem("photo_url") === null
+      ? setNewfile(null)
+      : setNewfile(sessionStorage.getItem("photo_url"));
+
     // 계좌 정보불러오기
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
@@ -69,6 +75,7 @@ const MyPage = () => {
           nickname: userResponse.data.nick_name,
           password: userResponse.data.password,
         });
+        setNewfile(userResponse.data.photo_url);
       } catch (err) {
         if (err.response.data.msg === "Expired Token") {
           console.log("Refresh Your Token");

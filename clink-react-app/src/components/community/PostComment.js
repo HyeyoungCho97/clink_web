@@ -18,11 +18,16 @@ export default function PostComment({
     register_id,
     register_datetime,
     parent_id,
+    photo_url,
+    user_no,
   } = comment || {};
   const [view, setView] = useState(false);
   const [isReply, setIsReply] = useState(false);
   const [isMine, setIsMine] = useState(false);
-  const [imgURL, setImgURL] = useState(null);
+  const [imgURL, setImgURL] = useState(
+    "http://ec2-43-202-97-102.ap-northeast-2.compute.amazonaws.com:8000/images/" +
+      photo_url
+  );
 
   useEffect(() => {
     if (comment_id !== parent_id) {
@@ -54,7 +59,11 @@ export default function PostComment({
             <></>
           )}
           <div className="CommunityPostProfileImg">
-            {imgURL !== null ? <p></p> : <img src={Logo} alt="Profile" />}
+            {imgURL !== null ? (
+              <img src={imgURL} alt="Profile" />
+            ) : (
+              <img src={Logo} alt="Profile" />
+            )}
           </div>
           <div className="CommunityPostProfileText">
             <p className="CommunityPostProfileNickname">{register_id}</p>

@@ -31,6 +31,7 @@ export default function PostCommentInput({ comment, parentCommentId }) {
           register_id: comment_commentWriter,
           comment_content: comment_commentContent,
           parent_id: parentCommentId,
+          user_no: sessionStorage.getItem("user_no"),
         },
         {
           headers: getAuthHeader(),
@@ -38,7 +39,7 @@ export default function PostCommentInput({ comment, parentCommentId }) {
       )
       .then((response) => {
         window.location.replace(
-          "http://43.200.204.75:80/community/post" + location.search
+          "http://0grang.duckdns.org:80/community/post" + location.search
         );
       })
       .catch((error) => {
